@@ -8,6 +8,7 @@ using GTA.Native;
 using GTA.Math;
 using System.Drawing;
 using System.Windows.Forms;
+using GTAVRemultiplied;
 
 /// <summary>
 /// Shows a command line for players to type into.
@@ -30,12 +31,12 @@ public class CommandLineScript : Script
     bool WasDownLast = false;
 
     string cText = "";
-
+    
     public void RunCommand(string cmd)
     {
         UI.ShowSubtitle("[Command] " + cmd); // Placeholder!
     }
-
+    
     private void CommandLineScript_KeyDown(object sender, KeyEventArgs e)
     {
         if (!Visible)
@@ -47,7 +48,6 @@ public class CommandLineScript : Script
             Visible = false;
             return;
         }
-        e.SuppressKeyPress = true;
         if (e.KeyCode == Keys.Enter)
         {
             RunCommand(cText);
@@ -57,22 +57,18 @@ public class CommandLineScript : Script
         }
         if (e.KeyCode == Keys.Back)
         {
-            if (cText.Length > 1)
+            if (cText.Length > 0)
             {
                 cText = cText.Substring(0, cText.Length - 1);
             }
             return;
         }
-        char newC = e.KeyCode.ToString()[0];
-        if (e.Shift)
+        char c = CharacterUtilities.GetCharFrom(e.KeyCode, e.Shift || Console.CapsLock);
+        if (c == '\0')
         {
-            newC = char.ToUpperInvariant(newC);
+            return;
         }
-        else
-        {
-            newC = char.ToLowerInvariant(newC);
-        }
-        cText += newC;
+        cText += c;
     }
 
     private void CommandLineScript_Tick(object sender, EventArgs e)
