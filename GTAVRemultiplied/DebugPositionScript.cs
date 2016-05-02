@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Native;
 using GTA.Math;
+using GTAVRemultiplied;
 
 /// <summary>
 /// Shows debug information indicating a player's world position on-screen.
@@ -44,32 +45,39 @@ public class DebugPositionScript : Script
 
     private void DebugPositionScript_Tick(object sender, EventArgs e)
     {
-        bool p = Game.IsKeyPressed(System.Windows.Forms.Keys.Multiply);
-        if (p && !WasDownLast)
+        try
         {
-            Enabled = !Enabled;
+            bool p = Game.IsKeyPressed(System.Windows.Forms.Keys.Multiply);
+            if (p && !WasDownLast)
+            {
+                Enabled = !Enabled;
+            }
+            WasDownLast = p;
+            if (Enabled)
+            {
+                PX.Caption = "PosX: " + Game.Player.Character.Position.X;
+                PY.Caption = "PosY: " + Game.Player.Character.Position.Y;
+                PZ.Caption = "PosZ: " + Game.Player.Character.Position.Z;
+                FX.Caption = "ForX: " + Game.Player.Character.ForwardVector.X;
+                FY.Caption = "ForY: " + Game.Player.Character.ForwardVector.Y;
+                FZ.Caption = "ForZ: " + Game.Player.Character.ForwardVector.Z;
+                CX.Caption = "CamX: " + GameplayCamera.Direction.X;
+                CY.Caption = "CamY: " + GameplayCamera.Direction.Y;
+                CZ.Caption = "CamZ: " + GameplayCamera.Direction.Z;
+                PX.Draw();
+                PY.Draw();
+                PZ.Draw();
+                FX.Draw();
+                FY.Draw();
+                FZ.Draw();
+                CX.Draw();
+                CY.Draw();
+                CZ.Draw();
+            }
         }
-        WasDownLast = p;
-        if (Enabled)
+        catch (Exception ex)
         {
-            PX.Caption = "PosX: " + Game.Player.Character.Position.X;
-            PY.Caption = "PosY: " + Game.Player.Character.Position.Y;
-            PZ.Caption = "PosZ: " + Game.Player.Character.Position.Z;
-            FX.Caption = "ForX: " + Game.Player.Character.ForwardVector.X;
-            FY.Caption = "ForY: " + Game.Player.Character.ForwardVector.Y;
-            FZ.Caption = "ForZ: " + Game.Player.Character.ForwardVector.Z;
-            CX.Caption = "CamX: " + GameplayCamera.Direction.X;
-            CY.Caption = "CamY: " + GameplayCamera.Direction.Y;
-            CZ.Caption = "CamZ: " + GameplayCamera.Direction.Z;
-            PX.Draw();
-            PY.Draw();
-            PZ.Draw();
-            FX.Draw();
-            FY.Draw();
-            FZ.Draw();
-            CX.Draw();
-            CY.Draw();
-            CZ.Draw();
+            Log.Exception(ex);
         }
     }
 }

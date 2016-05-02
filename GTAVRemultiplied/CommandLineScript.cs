@@ -34,7 +34,7 @@ public class CommandLineScript : Script
     
     public void RunCommand(string cmd)
     {
-        UI.ShowSubtitle("[Command] " + cmd); // Placeholder!
+        Log.Message("Command", cmd, 'G');
     }
     
     private void CommandLineScript_KeyDown(object sender, KeyEventArgs e)
@@ -73,19 +73,26 @@ public class CommandLineScript : Script
 
     private void CommandLineScript_Tick(object sender, EventArgs e)
     {
-        bool p = Game.IsKeyPressed(Keys.Divide);
-        if (p && !WasDownLast)
+        try
         {
-            cText = "";
-            Visible = !Visible;
+            bool p = Game.IsKeyPressed(Keys.Divide);
+            if (p && !WasDownLast)
+            {
+                cText = "";
+                Visible = !Visible;
+            }
+            WasDownLast = p;
+            if (Visible)
+            {
+                Game.DisableAllControlsThisFrame(2);
+                Rendered.Caption = cText;
+                BackRect.Draw();
+                Rendered.Draw();
+            }
         }
-        WasDownLast = p;
-        if (Visible)
+        catch (Exception ex)
         {
-            Game.DisableAllControlsThisFrame(2);
-            Rendered.Caption = cText;
-            BackRect.Draw();
-            Rendered.Draw();
+            Log.Exception(ex);
         }
     }
 }
