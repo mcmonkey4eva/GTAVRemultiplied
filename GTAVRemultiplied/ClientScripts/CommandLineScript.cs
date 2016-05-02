@@ -9,6 +9,7 @@ using GTA.Math;
 using System.Drawing;
 using System.Windows.Forms;
 using GTAVRemultiplied;
+using GTAVRemultiplied.ClientSystem;
 
 /// <summary>
 /// Shows a command line for players to type into.

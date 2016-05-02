@@ -9,7 +9,7 @@ using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
 
-namespace GTAVRemultiplied
+namespace GTAVRemultiplied.ClientSystem
 {
     public class GTAVFrenetic
     {

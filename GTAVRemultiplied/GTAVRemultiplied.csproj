@@ -44,13 +44,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharacterUtilities.cs" />
-    <Compile Include="ChatTextScript.cs" />
-    <Compile Include="CommandLineScript.cs" />
-    <Compile Include="DebugPositionScript.cs" />
-    <Compile Include="GTAVFrenetic.cs" />
-    <Compile Include="GTAVFreneticOutputter.cs" />
+    <Compile Include="ClientScripts\ChatTextScript.cs" />
+    <Compile Include="ClientScripts\CommandLineScript.cs" />
+    <Compile Include="ClientScripts\DebugPositionScript.cs" />
+    <Compile Include="ClientSystem\GTAVFrenetic.cs" />
+    <Compile Include="ClientSystem\GTAVFreneticOutputter.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ServerScripts\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
