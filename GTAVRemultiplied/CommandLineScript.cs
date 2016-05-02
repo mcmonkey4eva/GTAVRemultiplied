@@ -35,6 +35,7 @@ public class CommandLineScript : Script
     public void RunCommand(string cmd)
     {
         Log.Message("Command", cmd, 'G');
+        GTAVFrenetic.CommandSystem.ExecuteCommands(cmd, null);
     }
     
     private void CommandLineScript_KeyDown(object sender, KeyEventArgs e)

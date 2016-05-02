@@ -9,9 +9,11 @@ using GTA.Math;
 using System.Drawing;
 using System.Windows.Forms;
 using GTAVRemultiplied;
+using System.Diagnostics;
 
 /// <summary>
-/// Shows a a chat/log section along the side of the screen.
+/// Shows a chat/log section along the side of the screen.
+/// Also, starts up FreneticScript.
 /// </summary>
 public class ChatTextScript : Script
 {
@@ -45,6 +47,8 @@ public class ChatTextScript : Script
         {
             ChatTextSlot.Add(GenOne());
         }
+        GTAVFrenetic.Init();
+        sw.Start();
     }
 
     public void AddLine(char col, string type, string txt)
@@ -83,6 +87,12 @@ public class ChatTextScript : Script
                 case 'C':
                     ChatTextSlot[i].Color = Color.DarkCyan;
                     break;
+                case 'Y':
+                    ChatTextSlot[i].Color = Color.FromArgb(128, 128, 0); // DarkYellow.
+                    break;
+                case 'y':
+                    ChatTextSlot[i].Color = Color.Yellow;
+                    break;
                 default:
                     ChatTextSlot[i].Color = Color.White;
                     break;
@@ -91,6 +101,8 @@ public class ChatTextScript : Script
         }
         LastUpdate = DateTime.Now;
     }
+
+    Stopwatch sw = new Stopwatch();
 
     private void ChatTextScript_Tick(object sender, EventArgs e)
     {
@@ -103,5 +115,10 @@ public class ChatTextScript : Script
                 ChatTextSlot[i].Draw();
             }
         }
+        sw.Stop();
+        float delt = sw.ElapsedTicks / (float)Stopwatch.Frequency;
+        sw.Reset();
+        sw.Start();
+        GTAVFrenetic.Tick(delt);
     }
 }

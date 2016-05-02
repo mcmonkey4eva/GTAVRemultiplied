@@ -23,6 +23,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FreneticScript">
+      <HintPath>.\FreneticScript.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptHookVDotNet">
       <HintPath>.\ScriptHookVDotNet.dll</HintPath>
     </Reference>
@@ -35,12 +38,17 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="YamlDotNet">
+      <HintPath>.\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharacterUtilities.cs" />
     <Compile Include="ChatTextScript.cs" />
     <Compile Include="CommandLineScript.cs" />
     <Compile Include="DebugPositionScript.cs" />
+    <Compile Include="GTAVFrenetic.cs" />
+    <Compile Include="GTAVFreneticOutputter.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

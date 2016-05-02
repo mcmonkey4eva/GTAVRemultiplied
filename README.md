@@ -6,13 +6,12 @@ More information coming soon!
 
 ### Installing
 
-Install http://www.dev-c.com/gtav/scripthookv/ using their resources.
-
-Install https://github.com/crosire/scripthookvdotnet/releases using their resources or the copy contained in this source.
-
-Build this project from the source available here (or acquire the dll from a release copy).
-
-Copy the resultant dll of this project's build into your `GTAV/scripts/` folder.
+- Install http://www.dev-c.com/gtav/scripthookv/ using their resources.
+- Install https://github.com/crosire/scripthookvdotnet/releases using their resources or the copy contained in this source.
+- Build this project from the source available here (or acquire the dll's from a release copy).
+- Copy the resultant dll's (GTAVRemultiplied, YAMLDotNet, FreneticScript) of this project's build into your `GTAV/scripts/` folder.
+- In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "scripts".
+- You are now ready to play!
 
 ### Licensing pre-note:
 
