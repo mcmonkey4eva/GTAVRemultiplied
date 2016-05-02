@@ -28,31 +28,24 @@ public class DebugPositionScript : Script
     {
         Tick += DebugPositionScript_Tick;
         // TODO: Test these positions on different resolutions and adjust values accordingly? (Perhaps they should be a percentage of screen height?)
-        PX = new UIText("PosX: ", new System.Drawing.Point(0, UI.HEIGHT / 4), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        PY = new UIText("PosY: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        PZ = new UIText("PosZ: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FX = new UIText("ForX: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 48), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FY = new UIText("ForY: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 64), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FZ = new UIText("ForZ: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 80), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CX = new UIText("CamX: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 96), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CY = new UIText("CamY: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 112), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CZ = new UIText("CamZ: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 128), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        PX = new UIText("PosX: ", new System.Drawing.Point(0, 0), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        PY = new UIText("PosY: ", new System.Drawing.Point(0, 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        PZ = new UIText("PosZ: ", new System.Drawing.Point(0, 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        FX = new UIText("ForX: ", new System.Drawing.Point(0, 48), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        FY = new UIText("ForY: ", new System.Drawing.Point(0, 64), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        FZ = new UIText("ForZ: ", new System.Drawing.Point(0, 80), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        CX = new UIText("CamX: ", new System.Drawing.Point(0, 96), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        CY = new UIText("CamY: ", new System.Drawing.Point(0, 112), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        CZ = new UIText("CamZ: ", new System.Drawing.Point(0, 128), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
     }
 
-    bool Enabled = false;
-
-    bool WasDownLast = false;
+    public static bool Enabled = false;
 
     private void DebugPositionScript_Tick(object sender, EventArgs e)
     {
         try
         {
-            bool p = Game.IsKeyPressed(System.Windows.Forms.Keys.Multiply);
-            if (p && !WasDownLast)
-            {
-                Enabled = !Enabled;
-            }
-            WasDownLast = p;
+            // TODO: Toggler command!
             if (Enabled)
             {
                 PX.Caption = "PosX: " + Game.Player.Character.Position.X;

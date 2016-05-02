@@ -9,9 +9,9 @@ using FreneticScript.TagHandlers;
 using System.IO;
 using FreneticScript.TagHandlers.Objects;
 
-namespace GTAVRemultiplied.ServerSystem
+namespace GTAVRemultiplied.ClientSystem
 {
-    public class GTAVFreneticServerOutputter : Outputter
+    public class GTAVFreneticOutputter : Outputter
     {
         public Commands Syst;
 

@@ -8,13 +8,14 @@ using FreneticScript.CommandSystem;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
-using GTAVRemultiplied.ClientSystem.CommonCommands;
 
-namespace GTAVRemultiplied.ClientSystem
+namespace GTAVRemultiplied.ServerSystem
 {
-    public class GTAVFrenetic
+    public class GTAVFreneticServer
     {
-        public static GTAVFreneticOutputter Output;
+        public static bool Enabled = false;
+
+        public static GTAVFreneticServerOutputter Output;
 
         public static Commands CommandSystem;
 
@@ -31,19 +32,25 @@ namespace GTAVRemultiplied.ClientSystem
 
         public static void Tick(float delta)
         {
-            CommandSystem.Tick(delta);
+            if (Enabled)
+            {
+                CommandSystem.Tick(delta);
+            }
         }
 
         public static void Init()
         {
-            Output = new GTAVFreneticOutputter();
+            if (Enabled)
+            {
+                return;
+            }
+            Enabled = true;
+            Output = new GTAVFreneticServerOutputter();
             CommandSystem = new Commands();
             Output.Syst = CommandSystem;
             CommandSystem.Output = Output;
             CommandSystem.Init();
-            // Common Commands
-            CommandSystem.RegisterCommand(new DebugPositionCommand());
-            // Wrap up
+            // Register things...
             CommandSystem.PostInit();
             AutorunScripts();
         }

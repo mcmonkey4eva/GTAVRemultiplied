@@ -9,6 +9,7 @@ using GTA.Math;
 using System.Drawing;
 using System.Windows.Forms;
 using GTAVRemultiplied;
+using GTAVRemultiplied.ServerSystem;
 using GTAVRemultiplied.ClientSystem;
 
 /// <summary>
@@ -29,14 +30,29 @@ public class CommandLineScript : Script
 
     bool Visible = false;
 
+    bool Mode = false;
+
     bool WasDownLast = false;
+
+    bool WasDownLast2 = false;
 
     string cText = "";
     
     public void RunCommand(string cmd)
     {
-        Log.Message("Command", cmd, 'G');
-        GTAVFrenetic.CommandSystem.ExecuteCommands(cmd, null);
+        if (Mode)
+        {
+            if (GTAVFreneticServer.Enabled)
+            {
+                Log.Message("Server Command", cmd, 'G');
+                GTAVFreneticServer.CommandSystem.ExecuteCommands(cmd, null);
+            }
+        }
+        else
+        {
+            Log.Message("Client Command", cmd, 'G');
+            GTAVFrenetic.CommandSystem.ExecuteCommands(cmd, null);
+        }
     }
     
     private void CommandLineScript_KeyDown(object sender, KeyEventArgs e)
@@ -82,8 +98,17 @@ public class CommandLineScript : Script
             {
                 cText = "";
                 Visible = !Visible;
+                Mode = false;
             }
             WasDownLast = p;
+            p = Game.IsKeyPressed(Keys.Multiply);
+            if (p && GTAVFreneticServer.Enabled && !WasDownLast2)
+            {
+                cText = "";
+                Visible = !Visible;
+                Mode = true;
+            }
+            WasDownLast2 = p;
             if (Visible)
             {
                 Game.DisableAllControlsThisFrame(2);

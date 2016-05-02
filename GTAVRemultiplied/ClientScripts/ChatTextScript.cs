@@ -8,8 +8,11 @@ using GTA.Native;
 using GTA.Math;
 using System.Drawing;
 using System.Windows.Forms;
+using GTAVRemultiplied;
 using GTAVRemultiplied.ClientSystem;
+using GTAVRemultiplied.ServerSystem;
 using System.Diagnostics;
+using FreneticScript;
 
 /// <summary>
 /// Shows a chat/log section along the side of the screen.
@@ -47,6 +50,19 @@ public class ChatTextScript : Script
         {
             ChatTextSlot.Add(GenOne());
         }
+        TextStyle.Color_Simple = "";
+        TextStyle.Reset = "";
+        TextStyle.White = "";
+        TextStyle.Color_Standout = "";
+        TextStyle.Color_Importantinfo = "";
+        TextStyle.Color_Commandhelp = "";
+        TextStyle.Color_Error = "";
+        TextStyle.Color_Outgood = "";
+        TextStyle.Color_Outbad = "";
+        TextStyle.Color_Separate = "";
+        TextStyle.Color_Readable = "";
+        TextStyle.Color_Warning = "";
+        TextStyle.Default = "";
         GTAVFrenetic.Init();
         sw.Start();
     }
@@ -119,6 +135,21 @@ public class ChatTextScript : Script
         float delt = sw.ElapsedTicks / (float)Stopwatch.Frequency;
         sw.Reset();
         sw.Start();
-        GTAVFrenetic.Tick(delt);
+        try
+        {
+            GTAVFrenetic.Tick(delt);
+        }
+        catch (Exception ex)
+        {
+            Log.Exception(ex);
+        }
+        try
+        {
+            GTAVFreneticServer.Tick(delt);
+        }
+        catch (Exception ex)
+        {
+            Log.Exception(ex);
+        }
     }
 }
