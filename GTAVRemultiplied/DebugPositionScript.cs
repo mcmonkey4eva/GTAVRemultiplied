@@ -9,6 +9,7 @@ using GTA.Math;
 
 /// <summary>
 /// Shows debug information indicating a player's world position on-screen.
+/// Toggled by the numpad multiply key.
 /// </summary>
 public class DebugPositionScript : Script
 {
@@ -25,7 +26,7 @@ public class DebugPositionScript : Script
     public DebugPositionScript()
     {
         Tick += DebugPositionScript_Tick;
-        // TODO: Test these positions on non-1080 and adjust values accordingly. (Perhaps they should be a percentage of screen height?)
+        // TODO: Test these positions on different resolutions and adjust values accordingly? (Perhaps they should be a percentage of screen height?)
         PX = new UIText("PosX: ", new System.Drawing.Point(0, UI.HEIGHT / 4), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
         PY = new UIText("PosY: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
         PZ = new UIText("PosZ: ", new System.Drawing.Point(0, UI.HEIGHT / 4 + 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
