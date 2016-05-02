@@ -4,6 +4,16 @@ A fanciful high-hopes mod for Grand Theft Auto V
 
 More information coming soon!
 
+### Installing
+
+Install http://www.dev-c.com/gtav/scripthookv/ using their resources.
+
+Install https://github.com/crosire/scripthookvdotnet/releases using their resources or the copy contained in this source.
+
+Build this project from the source available here (or acquire the dll from a release copy).
+
+Copy the resultant dll of this project's build into your `GTAV/scripts/` folder.
+
 ### Licensing pre-note:
 
 This is an open source project, provided entirely freely, for everyone to use and contribute to.
