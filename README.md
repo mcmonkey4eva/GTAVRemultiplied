@@ -4,13 +4,20 @@ A fanciful high-hopes mod for Grand Theft Auto V
 
 More information coming soon!
 
-### Installing
+### Installing From Release
+
+- Download the release .zip file, extract its contents to a folder
+- Download the file at http://www.dev-c.com/gtav/scripthookv/ and include the files ScriptHookV.dll and dinput8.dll in your folder created by the first step
+- Run InstallGTAVRMP.exe, click "Find It" at the top right, and click your GTA5.exe file, where that is (Wherever you installed GTAV, EG in `C:/Program Files (x86)/Steam/steamapps/common/Grand Theft Auto V/GTA5.exe`)
+- Click "Install GTAV RMP"
+
+### Installing From Source (Manual)
 
 - Install http://www.dev-c.com/gtav/scripthookv/ using their resources.
 - Install https://github.com/crosire/scripthookvdotnet/releases using their resources or the copy contained in this source.
-- Build this project from the source available here (or acquire the dll's from a release copy).
+- Build this project from the source available here, using Visual Studio 2015 (or acquire the dll's from a release copy).
 - Copy the resultant dll's (GTAVRemultiplied, YAMLDotNet, FreneticScript) of this project's build into your `GTAV/scripts/` folder.
-- In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "scripts".
+- In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "client" and one labeled "server", in each, add a server labeled "scripts".
 - You are now ready to play!
 
 ### Licensing pre-note:
