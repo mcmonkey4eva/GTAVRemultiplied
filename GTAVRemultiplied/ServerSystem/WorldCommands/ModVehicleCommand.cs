@@ -73,10 +73,20 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
                         }
                     }
                     break;
+                case "color_trim":
+                    veh.Internal.TrimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    break;
+                case "color_rim":
+                    veh.Internal.RimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    break;
+                case "color_shine":
+                    veh.Internal.PearlescentColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    break;
                 case "invincible":
                     veh.Internal.IsInvincible = BooleanTag.TryFor(val).Internal;
                     break;
                 case "window_tint":
+                    // TODO: Functionality here?
                     veh.Internal.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
                     break;
                 case "repair":
