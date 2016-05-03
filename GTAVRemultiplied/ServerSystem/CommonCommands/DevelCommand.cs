@@ -8,6 +8,7 @@ using FreneticScript.CommandSystem;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using GTA;
+using GTA.Math;
 using GTA.Native;
 
 namespace GTAVRemultiplied.ServerSystem.CommonCommands
@@ -17,9 +18,9 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
         public DevelCommand()
         {
             Name = "devel";
-            Arguments = "<command> [argument]";
+            Arguments = "<command> <argument>";
             Description = "Runs an experimental serverside command.";
-            MinimumArguments = 1;
+            MinimumArguments = 2;
             MaximumArguments = 2;
             ObjectTypes = new List<Func<TemplateObject, TemplateObject>>()
             {
@@ -31,11 +32,12 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
         public override void Execute(CommandQueue queue, CommandEntry entry)
         {
             string cmd = entry.GetArgument(queue, 0);
+            TemplateObject arg2 = entry.GetArgumentObject(queue, 1);
             switch (cmd)
             {
                 case "switchCharacter":
                     PedHash mod;
-                    if (entry.Arguments.Count > 1 && Enum.TryParse(entry.GetArgument(queue, 1), true, out mod))
+                    if (Enum.TryParse(arg2.ToString(), true, out mod))
                     {
                         GTAVUtilities.SwitchCharacter(mod);
                         if (entry.ShouldShowGood(queue))
@@ -46,6 +48,23 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     else
                     {
                         queue.HandleError(entry, "Invalid input!");
+                    }
+                    break;
+                case "teleportTo":
+                        // TODO: Vector/Location tag!
+                        Game.Player.Character.Position = GTAVUtilities.StringToVector(arg2.ToString());
+                    if (entry.ShouldShowGood(queue))
+                    {
+                        entry.Good(queue, "Teleported!");
+                    }
+                    break;
+                case "teleportSafe":
+                    // TODO: Vector/Location tag!
+                    Game.Player.Character.Position = GTAVUtilities.StringToVector(arg2.ToString());
+                    Game.Player.Character.Position += new Vector3(0, 0, -Game.Player.Character.HeightAboveGround);
+                    if (entry.ShouldShowGood(queue))
+                    {
+                        entry.Good(queue, "Teleported safely!");
                     }
                     break;
                 default:
