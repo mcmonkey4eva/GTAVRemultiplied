@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GTA;
 using GTA.Native;
+using GTAVRemultiplied;
 
 public class ModelEnforcementScript : Script
 {
@@ -23,26 +24,43 @@ public class ModelEnforcementScript : Script
         {
             return;
         }
-        // TODO: Watch for death and avoid crashing
-        // (Game crashes if non-player model is in use at death time)
-        // 'GET_HASH_KEY("player_zero")'
-        // Note: have to request model and all, same as below.
-        if (WantedModel != null && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
+        try
         {
-            if (!Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, WantedModel.Value.Hash) || !Function.Call<bool>(Hash.IS_MODEL_VALID, WantedModel.Value.Hash))
+            if (Game.Player.IsDead && WantedModel != null && WantedModel.HasValue && Game.Player.Character.Model == WantedModel.Value)
             {
-                WantedModel = null;
+                int hash = Function.Call<int>(Hash.GET_HASH_KEY, "player_zero");
+                SetModel(new Model(hash));
                 return;
             }
-            CanTick = false;
-            Function.Call(Hash.REQUEST_MODEL, WantedModel.Value.Hash);
-            while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, WantedModel.Value.Hash))
+            if (WantedModel != null && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
             {
-                Wait(0);
+                if (!SetModel(WantedModel.Value))
+                {
+                    WantedModel = Game.Player.Character.Model;
+                }
             }
-            Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, WantedModel.Value.Hash);
-            Game.Player.Character.SetDefaultClothes();
-            CanTick = true;
         }
+        catch (Exception ex)
+        {
+            Log.Exception(ex);
+        }
+    }
+
+    bool SetModel(Model mod)
+    {
+        if (!Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, mod.Hash) || !Function.Call<bool>(Hash.IS_MODEL_VALID, mod.Hash))
+        {
+            return false;
+        }
+        CanTick = false;
+        Function.Call(Hash.REQUEST_MODEL, mod.Hash);
+        while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, mod.Hash))
+        {
+            Wait(0);
+        }
+        Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, mod.Hash);
+        Game.Player.Character.SetDefaultClothes();
+        CanTick = true;
+        return true;
     }
 }
