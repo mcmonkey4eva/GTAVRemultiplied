@@ -50,14 +50,16 @@
     <Compile Include="ClientSystem\CommonCommands\DebugPositionCommand.cs" />
     <Compile Include="ClientSystem\GTAVFrenetic.cs" />
     <Compile Include="ClientSystem\GTAVFreneticOutputter.cs" />
+    <Compile Include="ClientSystem\NetworkCommands\StartServerCommand.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerScripts\WatchForConnectionsScript.cs" />
+    <Compile Include="ServerSystem\GTAVServerClientConnection.cs" />
+    <Compile Include="ServerSystem\GTAVServerConnection.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServer.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServerOutputter.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ServerScripts\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

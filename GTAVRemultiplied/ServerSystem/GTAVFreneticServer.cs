@@ -38,13 +38,28 @@ namespace GTAVRemultiplied.ServerSystem
             }
         }
 
-        public static void Init()
+        public static void Shutdown()
+        {
+            if (!Enabled)
+            {
+                return;
+            }
+            Enabled = false;
+        }
+
+        public static ushort CurrentPort = 28010;
+
+        public static GTAVServerConnection Connections;
+
+        public static void Init(ushort port)
         {
             if (Enabled)
             {
                 return;
             }
             Enabled = true;
+            Connections = new GTAVServerConnection();
+            Connections.Listen(port);
             Output = new GTAVFreneticServerOutputter();
             CommandSystem = new Commands();
             Output.Syst = CommandSystem;

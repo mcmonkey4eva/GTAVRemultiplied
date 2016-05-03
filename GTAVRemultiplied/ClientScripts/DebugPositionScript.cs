@@ -10,7 +10,7 @@ using GTAVRemultiplied;
 
 /// <summary>
 /// Shows debug information indicating a player's world position on-screen.
-/// Toggled by the numpad multiply key.
+/// Toggled by command.
 /// </summary>
 public class DebugPositionScript : Script
 {

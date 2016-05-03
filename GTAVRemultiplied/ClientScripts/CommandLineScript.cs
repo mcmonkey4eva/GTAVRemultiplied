@@ -15,6 +15,7 @@ using GTAVRemultiplied.ClientSystem;
 /// <summary>
 /// Shows a command line for players to type into.
 /// Opened by the numpad divide key, closed with the enter key.
+/// Server command line opened by the number multiply key.
 /// </summary>
 public class CommandLineScript : Script
 {

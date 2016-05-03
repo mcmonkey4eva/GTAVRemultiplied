@@ -9,6 +9,7 @@ using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
 using GTAVRemultiplied.ClientSystem.CommonCommands;
+using GTAVRemultiplied.ClientSystem.NetworkCommands;
 
 namespace GTAVRemultiplied.ClientSystem
 {
@@ -43,6 +44,8 @@ namespace GTAVRemultiplied.ClientSystem
             CommandSystem.Init();
             // Common Commands
             CommandSystem.RegisterCommand(new DebugPositionCommand());
+            // Network Commands
+            CommandSystem.RegisterCommand(new StartServerCommand());
             // Wrap up
             CommandSystem.PostInit();
             AutorunScripts();
