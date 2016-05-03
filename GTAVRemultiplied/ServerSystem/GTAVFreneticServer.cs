@@ -8,6 +8,7 @@ using FreneticScript.CommandSystem;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
+using GTAVRemultiplied.ServerSystem.CommonCommands;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -65,7 +66,9 @@ namespace GTAVRemultiplied.ServerSystem
             Output.Syst = CommandSystem;
             CommandSystem.Output = Output;
             CommandSystem.Init();
-            // Register things...
+            // Common Commands
+            CommandSystem.RegisterCommand(new DevelCommand());
+            // Wrap up
             CommandSystem.PostInit();
             AutorunScripts();
         }
