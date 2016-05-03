@@ -63,10 +63,10 @@
     <Compile Include="ServerSystem\GTAVFreneticServer.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServerOutputter.cs" />
     <Compile Include="ServerSystem\TagObjects\VehicleTag.cs" />
+    <Compile Include="ServerSystem\WorldCommands\ModVehicleCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServerSystem\PacketsOut\" />
-    <Folder Include="ServerSystem\WorldCommands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

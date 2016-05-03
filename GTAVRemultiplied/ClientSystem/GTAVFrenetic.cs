@@ -21,7 +21,7 @@ namespace GTAVRemultiplied.ClientSystem
 
         public static void AutorunScripts()
         {
-            string[] files = Directory.GetFiles(Environment.CurrentDirectory + "/frenetic/scripts/", "*.cfg", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(Environment.CurrentDirectory + "/frenetic/client/scripts/", "*.cfg", SearchOption.AllDirectories);
             foreach (string file in files)
             {
                 string cmd = File.ReadAllText(file).Replace("\r", "").Replace("\0", "\\0");

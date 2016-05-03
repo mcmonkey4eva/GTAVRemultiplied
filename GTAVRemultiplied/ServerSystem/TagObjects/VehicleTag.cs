@@ -19,6 +19,11 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
             Internal = veh;
         }
 
+        public static VehicleTag For(TemplateObject obj)
+        {
+            return (obj is VehicleTag) ? (VehicleTag)obj : null;
+        }
+
         /// <summary>
         /// All tag handlers for this tag type.
         /// </summary>

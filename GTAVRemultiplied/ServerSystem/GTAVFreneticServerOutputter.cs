@@ -9,9 +9,9 @@ using FreneticScript.TagHandlers;
 using System.IO;
 using FreneticScript.TagHandlers.Objects;
 
-namespace GTAVRemultiplied.ClientSystem
+namespace GTAVRemultiplied.ServerSystem
 {
-    public class GTAVFreneticOutputter : Outputter
+    public class GTAVFreneticServerOutputter : Outputter
     {
         public Commands Syst;
 
@@ -27,7 +27,7 @@ namespace GTAVRemultiplied.ClientSystem
 
         public override string ReadTextFile(string name)
         {
-            return File.ReadAllText(Environment.CurrentDirectory + "/frenetic/scripts/" + name.Replace("..", "_")); // TODO: Proper sandbox!
+            return File.ReadAllText(Environment.CurrentDirectory + "/frenetic/server/scripts/" + name.Replace("..", "_")); // TODO: Proper sandbox!
         }
 
         public override void UnknownCommand(CommandQueue queue, string basecommand, string[] arguments)
@@ -42,12 +42,12 @@ namespace GTAVRemultiplied.ClientSystem
 
         public override byte[] ReadDataFile(string name)
         {
-            return File.ReadAllBytes(Environment.CurrentDirectory + "/frenetic/script_data/" + name.Replace("..", "_")); // TODO: Proper sandbox!
+            return File.ReadAllBytes(Environment.CurrentDirectory + "/frenetic/server/script_data/" + name.Replace("..", "_")); // TODO: Proper sandbox!
         }
 
         public override void WriteDataFile(string name, byte[] data)
         {
-            string path = Environment.CurrentDirectory + "/frenetic/script_data/" + name.Replace("..", "_"); // TODO: Proper sandbox!
+            string path = Environment.CurrentDirectory + "/frenetic/server/script_data/" + name.Replace("..", "_"); // TODO: Proper sandbox!
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, data);
         }

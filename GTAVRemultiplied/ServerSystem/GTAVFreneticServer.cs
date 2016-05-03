@@ -9,6 +9,7 @@ using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
 using GTAVRemultiplied.ServerSystem.CommonCommands;
+using GTAVRemultiplied.ServerSystem.WorldCommands;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -22,7 +23,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public static void AutorunScripts()
         {
-            string[] files = Directory.GetFiles(Environment.CurrentDirectory + "/frenetic/scripts/", "*.cfg", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles(Environment.CurrentDirectory + "/frenetic/server/scripts/", "*.cfg", SearchOption.AllDirectories);
             foreach (string file in files)
             {
                 string cmd = File.ReadAllText(file).Replace("\r", "").Replace("\0", "\\0");
@@ -68,6 +69,8 @@ namespace GTAVRemultiplied.ServerSystem
             CommandSystem.Init();
             // Common Commands
             CommandSystem.RegisterCommand(new DevelCommand());
+            // World Commands
+            CommandSystem.RegisterCommand(new ModVehicleCommand());
             // Wrap up
             CommandSystem.PostInit();
             AutorunScripts();
