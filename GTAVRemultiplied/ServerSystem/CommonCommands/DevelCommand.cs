@@ -35,6 +35,14 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
             TemplateObject arg2 = entry.GetArgumentObject(queue, 1);
             switch (cmd)
             {
+                case "quickVehicle":
+                    VehicleHash veh;
+                    if (Enum.TryParse(arg2.ToString(), true, out veh))
+                    {
+                        Vehicle v = World.CreateVehicle(veh, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+                        v.Position += new Vector3(0, 0, -v.HeightAboveGround);
+                    }
+                    break;
                 case "switchCharacter":
                     PedHash mod;
                     if (Enum.TryParse(arg2.ToString(), true, out mod))
