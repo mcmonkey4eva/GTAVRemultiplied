@@ -62,6 +62,8 @@
     <Compile Include="ServerSystem\GTAVServerConnection.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServer.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServerOutputter.cs" />
+    <Compile Include="ServerSystem\TagBases\GameTagBase.cs" />
+    <Compile Include="ServerSystem\TagObjects\CharacterTag.cs" />
     <Compile Include="ServerSystem\TagObjects\VehicleTag.cs" />
     <Compile Include="ServerSystem\WorldCommands\ModVehicleCommand.cs" />
   </ItemGroup>

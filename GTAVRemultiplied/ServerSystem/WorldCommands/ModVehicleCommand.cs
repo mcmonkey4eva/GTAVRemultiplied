@@ -79,6 +79,12 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
                 case "window_tint":
                     veh.Internal.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
                     break;
+                case "repair":
+                    if (BooleanTag.TryFor(val).Internal)
+                    {
+                        veh.Internal.Repair();
+                    }
+                    break;
                 default:
                     queue.HandleError(entry, "Unknown option!");
                     return;
