@@ -10,6 +10,7 @@ using FreneticScript.TagHandlers.Objects;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.ServerSystem.TagObjects;
 
 namespace GTAVRemultiplied.ServerSystem.CommonCommands
 {
@@ -35,12 +36,37 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
             TemplateObject arg2 = entry.GetArgumentObject(queue, 1);
             switch (cmd)
             {
+                case "quickNPC":
+                    PedHash pmod;
+                    if (Enum.TryParse(arg2.ToString(), true, out pmod))
+                    {
+                        Ped p = World.CreatePed(pmod, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+                        p.Position += new Vector3(0, 0, -p.HeightAboveGround);
+                        if (entry.ShouldShowGood(queue))
+                        {
+                            entry.Good(queue, "NPC spawned!");
+                        }
+                    }
+                    else
+                    {
+                        queue.HandleError(entry, "Invalid input!");
+                    }
+                    break;
                 case "quickVehicle":
                     VehicleHash veh;
                     if (Enum.TryParse(arg2.ToString(), true, out veh))
                     {
                         Vehicle v = World.CreateVehicle(veh, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
                         v.Position += new Vector3(0, 0, -v.HeightAboveGround);
+                        queue.SetVariable("devel_quick_vehicle", new VehicleTag(v));
+                        if (entry.ShouldShowGood(queue))
+                        {
+                            entry.Good(queue, "Vehicle spawned!");
+                        }
+                    }
+                    else
+                    {
+                        queue.HandleError(entry, "Invalid input!");
                     }
                     break;
                 case "switchCharacter":

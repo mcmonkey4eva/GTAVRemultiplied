@@ -62,6 +62,7 @@
     <Compile Include="ServerSystem\GTAVServerConnection.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServer.cs" />
     <Compile Include="ServerSystem\GTAVFreneticServerOutputter.cs" />
+    <Compile Include="ServerSystem\TagObjects\VehicleTag.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ServerSystem\PacketsOut\" />
