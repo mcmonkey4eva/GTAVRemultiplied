@@ -23,8 +23,7 @@ public class ChatTextScript : Script
     public static ChatTextScript Instance;
 
     const int Count = 7;
-
-    // TODO: Adjust this value according to resolution?
+    
     const int Height = 12;
 
     int CPos = UI.HEIGHT / 3 - Height;

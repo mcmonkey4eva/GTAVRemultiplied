@@ -27,7 +27,6 @@ public class DebugPositionScript : Script
     public DebugPositionScript()
     {
         Tick += DebugPositionScript_Tick;
-        // TODO: Test these positions on different resolutions and adjust values accordingly? (Perhaps they should be a percentage of screen height?)
         PX = new UIText("PosX: ", new System.Drawing.Point(0, 0), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
         PY = new UIText("PosY: ", new System.Drawing.Point(0, 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
         PZ = new UIText("PosZ: ", new System.Drawing.Point(0, 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);

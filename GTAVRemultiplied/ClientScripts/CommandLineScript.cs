@@ -19,7 +19,6 @@ using GTAVRemultiplied.ClientSystem;
 /// </summary>
 public class CommandLineScript : Script
 {
-    // TODO: Adjust coordinates to scale properly across different resolutions?
     UIRectangle BackRect = new UIRectangle(new Point(UI.WIDTH / 2 - 128, UI.HEIGHT / 2), new Size(512, 64), Color.Black);
     UIText Rendered = new UIText("", new Point(UI.WIDTH / 2 - 128, UI.HEIGHT / 2), 0.5f, Color.White, GTA.Font.ChaletLondon, false);
 
