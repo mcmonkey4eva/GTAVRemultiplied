@@ -23,6 +23,10 @@ public class ModelEnforcementScript : Script
         {
             return;
         }
+        // TODO: Watch for death and avoid crashing
+        // (Game crashes if non-player model is in use at death time)
+        // 'GET_HASH_KEY("player_zero")'
+        // Note: have to request model and all, same as below.
         if (WantedModel != null && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
         {
             if (!Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, WantedModel.Value.Hash) || !Function.Call<bool>(Hash.IS_MODEL_VALID, WantedModel.Value.Hash))
