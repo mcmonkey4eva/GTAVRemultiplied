@@ -10,7 +10,10 @@ namespace GTAVRemultiplied
     {
         public static void Message(string type, string text, char color = 'w')
         {
-            ChatTextScript.Instance.AddLine(color, type, text);
+            foreach (string str in text.Replace("\r", "").Split('\n'))
+            {
+                ChatTextScript.Instance.AddLine(color, type, str);
+            }
         }
 
         public static void Exception(Exception ex)

@@ -27,7 +27,7 @@ namespace GTAVRemultiplied.ServerSystem
         public void Tick()
         {
             // Placeholder!
-            if (Sock.Available >= 12)
+            while (Sock.Available >= 12)
             {
                 byte[] dat = new byte[12];
                 Sock.Receive(dat, 12, SocketFlags.None);
@@ -36,6 +36,7 @@ namespace GTAVRemultiplied.ServerSystem
                 float z = BitConverter.ToSingle(dat, 8);
                 Character.Position = new Vector3(x, y, z);
             }
+            Character.Task.StandStill(100);
         }
 
         public void SendPacket(byte type, byte[] data)

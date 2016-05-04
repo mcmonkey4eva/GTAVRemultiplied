@@ -123,7 +123,7 @@ public class ChatTextScript : Script
     {
         // NOTE: If our log renderer errors... just give up and let it crash!
         // TODO: Smooth fade out?
-        if (DateTime.Now.Subtract(LastUpdate).TotalSeconds <= 5)
+        if (DateTime.Now.Subtract(LastUpdate).TotalSeconds <= 8)
         {
             for (int i = 0; i < ChatTextSlot.Count; i++)
             {

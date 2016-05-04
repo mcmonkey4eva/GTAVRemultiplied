@@ -34,16 +34,17 @@ public class ClientConnectionScript : Script
                 }
                 if (Connected)
                 {
+                    Character.Task.StandStill(100);
                     Vector3 pos = Game.Player.Character.Position;
                     byte[] dat = new byte[12];
                     BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
                     BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
                     BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
                     Connection.Send(dat);
-                    if (Connection.Available >= 12)
+                    while (Connection.Available >= 12)
                     {
                         byte[] tdat = new byte[12];
-                        Connection.Receive(dat, 12, SocketFlags.None);
+                        Connection.Receive(tdat, 12, SocketFlags.None);
                         float x = BitConverter.ToSingle(tdat, 0);
                         float y = BitConverter.ToSingle(tdat, 4);
                         float z = BitConverter.ToSingle(tdat, 8);
@@ -65,7 +66,7 @@ public class ClientConnectionScript : Script
 
     bool pcon = false;
 
-    bool firsttele = false;
+    public static bool firsttele = false;
 
     static Object Locker = new Object();
 
