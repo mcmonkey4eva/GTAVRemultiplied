@@ -81,7 +81,7 @@ public class CommandLineScript : Script
             }
             return;
         }
-        char c = CharacterUtilities.GetCharFrom(e.KeyCode, e.Shift || Console.CapsLock);
+        char c = StringUtilities.GetCharFrom(e.KeyCode, e.Shift || Console.CapsLock);
         if (c == '\0')
         {
             return;

@@ -85,8 +85,8 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     }
                     break;
                 case "teleportTo":
-                        // TODO: Vector/Location tag!
-                        Game.Player.Character.Position = GTAVUtilities.StringToVector(arg2.ToString());
+                    // TODO: Vector/Location tag!
+                    Game.Player.Character.Position = GTAVUtilities.StringToVector(arg2.ToString());
                     if (entry.ShouldShowGood(queue))
                     {
                         entry.Good(queue, "Teleported!");
@@ -99,6 +99,23 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     if (entry.ShouldShowGood(queue))
                     {
                         entry.Good(queue, "Teleported safely!");
+                    }
+                    break;
+                case "clothesSet":
+                    ListTag list = new ListTag();
+                    for (int i = 0; i < 12; i++)
+                    {
+                        list.ListEntries.Add(new TextTag(i + "->" + Function.Call<int>(Hash.GET_PED_DRAWABLE_VARIATION, Game.Player.Character.Handle, i)));
+                    }
+                    entry.Info(queue, "Clothing was..." + list.ToString());
+                    int choice = (int)IntegerTag.TryFor(arg2).Internal;
+                    for (int i = 0; i < 12; i++)
+                    {
+                        ModelEnforcementScript.SetClothing(Game.Player.Character, i, choice, 0);
+                    }
+                    if (entry.ShouldShowGood(queue))
+                    {
+                        entry.Good(queue, "Clothing set!");
                     }
                     break;
                 default:

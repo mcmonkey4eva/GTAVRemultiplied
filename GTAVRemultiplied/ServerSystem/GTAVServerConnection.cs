@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using FreneticScript;
 using GTA;
 using GTA.Math;
+using GTAVRemultiplied.ServerSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -31,24 +32,17 @@ namespace GTAVRemultiplied.ServerSystem
                     Connections.Add(client);
                     client.Spawn();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Do nothing!
+                    Log.Exception(ex);
                 }
             }
             for (int i = 0; i < Connections.Count; i++)
             {
                 try
                 {
-                    // Placeholder!
-                    Vector3 pos = Game.Player.Character.Position;
-                    byte[] dat = new byte[16];
-                    BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
-                    BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
-                    BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
-                    BitConverter.GetBytes(Game.Player.Character.Heading).CopyTo(dat, 12);
-                    Connections[i].Sock.Send(dat);
                     Connections[i].Tick();
+                    Connections[i].SendPacket(new PlayerUpdatePacketOut(Game.Player));
                 }
                 catch (Exception ex)
                 {

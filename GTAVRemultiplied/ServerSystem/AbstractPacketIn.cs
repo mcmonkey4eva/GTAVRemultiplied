@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace GTAVRemultiplied.ServerSystem
 {
-    public abstract class AbstractPacketOut
+    public abstract class AbstractPacketIn
     {
-        public ServerToClientPacket ID;
-
-        public byte[] Data;
+        public abstract bool ParseAndExecute(GTAVServerClientConnection client, byte[] data);
     }
 }

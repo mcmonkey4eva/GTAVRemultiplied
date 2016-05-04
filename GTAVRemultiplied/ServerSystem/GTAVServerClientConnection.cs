@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.ServerSystem.PacketsIn;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -24,19 +25,50 @@ namespace GTAVRemultiplied.ServerSystem
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
+        byte[] known = new byte[8192 * 10];
+
+        int count = 0;
+
         public void Tick()
         {
-            // Placeholder!
-            while (Sock.Available >= 16)
+            while (Sock.Available > 0 && count < known.Length)
             {
-                byte[] dat = new byte[16];
-                Sock.Receive(dat, 16, SocketFlags.None);
-                float x = BitConverter.ToSingle(dat, 0);
-                float y = BitConverter.ToSingle(dat, 4);
-                float z = BitConverter.ToSingle(dat, 8);
-                float head = BitConverter.ToSingle(dat, 12);
-                Character.PositionNoOffset = new Vector3(x, y, z);
-                Character.Heading = head;
+                byte[] dat = new byte[known.Length - count];
+                int read = Sock.Receive(dat, Math.Min(dat.Length, Sock.Available), SocketFlags.None);
+                Array.Copy(dat, 0, known, count, read);
+                count += read;
+                while (count > 5)
+                {
+                    ClientToServerPacket packType = (ClientToServerPacket)known[0];
+                    int len = BitConverter.ToInt32(known, 1);
+                    if (count >= len + 5)
+                    {
+                        byte[] data = new byte[len];
+                        Array.Copy(known, 5, data, 0, len);
+                        count -= len + 5;
+                        Array.Copy(known, len + 5, known, 0, count);
+                        AbstractPacketIn pack = null;
+                        switch (packType)
+                        {
+                            case ClientToServerPacket.SELF_UPDATE:
+                                pack = new SelfUpdatePacketIn();
+                                break;
+                        }
+                        if (pack == null)
+                        {
+                            Log.Message("Server Error", "Packet from user is null!", 'Y');
+                            // TODO: Kick user + error.
+                        }
+                        else
+                        {
+                            if (!pack.ParseAndExecute(this, data))
+                            {
+                                Log.Message("Server Error", "Packet from user is invalid!", 'Y');
+                                // TODO: Kick user + error.
+                            }
+                        }
+                    }
+                }
             }
             Character.Task.StandStill(100);
         }
@@ -52,7 +84,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void SendPacket(AbstractPacketOut pack)
         {
-            SendPacket(pack.ID, pack.Data);
+            SendPacket((byte)pack.ID, pack.Data);
         }
     }
 }

@@ -9,6 +9,9 @@ using GTA.Native;
 using System.Net;
 using System.Net.Sockets;
 using GTAVRemultiplied;
+using GTAVRemultiplied.ClientSystem;
+using GTAVRemultiplied.ClientSystem.PacketsOut;
+using GTAVRemultiplied.ClientSystem.PacketsIn;
 
 public class ClientConnectionScript : Script
 {
@@ -17,7 +20,11 @@ public class ClientConnectionScript : Script
         Tick += ClientConnectionScript_Tick;
     }
 
-    Ped Character;
+    public static Ped Character;
+
+    byte[] known = new byte[8192 * 10];
+
+    int count = 0;
 
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
@@ -35,28 +42,50 @@ public class ClientConnectionScript : Script
                 if (Connected)
                 {
                     Character.Task.StandStill(100);
-                    Vector3 pos = Game.Player.Character.Position;
-                    byte[] dat = new byte[16];
-                    BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
-                    BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
-                    BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
-                    BitConverter.GetBytes(Game.Player.Character.Heading).CopyTo(dat, 12);
-                    Connection.Send(dat);
-                    while (Connection.Available >= 16)
+                    SendPacket(new SelfUpdatePacketOut());
+                    while (Connection.Available > 0 && count < known.Length)
                     {
-                        byte[] tdat = new byte[16];
-                        Connection.Receive(tdat, 16, SocketFlags.None);
-                        float x = BitConverter.ToSingle(tdat, 0);
-                        float y = BitConverter.ToSingle(tdat, 4);
-                        float z = BitConverter.ToSingle(tdat, 8);
-                        float head = BitConverter.ToSingle(tdat, 12);
-                        Character.PositionNoOffset = new Vector3(x, y, z);
-                        Character.Heading = head;
-                        if (!firsttele)
+                        byte[] dat = new byte[known.Length - count];
+                        int read = Connection.Receive(dat, Math.Min(dat.Length, Connection.Available), SocketFlags.None);
+                        Array.Copy(dat, 0, known, count, read);
+                        count += read;
+                        while (count > 5)
                         {
-                            Game.Player.Character.PositionNoOffset = Character.Position;
-                            firsttele = true;
+                            ServerToClientPacket packType = (ServerToClientPacket)known[0];
+                            int len = BitConverter.ToInt32(known, 1);
+                            if (count >= len + 5)
+                            {
+                                byte[] data = new byte[len];
+                                Array.Copy(known, 5, data, 0, len);
+                                count -= len + 5;
+                                Array.Copy(known, len + 5, known, 0, count);
+                                AbstractPacketIn pack = null;
+                                switch (packType)
+                                {
+                                    case ServerToClientPacket.PLAYER_UPDATE:
+                                        pack = new PlayerUpdatePacketIn();
+                                        break;
+                                }
+                                if (pack == null)
+                                {
+                                    Log.Message("Connection Error", "Packet from server is null!", 'Y');
+                                    // TODO: Disconnect + error.
+                                }
+                                else
+                                {
+                                    if (!pack.ParseAndExecute(data))
+                                    {
+                                        Log.Message("Connection Error", "Packet from server is invalid!", 'Y');
+                                        // TODO: Disconnect + error.
+                                    }
+                                }
+                            }
                         }
+                    }
+                    if (!firsttele)
+                    {
+                        Game.Player.Character.PositionNoOffset = Character.Position;
+                        firsttele = true;
                     }
                 }
             }
@@ -76,6 +105,20 @@ public class ClientConnectionScript : Script
     public static bool Connected = false;
 
     static Socket Connection;
+
+    public static void SendPacket(byte type, byte[] data)
+    {
+        byte[] toSend = new byte[data.Length + 5];
+        toSend[0] = type;
+        BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);
+        data.CopyTo(toSend, 5);
+        Connection.Send(toSend);
+    }
+
+    public static void SendPacket(AbstractPacketOut pack)
+    {
+        SendPacket((byte)pack.ID, pack.Data);
+    }
 
     public static void Connect(string ip, ushort port)
     {

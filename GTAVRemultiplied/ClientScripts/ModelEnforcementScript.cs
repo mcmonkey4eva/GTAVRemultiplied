@@ -16,7 +16,7 @@ public class ModelEnforcementScript : Script
         Tick += ModelEnforcementScript_Tick;
     }
 
-    bool CanTick = true;
+    static bool CanTick = true;
 
     private void ModelEnforcementScript_Tick(object sender, EventArgs e)
     {
@@ -32,7 +32,7 @@ public class ModelEnforcementScript : Script
                 SetModel(new Model(hash));
                 return;
             }
-            if (WantedModel != null && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
+            if (!Game.Player.IsDead && WantedModel != null && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
             {
                 if (!SetModel(WantedModel.Value))
                 {
@@ -46,7 +46,7 @@ public class ModelEnforcementScript : Script
         }
     }
 
-    bool SetModel(Model mod)
+    public static bool SetModel(Model mod)
     {
         if (!Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, mod.Hash) || !Function.Call<bool>(Hash.IS_MODEL_VALID, mod.Hash))
         {
@@ -61,6 +61,16 @@ public class ModelEnforcementScript : Script
         Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, mod.Hash);
         Game.Player.Character.SetDefaultClothes();
         CanTick = true;
+        // TODO: SET_MODEL_AS_NO_LONGER_NEEDED?
         return true;
+    }
+    public static bool SetClothing(Ped character, int component, int drawable, int texture)
+    {
+        if (Function.Call<bool>(Hash.IS_PED_COMPONENT_VARIATION_VALID, character.Handle, component, drawable, texture))
+        {
+            Function.Call(Hash.SET_PED_COMPONENT_VARIATION, character.Handle, component, drawable, texture, 0);
+            return true;
+        }
+        return false;
     }
 }

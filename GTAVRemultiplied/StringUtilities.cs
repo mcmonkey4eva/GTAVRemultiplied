@@ -10,7 +10,7 @@ namespace GTAVRemultiplied
     /// <summary>
     /// TODO: Irrelevantize/replace this!
     /// </summary>
-    public class CharacterUtilities
+    public class StringUtilities
     {
         public static char GetCharFrom(Keys key, bool shift)
         {

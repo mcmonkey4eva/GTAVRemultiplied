@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GTAVRemultiplied.ServerSystem
+namespace GTAVRemultiplied.ClientSystem
 {
     public abstract class AbstractPacketOut
     {
-        public ServerToClientPacket ID;
+        public ClientToServerPacket ID;
 
         public byte[] Data;
     }
