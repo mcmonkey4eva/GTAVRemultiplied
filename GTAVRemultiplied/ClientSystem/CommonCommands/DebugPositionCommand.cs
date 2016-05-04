@@ -12,6 +12,8 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
 {
     class DebugPositionCommand : AbstractCommand
     {
+        // TODO: Meta!
+        
         public DebugPositionCommand()
         {
             Name = "debugposition";

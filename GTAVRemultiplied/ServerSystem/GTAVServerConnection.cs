@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using FreneticScript;
+using GTA;
+using GTA.Math;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -27,6 +29,7 @@ namespace GTAVRemultiplied.ServerSystem
                     client.Sock.SendBufferSize = 1024 * 10 * 8;
                     client.Sock.ReceiveBufferSize = 1024 * 10 * 8;
                     Connections.Add(client);
+                    client.Spawn();
                 }
                 catch (Exception)
                 {
@@ -38,8 +41,13 @@ namespace GTAVRemultiplied.ServerSystem
                 try
                 {
                     // Placeholder!
-                    byte[] dat = FreneticScriptUtilities.Enc.GetBytes("Server is at " + GTA.Game.Player.Character.Position + "\n");
+                    Vector3 pos = Game.Player.Character.Position;
+                    byte[] dat = new byte[12];
+                    BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
+                    BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
+                    BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
                     Connections[i].Sock.Send(dat);
+                    Connections[i].Tick();
                 }
                 catch (Exception ex)
                 {
@@ -54,11 +62,6 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void Listen(ushort port)
         {
-            /*
-            Listener = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
-            Listener.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
-            Listener.Bind(new IPEndPoint(IPAddress.IPv6Any, port));
-            Listener.Listen(10);*/
             Listener = new TcpListener(IPAddress.IPv6Any, port);
             Listener.Server.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, false);
             Listener.Start();

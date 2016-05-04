@@ -45,6 +45,7 @@ namespace GTAVRemultiplied.ClientSystem
             // Common Commands
             CommandSystem.RegisterCommand(new DebugPositionCommand());
             // Network Commands
+            CommandSystem.RegisterCommand(new ConnectCommand());
             CommandSystem.RegisterCommand(new StartServerCommand());
             // Wrap up
             CommandSystem.PostInit();

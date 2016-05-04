@@ -45,12 +45,14 @@
   <ItemGroup>
     <Compile Include="CharacterUtilities.cs" />
     <Compile Include="ClientScripts\ChatTextScript.cs" />
+    <Compile Include="ClientScripts\ClientConnectionScript.cs" />
     <Compile Include="ClientScripts\CommandLineScript.cs" />
     <Compile Include="ClientScripts\DebugPositionScript.cs" />
     <Compile Include="ClientScripts\ModelEnforcementScript.cs" />
     <Compile Include="ClientSystem\CommonCommands\DebugPositionCommand.cs" />
     <Compile Include="ClientSystem\GTAVFrenetic.cs" />
     <Compile Include="ClientSystem\GTAVFreneticOutputter.cs" />
+    <Compile Include="ClientSystem\NetworkCommands\ConnectCommand.cs" />
     <Compile Include="ClientSystem\NetworkCommands\StartServerCommand.cs" />
     <Compile Include="GTAVUtilities.cs" />
     <Compile Include="Log.cs" />

@@ -16,6 +16,8 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
 {
     class ModVehicleCommand : AbstractCommand
     {
+        // TODO: Meta!
+
         public ModVehicleCommand()
         {
             Name = "modvehicle";
@@ -98,6 +100,10 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
                 default:
                     queue.HandleError(entry, "Unknown option!");
                     return;
+            }
+            if (entry.ShouldShowGood(queue))
+            {
+                entry.Good(queue, "Vehicle modified!");
             }
         }
     }

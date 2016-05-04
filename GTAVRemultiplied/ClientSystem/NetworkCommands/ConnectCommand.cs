@@ -11,27 +11,29 @@ using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.NetworkCommands
 {
-    class StartServerCommand : AbstractCommand
+    class ConnectCommand : AbstractCommand
     {
         // TODO: Meta!
 
-        public StartServerCommand()
+        public ConnectCommand()
         {
-            Name = "startserver";
-            Arguments = "[port]";
-            Description = "Starts hosting a server locally.";
-            MinimumArguments = 0;
-            MaximumArguments = 1;
+            Name = "connect";
+            Arguments = "<ip> [port]";
+            Description = "Connects to a remote server.";
+            MinimumArguments = 1;
+            MaximumArguments = 2;
             ObjectTypes = new List<Func<TemplateObject, TemplateObject>>()
             {
+                TextTag.For,
                 IntegerTag.TryFor
             };
         }
-        
+
         public override void Execute(CommandQueue queue, CommandEntry entry)
         {
+            string ip = entry.GetArgument(queue, 0);
             ushort port = 28010;
-            if (entry.Arguments.Count > 0)
+            if (entry.Arguments.Count > 1)
             {
                 port = (ushort)IntegerTag.TryFor(entry.GetArgumentObject(queue, 0)).Internal;
             }
@@ -40,10 +42,15 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
                 queue.HandleError(entry, "Already running a server!");
                 return;
             }
-            GTAVFreneticServer.Init(port);
+            if (ClientConnectionScript.Connected)
+            {
+                queue.HandleError(entry, "Already connected to a server!");
+                return;
+            }
+            ClientConnectionScript.Connect(ip, port);
             if (entry.ShouldShowGood(queue))
             {
-                entry.Good(queue, "Server starting!");
+                entry.Good(queue, "Connection starting!");
             }
         }
     }
