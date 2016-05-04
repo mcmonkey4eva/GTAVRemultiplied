@@ -36,22 +36,25 @@ public class ClientConnectionScript : Script
                 {
                     Character.Task.StandStill(100);
                     Vector3 pos = Game.Player.Character.Position;
-                    byte[] dat = new byte[12];
+                    byte[] dat = new byte[16];
                     BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
                     BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
                     BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
+                    BitConverter.GetBytes(Game.Player.Character.Heading).CopyTo(dat, 12);
                     Connection.Send(dat);
-                    while (Connection.Available >= 12)
+                    while (Connection.Available >= 16)
                     {
-                        byte[] tdat = new byte[12];
-                        Connection.Receive(tdat, 12, SocketFlags.None);
+                        byte[] tdat = new byte[16];
+                        Connection.Receive(tdat, 16, SocketFlags.None);
                         float x = BitConverter.ToSingle(tdat, 0);
                         float y = BitConverter.ToSingle(tdat, 4);
                         float z = BitConverter.ToSingle(tdat, 8);
-                        Character.Position = new Vector3(x, y, z);
+                        float head = BitConverter.ToSingle(tdat, 12);
+                        Character.PositionNoOffset = new Vector3(x, y, z);
+                        Character.Heading = head;
                         if (!firsttele)
                         {
-                            Game.Player.Character.Position = Character.Position;
+                            Game.Player.Character.PositionNoOffset = Character.Position;
                             firsttele = true;
                         }
                     }

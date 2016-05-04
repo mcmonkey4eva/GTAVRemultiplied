@@ -27,14 +27,16 @@ namespace GTAVRemultiplied.ServerSystem
         public void Tick()
         {
             // Placeholder!
-            while (Sock.Available >= 12)
+            while (Sock.Available >= 16)
             {
-                byte[] dat = new byte[12];
-                Sock.Receive(dat, 12, SocketFlags.None);
+                byte[] dat = new byte[16];
+                Sock.Receive(dat, 16, SocketFlags.None);
                 float x = BitConverter.ToSingle(dat, 0);
                 float y = BitConverter.ToSingle(dat, 4);
                 float z = BitConverter.ToSingle(dat, 8);
-                Character.Position = new Vector3(x, y, z);
+                float head = BitConverter.ToSingle(dat, 12);
+                Character.PositionNoOffset = new Vector3(x, y, z);
+                Character.Heading = head;
             }
             Character.Task.StandStill(100);
         }

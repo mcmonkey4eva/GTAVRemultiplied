@@ -42,10 +42,11 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     // Placeholder!
                     Vector3 pos = Game.Player.Character.Position;
-                    byte[] dat = new byte[12];
+                    byte[] dat = new byte[16];
                     BitConverter.GetBytes(pos.X).CopyTo(dat, 0);
                     BitConverter.GetBytes(pos.Y).CopyTo(dat, 4);
                     BitConverter.GetBytes(pos.Z).CopyTo(dat, 8);
+                    BitConverter.GetBytes(Game.Player.Character.Heading).CopyTo(dat, 12);
                     Connections[i].Sock.Send(dat);
                     Connections[i].Tick();
                 }
