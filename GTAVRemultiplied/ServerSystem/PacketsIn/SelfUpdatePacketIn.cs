@@ -20,8 +20,21 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             vec.X = BitConverter.ToSingle(data, 0);
             vec.Y = BitConverter.ToSingle(data, 4);
             vec.Z = BitConverter.ToSingle(data, 8);
-            client.Character.PositionNoOffset = vec;
             client.Character.Heading = BitConverter.ToSingle(data, 12);
+            float dist = vec.DistanceToSquared2D(client.Character.Position);
+            if (dist > 10f)
+            {
+                client.Character.Task.StandStill(1000);
+                client.Character.PositionNoOffset = vec;
+            }
+            else if (dist < 0.7f)
+            {
+                client.Character.Task.StandStill(1000);
+            }
+            else
+            {
+                client.Character.Task.GoTo(vec, false);
+            }
             return true;
         }
     }

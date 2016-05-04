@@ -38,10 +38,12 @@ public class ClientConnectionScript : Script
                     Log.Message("Connection", "Connected to a server now!");
                     Character = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
                     Character.IsPersistent = true;
+                    Character.IsInvincible = true;
+                    Character.IsFireProof = true;
+                    Character.IsExplosionProof = true;
                 }
                 if (Connected)
                 {
-                    Character.Task.StandStill(100);
                     SendPacket(new SelfUpdatePacketOut());
                     while (Connection.Available > 0 && count < known.Length)
                     {
