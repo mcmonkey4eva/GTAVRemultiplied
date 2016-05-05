@@ -43,6 +43,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientSystem\PacketsIn\FiredShotPacketIn.cs" />
+    <Compile Include="ClientSystem\PacketsOut\FiredShotPacketOut.cs" />
+    <Compile Include="ServerSystem\PacketsIn\FiredShotPacketIn.cs" />
+    <Compile Include="ServerSystem\PacketsOut\FiredShotPacketOut.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="ClientScripts\ChatTextScript.cs" />
     <Compile Include="ClientScripts\ClientConnectionScript.cs" />
@@ -78,7 +82,9 @@
     <Compile Include="ServerSystem\TagObjects\VehicleTag.cs" />
     <Compile Include="ServerSystem\WorldCommands\ModVehicleCommand.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SharedScripts\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

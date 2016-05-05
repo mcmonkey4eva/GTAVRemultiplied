@@ -58,6 +58,9 @@ namespace GTAVRemultiplied.ServerSystem
                             case ClientToServerPacket.SELF_UPDATE:
                                 pack = new SelfUpdatePacketIn();
                                 break;
+                            case ClientToServerPacket.FIRED_SHOT:
+                                pack = new FiredShotPacketIn();
+                                break;
                         }
                         if (pack == null)
                         {

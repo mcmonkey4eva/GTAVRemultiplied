@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using FreneticScript;
 using GTA;
 using GTA.Math;
+using GTA.Native;
 using GTAVRemultiplied.ServerSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ServerSystem
@@ -53,7 +54,28 @@ namespace GTAVRemultiplied.ServerSystem
                     i--;
                 }
             }
+            WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
+            if (cweap != weap)
+            {
+                weap = cweap;
+            }
+            else
+            {
+                int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
+                if (ammo > cammo)
+                {
+                    for (int i = 0; i < Connections.Count; i++)
+                    {
+                        Connections[i].SendPacket(new FiredShotPacketOut(Game.Player));
+                    }
+                }
+                ammo = cammo;
+                // TODO: Reload, etc.
+            }
         }
+        
+        int ammo = 0;
+        WeaponHash weap = WeaponHash.Unarmed;
 
         public void Listen(ushort port)
         {

@@ -26,6 +26,9 @@ public class ClientConnectionScript : Script
 
     int count = 0;
 
+    int ammo = 0;
+    WeaponHash weap = WeaponHash.Unarmed;
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
@@ -69,6 +72,9 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.PLAYER_UPDATE:
                                         pack = new PlayerUpdatePacketIn();
                                         break;
+                                    case ServerToClientPacket.FIRED_SHOT:
+                                        pack = new FiredShotPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -90,6 +96,21 @@ public class ClientConnectionScript : Script
                     {
                         Game.Player.Character.PositionNoOffset = Character.Position;
                         firsttele = true;
+                    }
+                    WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
+                    if (cweap != weap)
+                    {
+                        weap = cweap;
+                    }
+                    else
+                    {
+                        int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
+                        if (ammo > cammo)
+                        {
+                            SendPacket(new FiredShotPacketOut());
+                        }
+                        ammo = cammo;
+                        // TODO: Reload, etc.
                     }
                 }
             }

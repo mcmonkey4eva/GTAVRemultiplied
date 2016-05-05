@@ -8,11 +8,13 @@ namespace GTAVRemultiplied
 {
     public enum ClientToServerPacket : byte
     {
-        SELF_UPDATE = 0
+        SELF_UPDATE = 0,
+        FIRED_SHOT = 1
     }
 
     public enum ServerToClientPacket : byte
     {
-        PLAYER_UPDATE = 0
+        PLAYER_UPDATE = 0,
+        FIRED_SHOT = 1
     }
 }
