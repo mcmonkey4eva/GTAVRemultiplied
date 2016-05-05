@@ -41,6 +41,8 @@ public class ClientConnectionScript : Script
                     Character.IsInvincible = true;
                     Character.IsFireProof = true;
                     Character.IsExplosionProof = true;
+                    Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
+                    Character.Weapons.Select(held);
                 }
                 if (Connected)
                 {

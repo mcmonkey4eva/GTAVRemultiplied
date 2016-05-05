@@ -25,6 +25,8 @@ namespace GTAVRemultiplied.ServerSystem
             Character.IsInvincible = true;
             Character.IsFireProof = true;
             Character.IsExplosionProof = true;
+            Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
+            Character.Weapons.Select(held);
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
