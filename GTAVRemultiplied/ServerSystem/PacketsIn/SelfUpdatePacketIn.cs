@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
     {
         public override bool ParseAndExecute(GTAVServerClientConnection client, byte[] data)
         {
-            if (data.Length != 16 + 12 + 4)
+            if (data.Length != 16 + 12 + 4 + 12)
             {
                 return false;
             }
@@ -61,6 +61,11 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
                 client.Character.Weapons.Give(weap, 1000, true, true);
                 client.Character.Weapons.Select(weap);
             }
+            Vector3 vel = new Vector3();
+            vel.X = BitConverter.ToSingle(data, 16 + 12 + 4);
+            vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
+            vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
+            client.Character.Velocity = vel;
             return true;
         }
     }
