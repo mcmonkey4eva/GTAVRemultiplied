@@ -117,15 +117,12 @@ public class ClientConnectionScript : Script
                         // TODO: Reload, etc.
                     }
                     ammo = cammo;
-                    if (Game.Player.Character.IsJumping && !pjump)
+                    bool tjump = Game.Player.Character.IsJumping;
+                    if (tjump && !pjump)
                     {
                         SendPacket(new JumpPacketOut());
-                        pjump = true;
                     }
-                    else
-                    {
-                        pjump = false;
-                    }
+                    pjump = tjump;
                 }
             }
         }

@@ -72,18 +72,15 @@ namespace GTAVRemultiplied.ServerSystem
                 // TODO: Reload, etc.
             }
             ammo = cammo;
-            if (Game.Player.Character.IsJumping && !pjump)
+            bool tjump = Game.Player.Character.IsJumping;
+            if (tjump && !pjump)
             {
                 for (int i = 0; i < Connections.Count; i++)
                 {
                     Connections[i].SendPacket(new JumpPacketOut(Game.Player));
                 }
-                pjump = true;
             }
-            else
-            {
-                pjump = false;
-            }
+            pjump = tjump;
         }
         
         int ammo = 0;

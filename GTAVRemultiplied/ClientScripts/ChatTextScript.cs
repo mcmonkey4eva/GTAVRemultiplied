@@ -22,7 +22,7 @@ public class ChatTextScript : Script
 {
     public static ChatTextScript Instance;
 
-    const int Count = 7;
+    const int Count = 10;
     
     const int Height = 12;
 
@@ -69,9 +69,9 @@ public class ChatTextScript : Script
     public void AddLine(char col, string type, string txt)
     {
         AllText.Add(col + "[" + type + "] " + txt);
-        if (AllText.Count > 14)
+        if (AllText.Count > Count * 2)
         {
-            AllText.RemoveRange(0, 7);
+            AllText.RemoveRange(0, Count);
         }
         int start = AllText.Count >= Count ? AllText.Count - Count : 0;
         List<string> substrs = AllText.GetRange(start, AllText.Count - start);
