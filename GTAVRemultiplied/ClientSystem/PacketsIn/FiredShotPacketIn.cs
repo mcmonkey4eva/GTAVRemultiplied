@@ -21,8 +21,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             aim.X = BitConverter.ToSingle(data, 0);
             aim.Y = BitConverter.ToSingle(data, 4);
             aim.Z = BitConverter.ToSingle(data, 8);
-            Vector3 vec = ClientConnectionScript.Character.Position + aim * 20;
-            //ClientConnectionScript.Character.Task.ShootAt(vec, 100, FiringPattern.FullAuto);
+            Vector3 vec = ClientConnectionScript.Character.Position + aim * 50;
             // SET_PED_SHOOTS_AT_COORD(Ped ped, float x, float y, float z, BOOL toggle)
             Function.Call(Hash.SET_PED_SHOOTS_AT_COORD, ClientConnectionScript.Character.Handle, vec.X, vec.Y, vec.Z, true);
             return true;

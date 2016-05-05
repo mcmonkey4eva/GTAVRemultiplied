@@ -29,6 +29,8 @@ public class ClientConnectionScript : Script
     int ammo = 0;
     WeaponHash weap = WeaponHash.Unarmed;
 
+    bool pjump = false;
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
@@ -75,6 +77,9 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.FIRED_SHOT:
                                         pack = new FiredShotPacketIn();
                                         break;
+                                    case ServerToClientPacket.JUMP:
+                                        pack = new JumpPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -98,19 +103,28 @@ public class ClientConnectionScript : Script
                         firsttele = true;
                     }
                     WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
+                    int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
                     if (cweap != weap)
                     {
                         weap = cweap;
                     }
                     else
                     {
-                        int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
                         if (ammo > cammo)
                         {
                             SendPacket(new FiredShotPacketOut());
                         }
-                        ammo = cammo;
                         // TODO: Reload, etc.
+                    }
+                    ammo = cammo;
+                    if (Game.Player.Character.IsJumping && !pjump)
+                    {
+                        SendPacket(new JumpPacketOut());
+                        pjump = true;
+                    }
+                    else
+                    {
+                        pjump = false;
                     }
                 }
             }

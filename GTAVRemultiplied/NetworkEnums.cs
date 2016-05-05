@@ -9,12 +9,14 @@ namespace GTAVRemultiplied
     public enum ClientToServerPacket : byte
     {
         SELF_UPDATE = 0,
-        FIRED_SHOT = 1
+        FIRED_SHOT = 1,
+        JUMP = 2
     }
 
     public enum ServerToClientPacket : byte
     {
         PLAYER_UPDATE = 0,
-        FIRED_SHOT = 1
+        FIRED_SHOT = 1,
+        JUMP = 2
     }
 }

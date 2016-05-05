@@ -12,6 +12,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
     {
         public FiredShotPacketOut(Player character) // TODO: GTAV-RMP Player object rather than GTA Player?
         {
+            // TODO: Player ID!
             ID = ServerToClientPacket.FIRED_SHOT;
             Data = new byte[12];
             Vector3 aim = character.Character.ForwardVector;

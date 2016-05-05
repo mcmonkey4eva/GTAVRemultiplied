@@ -44,9 +44,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientSystem\PacketsIn\FiredShotPacketIn.cs" />
+    <Compile Include="ClientSystem\PacketsIn\JumpPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsOut\FiredShotPacketOut.cs" />
+    <Compile Include="ClientSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsIn\FiredShotPacketIn.cs" />
+    <Compile Include="ServerSystem\PacketsIn\JumpPacketIn.cs" />
     <Compile Include="ServerSystem\PacketsOut\FiredShotPacketOut.cs" />
+    <Compile Include="ServerSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="ClientScripts\ChatTextScript.cs" />
     <Compile Include="ClientScripts\ClientConnectionScript.cs" />

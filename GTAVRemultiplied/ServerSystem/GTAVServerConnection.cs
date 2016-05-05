@@ -55,13 +55,13 @@ namespace GTAVRemultiplied.ServerSystem
                 }
             }
             WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
+            int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
             if (cweap != weap)
             {
                 weap = cweap;
             }
             else
             {
-                int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
                 if (ammo > cammo)
                 {
                     for (int i = 0; i < Connections.Count; i++)
@@ -69,13 +69,27 @@ namespace GTAVRemultiplied.ServerSystem
                         Connections[i].SendPacket(new FiredShotPacketOut(Game.Player));
                     }
                 }
-                ammo = cammo;
                 // TODO: Reload, etc.
+            }
+            ammo = cammo;
+            if (Game.Player.Character.IsJumping && !pjump)
+            {
+                for (int i = 0; i < Connections.Count; i++)
+                {
+                    Connections[i].SendPacket(new JumpPacketOut(Game.Player));
+                }
+                pjump = true;
+            }
+            else
+            {
+                pjump = false;
             }
         }
         
         int ammo = 0;
         WeaponHash weap = WeaponHash.Unarmed;
+
+        bool pjump = false;
 
         public void Listen(ushort port)
         {

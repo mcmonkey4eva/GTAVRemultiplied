@@ -61,6 +61,9 @@ namespace GTAVRemultiplied.ServerSystem
                             case ClientToServerPacket.FIRED_SHOT:
                                 pack = new FiredShotPacketIn();
                                 break;
+                            case ClientToServerPacket.JUMP:
+                                pack = new JumpPacketIn();
+                                break;
                         }
                         if (pack == null)
                         {
