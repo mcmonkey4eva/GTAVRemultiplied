@@ -34,7 +34,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.Character.Task.StandStill(1000);
                 if (aim.LengthSquared() > 0.1)
                 {
-                    ClientConnectionScript.Character.Task.AimAt(ClientConnectionScript.Character.Position + aim * 20, 1000);
+                    ClientConnectionScript.Character.Task.AimAt(ClientConnectionScript.Character.Position + aim * 50, 1000);
                 }
                 ClientConnectionScript.Character.PositionNoOffset = vec;
             }
@@ -43,7 +43,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.Character.Task.StandStill(1000);
                 if (aim.LengthSquared() > 0.1)
                 {
-                    ClientConnectionScript.Character.Task.AimAt(ClientConnectionScript.Character.Position + aim * 20, 1000);
+                    ClientConnectionScript.Character.Task.AimAt(ClientConnectionScript.Character.Position + aim * 50, 1000);
                 }
             }
             else
@@ -51,7 +51,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.Character.Task.GoTo(vec, true);
                 if (aim.LengthSquared() > 0.1)
                 {
-                    Vector3 taim = ClientConnectionScript.Character.Position + aim * 20;
+                    Vector3 taim = ClientConnectionScript.Character.Position + aim * 50;
                     //TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD(Ped ped, float x, float y, float z, float aimAtX, float aimAtY, float aimAtZ, float moveSpeed, BOOL p8, float p9, float p10, BOOL p11, Any flags, BOOL p13, Hash firingPattern)
                     Function.Call(Hash.TASK_GO_TO_COORD_WHILE_AIMING_AT_COORD, ClientConnectionScript.Character.Handle, vec.X, vec.Y, vec.Z, taim.X, taim.Y, taim.Z, 1f, false, -1f, -1f, false, 0, false, (int)FiringPattern.DelayFireByOneSec);
                 }
