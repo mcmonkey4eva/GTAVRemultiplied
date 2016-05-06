@@ -81,12 +81,41 @@ namespace GTAVRemultiplied.ServerSystem
                 }
             }
             pjump = tjump;
+            List<int> ids = Vehicles.Keys.ToList();
+            foreach (Vehicle vehicle in World.GetAllVehicles())
+            {
+                if (!Vehicles.ContainsValue(vehicle))
+                {
+                    int id = ++VehicleInstanceID;
+                    Vehicles[id] = vehicle;
+                    ReverseVehicles[vehicle] = id;
+                }
+                else
+                {
+                    ids.Remove(ReverseVehicles[vehicle]);
+                }
+            }
+            foreach (int id in ids)
+            {
+                Vehicle vehicle = Vehicles[id];
+                Vehicles.Remove(id);
+                ReverseVehicles.Remove(vehicle);
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    connection.SendPacket(new RemoveVehiclePacketOut(id));
+                }
+            }
         }
         
         int ammo = 0;
         WeaponHash weap = WeaponHash.Unarmed;
 
         bool pjump = false;
+
+        public static int VehicleInstanceID = -1;
+
+        public static Dictionary<int, Vehicle> Vehicles = new Dictionary<int, Vehicle>();
+        public static Dictionary<Vehicle, int> ReverseVehicles = new Dictionary<Vehicle, int>();
 
         public void Listen(ushort port)
         {

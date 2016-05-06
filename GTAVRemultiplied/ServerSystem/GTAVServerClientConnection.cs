@@ -9,6 +9,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAVRemultiplied.ServerSystem.PacketsIn;
+using GTAVRemultiplied.ServerSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -17,6 +18,8 @@ namespace GTAVRemultiplied.ServerSystem
         public Socket Sock;
 
         public Ped Character;
+
+        public int HasVehicle = -1;
 
         public void Spawn()
         {
@@ -36,6 +39,19 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void Tick()
         {
+            if (GTAVServerConnection.VehicleInstanceID > HasVehicle)
+            {
+                HasVehicle++;
+                while (HasVehicle <= GTAVServerConnection.VehicleInstanceID)
+                {
+                    if (GTAVServerConnection.Vehicles.ContainsKey(HasVehicle))
+                    {
+                        Vehicle vehicle = GTAVServerConnection.Vehicles[HasVehicle];
+                        SendPacket(new AddVehiclePacketOut(vehicle, HasVehicle));
+                    }
+                    HasVehicle++;
+                }
+            }
             while (Sock.Available > 0 && count < known.Length)
             {
                 byte[] dat = new byte[known.Length - count];

@@ -31,6 +31,8 @@ public class ClientConnectionScript : Script
 
     bool pjump = false;
 
+    public static Dictionary<int, Vehicle> ServerAddedVehicles = new Dictionary<int, Vehicle>();
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
@@ -80,6 +82,12 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.JUMP:
                                         pack = new JumpPacketIn();
                                         break;
+                                    case ServerToClientPacket.ADD_VEHICLE:
+                                        pack = new AddVehiclePacketIn();
+                                        break;
+                                    case ServerToClientPacket.REMOVE_VEHICLE:
+                                        pack = new RemoveVehiclePacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -123,6 +131,13 @@ public class ClientConnectionScript : Script
                         SendPacket(new JumpPacketOut());
                     }
                     pjump = tjump;
+                    foreach (Vehicle vehicle in World.GetAllVehicles())
+                    {
+                        if (!ServerAddedVehicles.ContainsValue(vehicle))
+                        {
+                            vehicle.Delete();
+                        }
+                    }
                 }
             }
         }

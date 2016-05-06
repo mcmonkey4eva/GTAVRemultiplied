@@ -35,7 +35,7 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
             ushort port = 28010;
             if (entry.Arguments.Count > 1)
             {
-                port = (ushort)IntegerTag.TryFor(entry.GetArgumentObject(queue, 0)).Internal;
+                port = (ushort)IntegerTag.TryFor(entry.GetArgumentObject(queue, 1)).Internal;
             }
             if (GTAVFreneticServer.Enabled)
             {
