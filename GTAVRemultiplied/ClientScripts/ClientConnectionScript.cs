@@ -157,7 +157,11 @@ public class ClientConnectionScript : Script
         catch (Exception ex)
         {
             Log.Exception(ex);
-            // TODO: Maybe disconnect depending on error details?
+            if (ex is SocketException)
+            {
+                Connected = false;
+                // TODO: Disconnect properly!
+            }
         }
     }
 

@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         public UpdateVehiclePacketOut(Vehicle veh)
         {
             ID = ServerToClientPacket.UPDATE_VEHICLE;
-            Data = new byte[4 + 12 + 12 + 4 + 1];
+            Data = new byte[4 + 12 + 12 + 12 + 1];
             BitConverter.GetBytes(veh.Handle).CopyTo(Data, 0);
             BitConverter.GetBytes(veh.Position.X).CopyTo(Data, 4);
             BitConverter.GetBytes(veh.Position.Y).CopyTo(Data, 4 + 4);
@@ -21,8 +21,10 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(veh.Velocity.X).CopyTo(Data, 4 + 12);
             BitConverter.GetBytes(veh.Velocity.Y).CopyTo(Data, 4 + 12 + 4);
             BitConverter.GetBytes(veh.Velocity.Z).CopyTo(Data, 4 + 12 + 8);
-            BitConverter.GetBytes(veh.Heading).CopyTo(Data, 4 + 12 + 12);
-            Data[4 + 12 + 12 + 4] = (byte)(veh.IsDead ? 1 : 0);
+            BitConverter.GetBytes(veh.Rotation.X).CopyTo(Data, 4 + 12 + 12);
+            BitConverter.GetBytes(veh.Rotation.Y).CopyTo(Data, 4 + 12 + 12 + 4);
+            BitConverter.GetBytes(veh.Rotation.Z).CopyTo(Data, 4 + 12 + 12 + 8);
+            Data[4 + 12 + 12 + 12] = (byte)(veh.IsDead ? 1 : 0);
         }
     }
 }

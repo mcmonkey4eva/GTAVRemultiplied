@@ -12,7 +12,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 4 + 12 + 12 + 4 + 1)
+            if (data.Length != 4 + 12 + 12 + 12 + 1)
             {
                 return false;
             }
@@ -25,8 +25,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vel.X = BitConverter.ToSingle(data, 4 + 12);
             vel.Y = BitConverter.ToSingle(data, 4 + 12 + 4);
             vel.Z = BitConverter.ToSingle(data, 4 + 12 + 8);
-            float heading = BitConverter.ToSingle(data, 4 + 12 + 12);
-            byte flags = data[4 + 12 + 12 + 4];
+            Vector3 rot;
+            rot.X = BitConverter.ToSingle(data, 4 + 12 + 12);
+            rot.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 4);
+            rot.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 8);
+            byte flags = data[4 + 12 + 12 + 12];
             bool isDead = (flags & 1) == 1;
             int veh;
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
@@ -34,9 +37,10 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 Vehicle vehicle = new Vehicle(veh);
                 vehicle.PositionNoOffset = pos;
                 vehicle.Velocity = vel;
-                vehicle.Heading = heading;
+                vehicle.Rotation = rot;
                 if (isDead && !vehicle.IsDead)
                 {
+                    vehicle.IsInvincible = false;
                     vehicle.Explode();
                     if (!vehicle.IsDead)
                     {
