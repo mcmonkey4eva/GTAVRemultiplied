@@ -73,6 +73,12 @@ namespace GTAVRemultiplied.ServerSystem
                             case ClientToServerPacket.JUMP:
                                 pack = new JumpPacketIn();
                                 break;
+                            case ClientToServerPacket.ENTER_VEHICLE:
+                                pack = new EnterVehiclePacketIn();
+                                break;
+                            case ClientToServerPacket.EXIT_VEHICLE:
+                                pack = new ExitVehiclePacketIn();
+                                break;
                         }
                         if (pack == null)
                         {

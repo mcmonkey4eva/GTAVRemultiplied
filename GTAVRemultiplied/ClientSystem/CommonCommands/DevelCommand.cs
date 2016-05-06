@@ -7,6 +7,8 @@ using FreneticScript;
 using FreneticScript.CommandSystem;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
+using GTA;
+using GTA.Native;
 
 namespace GTAVRemultiplied.ClientSystem.CommonCommands
 {

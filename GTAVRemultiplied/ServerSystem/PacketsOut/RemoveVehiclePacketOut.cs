@@ -13,8 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         public RemoveVehiclePacketOut(int id)
         {
             ID = ServerToClientPacket.REMOVE_VEHICLE;
-            Data = new byte[4];
-            BitConverter.GetBytes(id).CopyTo(Data, 0);
+            Data = BitConverter.GetBytes(id);
         }
     }
 }

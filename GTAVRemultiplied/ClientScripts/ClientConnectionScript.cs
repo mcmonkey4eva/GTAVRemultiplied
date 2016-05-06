@@ -31,6 +31,8 @@ public class ClientConnectionScript : Script
 
     bool pjump = false;
 
+    bool wasInVehicle = false;
+
     public static Dictionary<int, int> ServerToClientVehicle = new Dictionary<int, int>();
 
     public static Dictionary<int, int> ClientToServerVehicle = new Dictionary<int, int>();
@@ -88,6 +90,12 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.JUMP:
                                         pack = new JumpPacketIn();
                                         break;
+                                    case ServerToClientPacket.ENTER_VEHICLE:
+                                        pack = new EnterVehiclePacketIn();
+                                        break;
+                                    case ServerToClientPacket.EXIT_VEHICLE:
+                                        pack = new ExitVehiclePacketIn();
+                                        break;
                                     case ServerToClientPacket.ADD_VEHICLE:
                                         pack = new AddVehiclePacketIn();
                                         break;
@@ -109,7 +117,7 @@ public class ClientConnectionScript : Script
                                 {
                                     if (!pack.ParseAndExecute(data))
                                     {
-                                        Log.Error("Packet from server is invalid: " + packType);
+                                        Log.Error("Packet from server is invalid: " + packType + " of length " + data.Length);
                                         Connected = false;
                                         // TODO: Disconnect properly.
                                         return;
@@ -151,6 +159,16 @@ public class ClientConnectionScript : Script
                             vehicle.Delete();
                         }
                     }
+                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle();
+                    if (isInVehicle && !wasInVehicle)
+                    {
+                        SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
+                    }
+                    else if (!isInVehicle && wasInVehicle)
+                    {
+                        SendPacket(new ExitVehiclePacketOut());
+                    }
+                    wasInVehicle = isInVehicle;
                 }
             }
         }

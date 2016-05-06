@@ -10,7 +10,9 @@ namespace GTAVRemultiplied
     {
         SELF_UPDATE = 0,
         FIRED_SHOT = 1,
-        JUMP = 2
+        JUMP = 2,
+        ENTER_VEHICLE = 3,
+        EXIT_VEHICLE = 4
     }
 
     public enum ServerToClientPacket : byte
@@ -18,8 +20,10 @@ namespace GTAVRemultiplied
         PLAYER_UPDATE = 0,
         FIRED_SHOT = 1,
         JUMP = 2,
-        ADD_VEHICLE = 3,
-        REMOVE_VEHICLE = 4,
-        UPDATE_VEHICLE = 5
+        ENTER_VEHICLE = 3,
+        EXIT_VEHICLE = 4,
+        ADD_VEHICLE = 5,
+        REMOVE_VEHICLE = 6,
+        UPDATE_VEHICLE = 7
     }
 }

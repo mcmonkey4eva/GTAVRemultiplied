@@ -114,7 +114,28 @@ namespace GTAVRemultiplied.ServerSystem
                     connection.SendPacket(new RemoveVehiclePacketOut(id));
                 }
             }
+            bool isInVehicle = Game.Player.Character.IsSittingInVehicle();
+            if (isInVehicle && (!wasInVehicle || DateTime.Now.Subtract(nextVehicleReminder).TotalSeconds > 1.0))
+            {
+                nextVehicleReminder = DateTime.Now;
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    connection.SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
+                }
+            }
+            else if (!isInVehicle && wasInVehicle)
+            {
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    connection.SendPacket(new ExitVehiclePacketOut());
+                }
+            }
+            wasInVehicle = isInVehicle;
         }
+
+        bool wasInVehicle = false;
+
+        DateTime nextVehicleReminder = DateTime.Now;
         
         DateTime nextVehicleUpdate = DateTime.Now;
         
