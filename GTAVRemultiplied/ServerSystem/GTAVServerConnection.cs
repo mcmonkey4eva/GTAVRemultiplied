@@ -28,8 +28,8 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     client.Sock = Listener.AcceptSocket();
                     client.Sock.Blocking = false;
-                    client.Sock.SendBufferSize = 1024 * 10 * 8;
-                    client.Sock.ReceiveBufferSize = 1024 * 10 * 8;
+                    client.Sock.SendBufferSize = 1024 * 1024;
+                    client.Sock.ReceiveBufferSize = 1024 * 1024;
                     Connections.Add(client);
                     client.Spawn();
                 }
@@ -48,7 +48,7 @@ namespace GTAVRemultiplied.ServerSystem
                 catch (Exception ex)
                 {
                     Log.Exception(ex);
-                    Log.Message("Server", "Dropping a client!", 'Y');
+                    Log.Error("Dropping a client!");
                     Connections[i].Sock.Close();
                     Connections.RemoveAt(i);
                     i--;
@@ -81,25 +81,34 @@ namespace GTAVRemultiplied.ServerSystem
                 }
             }
             pjump = tjump;
-            List<int> ids = Vehicles.Keys.ToList();
+            HashSet<int> ids = new HashSet<int>(Vehicles);
+            // TODO: Network vehicle updates more cleverly.
+            bool needsVehUpdate = DateTime.Now.Subtract(nextVehicleUpdate).TotalMilliseconds > 100;
+            if (needsVehUpdate)
+            {
+                nextVehicleUpdate = DateTime.Now;
+            }
             foreach (Vehicle vehicle in World.GetAllVehicles())
             {
-                if (!Vehicles.ContainsValue(vehicle))
+                if (Vehicles.Add(vehicle.Handle))
                 {
-                    int id = ++VehicleInstanceID;
-                    Vehicles[id] = vehicle;
-                    ReverseVehicles[vehicle] = id;
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        connection.SendPacket(new AddVehiclePacketOut(vehicle));
+                    }
                 }
-                else
+                ids.Remove(vehicle.Handle);
+                if (needsVehUpdate)
                 {
-                    ids.Remove(ReverseVehicles[vehicle]);
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
+                    }
                 }
             }
             foreach (int id in ids)
             {
-                Vehicle vehicle = Vehicles[id];
                 Vehicles.Remove(id);
-                ReverseVehicles.Remove(vehicle);
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
                     connection.SendPacket(new RemoveVehiclePacketOut(id));
@@ -107,15 +116,14 @@ namespace GTAVRemultiplied.ServerSystem
             }
         }
         
+        DateTime nextVehicleUpdate = DateTime.Now;
+        
         int ammo = 0;
         WeaponHash weap = WeaponHash.Unarmed;
 
         bool pjump = false;
-
-        public static int VehicleInstanceID = -1;
-
-        public static Dictionary<int, Vehicle> Vehicles = new Dictionary<int, Vehicle>();
-        public static Dictionary<Vehicle, int> ReverseVehicles = new Dictionary<Vehicle, int>();
+        
+        public static HashSet<int> Vehicles = new HashSet<int>();
 
         public void Listen(ushort port)
         {

@@ -18,9 +18,7 @@ namespace GTAVRemultiplied.ServerSystem
         public Socket Sock;
 
         public Ped Character;
-
-        public int HasVehicle = -1;
-
+        
         public void Spawn()
         {
             Character = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
@@ -30,7 +28,11 @@ namespace GTAVRemultiplied.ServerSystem
             Character.IsExplosionProof = true;
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
-            Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
+            foreach (int vehicle in GTAVServerConnection.Vehicles)
+            {
+                SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
+            }
+                Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
         byte[] known = new byte[8192 * 10];
@@ -39,19 +41,6 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void Tick()
         {
-            if (GTAVServerConnection.VehicleInstanceID > HasVehicle)
-            {
-                HasVehicle++;
-                while (HasVehicle <= GTAVServerConnection.VehicleInstanceID)
-                {
-                    if (GTAVServerConnection.Vehicles.ContainsKey(HasVehicle))
-                    {
-                        Vehicle vehicle = GTAVServerConnection.Vehicles[HasVehicle];
-                        SendPacket(new AddVehiclePacketOut(vehicle, HasVehicle));
-                    }
-                    HasVehicle++;
-                }
-            }
             while (Sock.Available > 0 && count < known.Length)
             {
                 byte[] dat = new byte[known.Length - count];
@@ -62,7 +51,11 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     ClientToServerPacket packType = (ClientToServerPacket)known[0];
                     int len = BitConverter.ToInt32(known, 1);
-                    if (count >= len + 5)
+                    if (count < len + 5)
+                    {
+                        break;
+                    }
+                    else
                     {
                         byte[] data = new byte[len];
                         Array.Copy(known, 5, data, 0, len);
@@ -83,14 +76,14 @@ namespace GTAVRemultiplied.ServerSystem
                         }
                         if (pack == null)
                         {
-                            Log.Message("Server Error", "Packet from user is null!", 'Y');
+                            Log.Error("Packet from user is null!");
                             // TODO: Kick user + error.
                         }
                         else
                         {
                             if (!pack.ParseAndExecute(this, data))
                             {
-                                Log.Message("Server Error", "Packet from user is invalid!", 'Y');
+                                Log.Error("Packet from user is invalid: " + packType);
                                 // TODO: Kick user + error.
                             }
                         }

@@ -31,7 +31,9 @@ public class ClientConnectionScript : Script
 
     bool pjump = false;
 
-    public static Dictionary<int, Vehicle> ServerAddedVehicles = new Dictionary<int, Vehicle>();
+    public static Dictionary<int, int> ServerToClientVehicle = new Dictionary<int, int>();
+
+    public static Dictionary<int, int> ClientToServerVehicle = new Dictionary<int, int>();
 
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
@@ -64,7 +66,11 @@ public class ClientConnectionScript : Script
                         {
                             ServerToClientPacket packType = (ServerToClientPacket)known[0];
                             int len = BitConverter.ToInt32(known, 1);
-                            if (count >= len + 5)
+                            if (count < len + 5)
+                            {
+                                break;
+                            }
+                            else
                             {
                                 byte[] data = new byte[len];
                                 Array.Copy(known, 5, data, 0, len);
@@ -88,18 +94,25 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.REMOVE_VEHICLE:
                                         pack = new RemoveVehiclePacketIn();
                                         break;
+                                    case ServerToClientPacket.UPDATE_VEHICLE:
+                                        pack = new UpdateVehiclePacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
-                                    Log.Message("Connection Error", "Packet from server is null!", 'Y');
-                                    // TODO: Disconnect + error.
+                                    Log.Error("Packet from server is null!");
+                                    Connected = false;
+                                    // TODO: Disconnect properly.
+                                    return;
                                 }
                                 else
                                 {
                                     if (!pack.ParseAndExecute(data))
                                     {
-                                        Log.Message("Connection Error", "Packet from server is invalid!", 'Y');
-                                        // TODO: Disconnect + error.
+                                        Log.Error("Packet from server is invalid: " + packType);
+                                        Connected = false;
+                                        // TODO: Disconnect properly.
+                                        return;
                                     }
                                 }
                             }
@@ -133,7 +146,7 @@ public class ClientConnectionScript : Script
                     pjump = tjump;
                     foreach (Vehicle vehicle in World.GetAllVehicles())
                     {
-                        if (!ServerAddedVehicles.ContainsValue(vehicle))
+                        if (!ClientToServerVehicle.ContainsKey(vehicle.Handle))
                         {
                             vehicle.Delete();
                         }
@@ -144,6 +157,7 @@ public class ClientConnectionScript : Script
         catch (Exception ex)
         {
             Log.Exception(ex);
+            // TODO: Maybe disconnect depending on error details?
         }
     }
 

@@ -19,6 +19,7 @@ namespace GTAVRemultiplied
         FIRED_SHOT = 1,
         JUMP = 2,
         ADD_VEHICLE = 3,
-        REMOVE_VEHICLE = 4
+        REMOVE_VEHICLE = 4,
+        UPDATE_VEHICLE = 5
     }
 }

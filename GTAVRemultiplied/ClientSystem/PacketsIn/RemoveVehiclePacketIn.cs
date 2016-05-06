@@ -1,9 +1,9 @@
-﻿using GTA;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GTA;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
@@ -16,11 +16,17 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int id = BitConverter.ToInt32(data, 0);
-            if (ClientConnectionScript.ServerAddedVehicles.ContainsKey(id))
+            int veh;
+            if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
             {
-                Vehicle vehicle = ClientConnectionScript.ServerAddedVehicles[id];
+                Vehicle vehicle = new Vehicle(veh);
                 vehicle.Delete();
-                ClientConnectionScript.ServerAddedVehicles.Remove(id);
+                ClientConnectionScript.ServerToClientVehicle.Remove(id);
+                ClientConnectionScript.ClientToServerVehicle.Remove(veh);
+            }
+            else
+            {
+                Log.Message("Warning", "Unknown vehicle removed!", 'Y');
             }
             return true;
         }

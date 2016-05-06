@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GTAVRemultiplied
 {
@@ -16,9 +17,15 @@ namespace GTAVRemultiplied
             }
         }
 
+        public static void Error(string message)
+        {
+            Message("Error", "INTERNAL ERROR: " + message, 'R');
+            File.AppendAllText(Environment.CurrentDirectory + "/frenetic/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + ".log", "[[ERROR]]: " + message);
+        }
+
         public static void Exception(Exception ex)
         {
-            Message("Exception", "INTERNAL ERROR: " + ex.ToString(), 'R');
+            Error(ex.ToString());
         }
     }
 }

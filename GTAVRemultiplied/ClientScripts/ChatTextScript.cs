@@ -22,7 +22,7 @@ public class ChatTextScript : Script
 {
     public static ChatTextScript Instance;
 
-    const int Count = 10;
+    const int Count = 15;
     
     const int Height = 12;
 
