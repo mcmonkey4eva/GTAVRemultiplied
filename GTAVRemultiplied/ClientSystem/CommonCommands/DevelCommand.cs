@@ -65,6 +65,12 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "removeHC":
                     GTAVUtilities.RemoveCarrier();
                     break;
+                case "getWeapons":
+                    foreach (WeaponHash hash in ModelEnforcementScript.hashes)
+                    {
+                        Game.Player.Character.Weapons.Give(hash, 999, false, true);
+                    }
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;

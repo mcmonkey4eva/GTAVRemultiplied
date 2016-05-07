@@ -57,8 +57,23 @@ public class ModelEnforcementScript : Script
         {
             Wait(0);
         }
+        bool[] hads = new bool[hashes.Length];
+        for (int i = 0; i < hashes.Length; i++)
+        {
+            hads[i] = Game.Player.Character.Weapons.HasWeapon(hashes[i]);
+            // TODO: Get Ammo for each?
+        }
+        WeaponHash current = Game.Player.Character.Weapons.Current.Hash;
         Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, mod.Hash);
         Game.Player.Character.SetDefaultClothes();
+        for (int i = 0; i < hashes.Length; i++)
+        {
+            if (hads[i])
+            {
+                Game.Player.Character.Weapons.Give(hashes[i], 999, false, true);
+            }
+        }
+        Game.Player.Character.Weapons.Select(current, true);
         CanTick = true;
         Wait(100);
         Function.Call(Hash.SET_MODEL_AS_NO_LONGER_NEEDED, mod.Hash);
@@ -74,4 +89,6 @@ public class ModelEnforcementScript : Script
         }
         return false;
     }
+
+    public static WeaponHash[] hashes = (WeaponHash[])Enum.GetValues(typeof(WeaponHash));
 }
