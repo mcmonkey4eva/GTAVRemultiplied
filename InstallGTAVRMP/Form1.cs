@@ -31,8 +31,7 @@ namespace InstallGTAVRMP
         const string file_gtavrmpdll = "/GTAVRemultiplied.dll";
 
         const string file_gtavrmppdb = "/GTAVRemultiplied.pdb";
-
-
+        
         string[] downloadFiles = new string[]
         {
             file_dinput8,

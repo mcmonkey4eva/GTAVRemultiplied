@@ -133,6 +133,14 @@ public class ClientConnectionScript : Script
                     if (!firsttele && ClientToServerPed.Count > 0)
                     {
                         Game.Player.Character.PositionNoOffset = new Ped(ClientToServerPed.Keys.First()).Position;
+                        foreach (int ped in ClientToServerPed.Keys)
+                        {
+                            if (new Ped(ped).Model.Hash == (int)PedHash.DeadHooker)
+                            {
+                                Game.Player.Character.PositionNoOffset = new Ped(ped).Position;
+                                break;
+                            }
+                        }
                         firsttele = true;
                     }
                     WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;

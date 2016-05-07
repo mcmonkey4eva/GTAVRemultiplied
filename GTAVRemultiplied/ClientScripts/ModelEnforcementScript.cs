@@ -28,8 +28,7 @@ public class ModelEnforcementScript : Script
         {
             if (Game.Player.IsDead && WantedModel.HasValue && Game.Player.Character.Model == WantedModel.Value)
             {
-                int hash = Function.Call<int>(Hash.GET_HASH_KEY, "player_zero");
-                SetModel(new Model(hash));
+                SetModel(PedHash.Michael);
                 return;
             }
             if (!Game.Player.IsDead && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
