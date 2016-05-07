@@ -28,6 +28,7 @@ namespace GTAVRemultiplied
         REMOVE_VEHICLE = 7,
         UPDATE_VEHICLE = 8,
         ADD_PED = 9,
-        REMOVE_PED = 10
+        REMOVE_PED = 10,
+        SET_IPL_DATA = 11
     }
 }

@@ -50,6 +50,7 @@
     <Compile Include="ClientSystem\PacketsIn\JumpPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddVehiclePacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\RemovePedPacketIn.cs" />
+    <Compile Include="ClientSystem\PacketsIn\SetIPLDataPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\SetModelPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\UpdateVehiclePacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\RemoveVehiclePacketIn.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\RemovePedPacketOut.cs" />
+    <Compile Include="ServerSystem\PacketsOut\SetIPLDataPacketOut.cs" />
     <Compile Include="ServerSystem\PedInfo.cs" />
     <Compile Include="ServerSystem\PacketsIn\EnterVehiclePacketIn.cs" />
     <Compile Include="ServerSystem\PacketsIn\ExitVehiclePacketIn.cs" />

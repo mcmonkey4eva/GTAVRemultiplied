@@ -39,10 +39,17 @@ public class ClientConnectionScript : Script
 
     public static Dictionary<int, int> ClientToServerPed = new Dictionary<int, int>();
 
+    bool dlcEnabled = false;
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
         {
+            if (!dlcEnabled)
+            {
+                GTAVUtilities.EnableDLC();
+                dlcEnabled = true;
+            }
             lock (Locker)
             {
                 if (Connected && !pcon)
@@ -108,6 +115,9 @@ public class ClientConnectionScript : Script
                                         break;
                                     case ServerToClientPacket.REMOVE_PED:
                                         pack = new RemovePedPacketIn();
+                                        break;
+                                    case ServerToClientPacket.SET_IPL_DATA:
+                                        pack = new SetIPLDataPacketIn();
                                         break;
                                 }
                                 if (pack == null)
