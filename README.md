@@ -29,6 +29,7 @@ More information coming soon!
 - It is technically possible to just send raw function call data across the network, due to its design. However, NEVER do this. It gives too much power to the packet creator!
 - We can call any function we want in any form we want, and you are free to do so. However, where there is a pre-implemented method or property available, please use that instead.
 	- For example: while we could use `Function.Call<Vector3>(GET_ENTITY_VELOCITY, ped.Handle)`, we should instead use `ped.Velocity`.
+- We're missing a lot of control here. We gotta just make do with what we got. We might end up having to somehow inject code somewhere, but let's try to avoid that.
 
 ### Licensing pre-note:
 

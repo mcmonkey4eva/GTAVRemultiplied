@@ -8,6 +8,7 @@ using FreneticScript.CommandSystem;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using GTA;
+using GTA.Math;
 using GTA.Native;
 
 namespace GTAVRemultiplied.ClientSystem.CommonCommands
@@ -51,6 +52,18 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     {
                         queue.HandleError(entry, "Invalid input!");
                     }
+                    break;
+                case "spawnNY":
+                    GTAVUtilities.SpawnNorthYankton();
+                    break;
+                case "spawnHC":
+                    GTAVUtilities.SpawnCarrier();
+                    break;
+                case "removeNY":
+                    GTAVUtilities.RemoveNorthYankton();
+                    break;
+                case "removeHC":
+                    GTAVUtilities.RemoveCarrier();
                     break;
                 default:
                     queue.HandleError(entry, "What?");
