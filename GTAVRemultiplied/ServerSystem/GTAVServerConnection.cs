@@ -129,7 +129,8 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     if (connection.Character.Handle != ped.Handle)
                     {
-                        connection.SendPacket(new PlayerUpdatePacketOut(ped, owner == null ? Vector3.Zero: owner.Aim));
+                        connection.SendPacket(new PlayerUpdatePacketOut(ped,
+                            (ped.Handle == Game.Player.Character.Handle) ? GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
                         WeaponHash cweap = ped.Weapons.Current.Hash;
                         int cammo = ped.Weapons.Current.AmmoInClip;
                         if (cweap != character.weap)
@@ -142,7 +143,8 @@ namespace GTAVRemultiplied.ServerSystem
                             {
                                 for (int i = 0; i < Connections.Count; i++)
                                 {
-                                    Connections[i].SendPacket(new FiredShotPacketOut(ped, owner == null ? Vector3.Zero : owner.Aim));
+                                    Connections[i].SendPacket(new FiredShotPacketOut(ped,
+                                        (ped.Handle == Game.Player.Character.Handle) ? GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
                                 }
                             }
                             // TODO: Reload, etc.
