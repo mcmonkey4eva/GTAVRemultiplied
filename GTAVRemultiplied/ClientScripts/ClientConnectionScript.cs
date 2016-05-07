@@ -135,7 +135,7 @@ public class ClientConnectionScript : Script
                         Game.Player.Character.PositionNoOffset = new Ped(ClientToServerPed.Keys.First()).Position;
                         foreach (int ped in ClientToServerPed.Keys)
                         {
-                            if (new Ped(ped).Model.Hash == (int)PedHash.DeadHooker)
+                            if (new Ped(ped).Model.Hash == DefaultModel.Hash)
                             {
                                 Game.Player.Character.PositionNoOffset = new Ped(ped).Position;
                                 break;
@@ -212,6 +212,8 @@ public class ClientConnectionScript : Script
             }
         }
     }
+
+    static Model DefaultModel = PedHash.DeadHooker;
 
     bool pcon = false;
 

@@ -21,6 +21,15 @@ More information coming soon!
 - In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "client" and one labeled "server", in each, add a server labeled "scripts".
 - You are now ready to play!
 
+### Notes to GTAV-RMP developers
+
+- Be careful handling object hashes. They are `UInt32`s on the inside (32-bit unsigned integers), but are converted by ScriptHookVDotNet to `Int32`s (32-bit SIGNED integers).
+	- Because of this, if you have a PedHash or VehicleHash or similar and want to treat it as the same as a model hash (IE, as an int), send it through the `Model` class.
+		- This can be done, for example, with the following: `Model DefaultModel = PedHash.DeadHooker; if (myHash == DefaultModel.Hash) ...`
+- It is technically possible to just send raw function call data across the network, due to its design. However, NEVER do this. It gives too much power to the packet creator!
+- We can call any function we want in any form we want, and you are free to do so. However, where there is a pre-implemented method or property available, please use that instead.
+	- For example: while we could use `Function.Call<Vector3>(GET_ENTITY_VELOCITY, ped.Handle)`, we should instead use `ped.Velocity`.
+
 ### Licensing pre-note:
 
 This is an open source project, provided entirely freely, for everyone to use and contribute to.
