@@ -209,19 +209,33 @@ public class ClientConnectionScript : Script
 
     public static void Connect(string ip, ushort port)
     {
-        Connected = false;
-        // TODO: Reasonably choose between ipv4 and ipv6.
-        Connection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        Connection.BeginConnect(ip, port, (a) =>
+        try
         {
-            Connection.EndConnect(a);
-            if (Connection.Connected)
+            Connected = false;
+            // TODO: Reasonably choose between ipv4 and ipv6.
+            Connection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Connection.BeginConnect(ip, port, (a) =>
             {
-                lock (Locker)
+                try
                 {
-                    Connected = true;
+                    Connection.EndConnect(a);
+                    if (Connection.Connected)
+                    {
+                        lock (Locker)
+                        {
+                            Connected = true;
+                        }
+                    }
                 }
-            }
-        }, null);
+                catch (Exception ex)
+                {
+                    Log.Exception(ex);
+                }
+            }, null);
+        }
+        catch (Exception ex)
+        {
+            Log.Exception(ex);
+        }
     }
 }
