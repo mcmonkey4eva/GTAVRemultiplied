@@ -9,11 +9,11 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
 {
     public class JumpPacketOut : AbstractPacketOut
     {
-        public JumpPacketOut(Player character) // TODO: GTAV-RMP Player object rather than GTA Player?
+        public JumpPacketOut(Ped character)
         {
             // TODO: Player ID!
             ID = ServerToClientPacket.JUMP;
-            Data = new byte[0];
+            Data = BitConverter.GetBytes(character.Handle);
         }
     }
 }

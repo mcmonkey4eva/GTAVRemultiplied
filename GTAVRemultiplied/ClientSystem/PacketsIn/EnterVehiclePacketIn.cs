@@ -11,14 +11,15 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 5)
+            if (data.Length != 5 + 4)
             {
                 return false;
             }
             int veh = BitConverter.ToInt32(data, 0);
             // TODO: Validate vehicle ID!
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
-            ClientConnectionScript.Character.SetIntoVehicle(new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]), seat);
+            int ped = BitConverter.ToInt32(data, 5);
+            new Ped(ClientConnectionScript.ServerToClientPed[ped]).SetIntoVehicle(new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]), seat);
             return true;
         }
     }

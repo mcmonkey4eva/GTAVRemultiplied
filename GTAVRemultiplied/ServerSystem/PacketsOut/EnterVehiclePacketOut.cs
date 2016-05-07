@@ -9,12 +9,13 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
 {
     public class EnterVehiclePacketOut : AbstractPacketOut
     {
-        public EnterVehiclePacketOut(Vehicle veh, VehicleSeat seat) // TODO: RMP Player object!
+        public EnterVehiclePacketOut(Ped ped, Vehicle veh, VehicleSeat seat)
         {
             ID = ServerToClientPacket.ENTER_VEHICLE;
-            Data = new byte[4 + 1];
+            Data = new byte[4 + 1 + 4];
             BitConverter.GetBytes(veh.Handle).CopyTo(Data, 0);
             Data[4] = (byte)(seat + 3);
+            BitConverter.GetBytes(ped.Handle).CopyTo(Data, 4 + 1);
         }
     }
 }

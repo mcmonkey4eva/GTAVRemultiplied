@@ -27,6 +27,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             aim.X = BitConverter.ToSingle(data, 16);
             aim.Y = BitConverter.ToSingle(data, 16 + 4);
             aim.Z = BitConverter.ToSingle(data, 16 + 8);
+            client.Aim = aim;
             WeaponHash weap = (WeaponHash)BitConverter.ToUInt32(data, 16 + 12);
             client.Character.Task.ClearAll();
             if (dist > 10f)

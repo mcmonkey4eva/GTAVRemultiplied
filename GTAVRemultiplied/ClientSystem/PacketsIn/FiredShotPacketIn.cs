@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 12)
+            if (data.Length != 12 + 4)
             {
                 return false;
             }
@@ -21,9 +21,10 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             aim.X = BitConverter.ToSingle(data, 0);
             aim.Y = BitConverter.ToSingle(data, 4);
             aim.Z = BitConverter.ToSingle(data, 8);
-            Vector3 vec = ClientConnectionScript.Character.Position + aim * 50;
+            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[BitConverter.ToInt32(data, 12)]);
+            Vector3 vec = ped.Position + aim * 50;
             // SET_PED_SHOOTS_AT_COORD(Ped ped, float x, float y, float z, BOOL toggle)
-            Function.Call(Hash.SET_PED_SHOOTS_AT_COORD, ClientConnectionScript.Character.Handle, vec.X, vec.Y, vec.Z, true);
+            Function.Call(Hash.SET_PED_SHOOTS_AT_COORD, ped.Handle, vec.X, vec.Y, vec.Z, true);
             return true;
         }
     }

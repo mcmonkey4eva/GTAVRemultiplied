@@ -19,22 +19,7 @@ public class ClientConnectionScript : Script
     {
         Tick += ClientConnectionScript_Tick;
     }
-
-    public static Model CharacterModel = PedHash.DeadHooker;
-
-    public static Ped Character;
-
-    public static void SpawnCharacter()
-    {
-        Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
-        Character.IsPersistent = true;
-        Character.IsInvincible = true;
-        Character.IsFireProof = true;
-        Character.IsExplosionProof = true;
-        Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
-        Character.Weapons.Select(held);
-    }
-
+    
     byte[] known = new byte[8192 * 10];
 
     int count = 0;
@@ -50,6 +35,10 @@ public class ClientConnectionScript : Script
 
     public static Dictionary<int, int> ClientToServerVehicle = new Dictionary<int, int>();
 
+    public static Dictionary<int, int> ServerToClientPed = new Dictionary<int, int>();
+
+    public static Dictionary<int, int> ClientToServerPed = new Dictionary<int, int>();
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
@@ -60,7 +49,6 @@ public class ClientConnectionScript : Script
                 {
                     pcon = true;
                     Log.Message("Connection", "Connected to a server now!");
-                    SpawnCharacter();
                 }
                 if (Connected)
                 {
@@ -115,6 +103,12 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.UPDATE_VEHICLE:
                                         pack = new UpdateVehiclePacketIn();
                                         break;
+                                    case ServerToClientPacket.ADD_PED:
+                                        pack = new AddPedPacketIn();
+                                        break;
+                                    case ServerToClientPacket.REMOVE_PED:
+                                        pack = new RemovePedPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -136,9 +130,9 @@ public class ClientConnectionScript : Script
                             }
                         }
                     }
-                    if (!firsttele)
+                    if (!firsttele && ClientToServerPed.Count > 0)
                     {
-                        Game.Player.Character.PositionNoOffset = Character.Position;
+                        Game.Player.Character.PositionNoOffset = new Ped(ClientToServerPed.Keys.First()).Position;
                         firsttele = true;
                     }
                     WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
@@ -167,6 +161,13 @@ public class ClientConnectionScript : Script
                         if (!ClientToServerVehicle.ContainsKey(vehicle.Handle))
                         {
                             vehicle.Delete();
+                        }
+                    }
+                    foreach (Ped ped in World.GetAllPeds())
+                    {
+                        if (!ClientToServerPed.ContainsKey(ped.Handle) && ped.Handle != Game.Player.Character.Handle)
+                        {
+                            ped.Delete();
                         }
                     }
                     bool isInVehicle = Game.Player.Character.IsSittingInVehicle();

@@ -9,7 +9,7 @@ using GTA.Native;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
-    public class AddVehiclePacketIn : AbstractPacketIn
+    public class AddPedPacketIn : AbstractPacketIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
@@ -24,28 +24,28 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pos.Y = BitConverter.ToSingle(data, 4 + 4 + 4);
             pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
-            Vehicle vehicle = World.CreateVehicle(new Model(hash), pos, heading);
-            if (vehicle != null)
+            Ped ped = World.CreatePed(new Model(hash), pos, heading);
+            if (ped != null)
             {
-                vehicle.IsPersistent = true;
-                vehicle.IsInvincible = true;
-                ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
-                ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
+                ped.IsPersistent = true;
+                ped.IsInvincible = true;
+                ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
+                ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
             }
             else
             {
                 // TODO: SetModel later!
-                vehicle = World.CreateVehicle(VehicleHash.Kuruma, Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
-                if (vehicle != null)
+                ped = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
+                if (ped != null)
                 {
-                    vehicle.IsPersistent = true;
-                    vehicle.IsInvincible = true;
-                    ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
-                    ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
+                    ped.IsPersistent = true;
+                    ped.IsInvincible = true;
+                    ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
+                    ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
                 }
                 else
                 {
-                    Log.Message("Warning", "Null vehicle spawned: " + hash, 'Y');
+                    Log.Error("Null character spawned: " + hash + ", " + id + ", " + pos);
                 }
             }
             return true;

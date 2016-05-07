@@ -26,6 +26,8 @@ namespace GTAVRemultiplied
         SET_MODEL = 5,
         ADD_VEHICLE = 6,
         REMOVE_VEHICLE = 7,
-        UPDATE_VEHICLE = 8
+        UPDATE_VEHICLE = 8,
+        ADD_PED = 9,
+        REMOVE_PED = 10
     }
 }

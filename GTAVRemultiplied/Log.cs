@@ -20,7 +20,7 @@ namespace GTAVRemultiplied
         public static void Error(string message)
         {
             Message("Error", "INTERNAL ERROR: " + message, 'R');
-            File.AppendAllText(Environment.CurrentDirectory + "/frenetic/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + ".log", "[[ERROR]]: " + message);
+            File.AppendAllText(Environment.CurrentDirectory + "/frenetic/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + ".log", "[[ERROR]]: " + message + Environment.NewLine);
         }
 
         public static void Exception(Exception ex)

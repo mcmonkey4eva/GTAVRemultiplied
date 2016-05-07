@@ -10,19 +10,15 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
 {
     class FiredShotPacketOut : AbstractPacketOut
     {
-        public FiredShotPacketOut(Player character) // TODO: GTAV-RMP Player object rather than GTA Player?
+        public FiredShotPacketOut(Ped character, Vector3 aim)
         {
             // TODO: Player ID!
             ID = ServerToClientPacket.FIRED_SHOT;
-            Data = new byte[12];
-            Vector3 aim = character.Character.ForwardVector;
-            if (character.IsAiming)
-            {
-                aim = GameplayCamera.Direction;
-            }
+            Data = new byte[12 + 4];
             BitConverter.GetBytes(aim.X).CopyTo(Data, 0);
             BitConverter.GetBytes(aim.Y).CopyTo(Data, 4);
             BitConverter.GetBytes(aim.Z).CopyTo(Data, 8);
+            BitConverter.GetBytes(character.Handle).CopyTo(Data, 12);
         }
     }
 }

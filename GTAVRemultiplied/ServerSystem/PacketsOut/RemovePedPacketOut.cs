@@ -7,12 +7,12 @@ using GTA;
 
 namespace GTAVRemultiplied.ServerSystem.PacketsOut
 {
-    public class ExitVehiclePacketOut : AbstractPacketOut
+    public class RemovePedPacketOut : AbstractPacketOut
     {
-        public ExitVehiclePacketOut(Ped ped)
+        public RemovePedPacketOut(int ped)
         {
-            ID = ServerToClientPacket.EXIT_VEHICLE;
-            Data = BitConverter.GetBytes(ped.Handle);
+            ID = ServerToClientPacket.REMOVE_PED;
+            Data = BitConverter.GetBytes(ped);
         }
     }
 }

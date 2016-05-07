@@ -21,6 +21,10 @@ namespace GTAVRemultiplied.ServerSystem
 
         public Ped Character;
 
+        public HashSet<int> KnownCharHistory = new HashSet<int>();
+
+        public Vector3 Aim = Vector3.Zero;
+
         public void SpawnCharacter()
         {
             Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
@@ -30,6 +34,7 @@ namespace GTAVRemultiplied.ServerSystem
             Character.IsExplosionProof = true;
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
+            KnownCharHistory.Add(Character.Handle);
         }
 
         public void Spawn()
@@ -38,6 +43,10 @@ namespace GTAVRemultiplied.ServerSystem
             foreach (int vehicle in GTAVServerConnection.Vehicles)
             {
                 SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
+            }
+            foreach (int ped in GTAVServerConnection.Characters.Keys)
+            {
+                SendPacket(new AddPedPacketOut(new Ped(ped)));
             }
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
@@ -48,6 +57,10 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void Tick()
         {
+            if (dcon)
+            {
+                throw new Exception("Disconnected");
+            }
             while (Sock.Available > 0 && count < known.Length)
             {
                 byte[] dat = new byte[known.Length - count];
@@ -108,13 +121,26 @@ namespace GTAVRemultiplied.ServerSystem
             }
         }
 
+        bool dcon = false;
+
         public void SendPacket(byte type, byte[] data)
         {
-            byte[] toSend = new byte[data.Length + 5];
-            toSend[0] = type;
-            BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);
-            data.CopyTo(toSend, 5);
-            Sock.Send(toSend);
+            if (dcon)
+            {
+                return;
+            }
+            try
+            {
+                byte[] toSend = new byte[data.Length + 5];
+                toSend[0] = type;
+                BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);
+                data.CopyTo(toSend, 5);
+                Sock.Send(toSend);
+            }
+            catch (SocketException)
+            {
+                dcon = true;
+            }
         }
 
         public void SendPacket(AbstractPacketOut pack)

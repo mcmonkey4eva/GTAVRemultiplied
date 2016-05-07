@@ -43,7 +43,6 @@ namespace GTAVRemultiplied.ServerSystem
                 try
                 {
                     Connections[i].Tick();
-                    Connections[i].SendPacket(new PlayerUpdatePacketOut(Game.Player));
                 }
                 catch (Exception ex)
                 {
@@ -54,33 +53,6 @@ namespace GTAVRemultiplied.ServerSystem
                     i--;
                 }
             }
-            WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
-            int cammo = Game.Player.Character.Weapons.Current.AmmoInClip;
-            if (cweap != weap)
-            {
-                weap = cweap;
-            }
-            else
-            {
-                if (ammo > cammo)
-                {
-                    for (int i = 0; i < Connections.Count; i++)
-                    {
-                        Connections[i].SendPacket(new FiredShotPacketOut(Game.Player));
-                    }
-                }
-                // TODO: Reload, etc.
-            }
-            ammo = cammo;
-            bool tjump = Game.Player.Character.IsJumping;
-            if (tjump && !pjump)
-            {
-                for (int i = 0; i < Connections.Count; i++)
-                {
-                    Connections[i].SendPacket(new JumpPacketOut(Game.Player));
-                }
-            }
-            pjump = tjump;
             HashSet<int> ids = new HashSet<int>(Vehicles);
             // TODO: Network vehicle updates more cleverly.
             bool needsVehUpdate = DateTime.Now.Subtract(nextVehicleUpdate).TotalMilliseconds > 100;
@@ -114,23 +86,6 @@ namespace GTAVRemultiplied.ServerSystem
                     connection.SendPacket(new RemoveVehiclePacketOut(id));
                 }
             }
-            bool isInVehicle = Game.Player.Character.IsSittingInVehicle();
-            if (isInVehicle && (!wasInVehicle || DateTime.Now.Subtract(nextVehicleReminder).TotalSeconds > 1.0))
-            {
-                nextVehicleReminder = DateTime.Now;
-                foreach (GTAVServerClientConnection connection in Connections)
-                {
-                    connection.SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
-                }
-            }
-            else if (!isInVehicle && wasInVehicle)
-            {
-                foreach (GTAVServerClientConnection connection in Connections)
-                {
-                    connection.SendPacket(new ExitVehiclePacketOut());
-                }
-            }
-            wasInVehicle = isInVehicle;
             bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
             if (hasModel)
             {
@@ -139,30 +94,107 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        connection.SendPacket(new SetModelPacketOut(cModel));
+                        connection.SendPacket(new SetModelPacketOut(Game.Player.Character, cModel));
                     }
                     pModel = cModel;
                 }
             }
             pHadModel = hasModel;
+            HashSet<int> pids = new HashSet<int>(Characters.Keys);
+            foreach (Ped ped in World.GetAllPeds())
+            {
+                if (!Characters.ContainsKey(ped.Handle))
+                {
+                    Characters[ped.Handle] = new PedInfo();
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        if (connection.Character.Handle != ped.Handle)
+                        {
+                            connection.SendPacket(new AddPedPacketOut(ped));
+                        }
+                    }
+                }
+                pids.Remove(ped.Handle);
+                GTAVServerClientConnection owner = null;
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    if (connection.Character.Handle == ped.Handle)
+                    {
+                        owner = connection;
+                        break;
+                    }
+                }
+                PedInfo character = Characters[ped.Handle];
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    if (connection.Character.Handle != ped.Handle)
+                    {
+                        connection.SendPacket(new PlayerUpdatePacketOut(ped, owner == null ? Vector3.Zero: owner.Aim));
+                        WeaponHash cweap = ped.Weapons.Current.Hash;
+                        int cammo = ped.Weapons.Current.AmmoInClip;
+                        if (cweap != character.weap)
+                        {
+                            character.weap = cweap;
+                        }
+                        else
+                        {
+                            if (character.ammo > cammo)
+                            {
+                                for (int i = 0; i < Connections.Count; i++)
+                                {
+                                    Connections[i].SendPacket(new FiredShotPacketOut(ped, owner == null ? Vector3.Zero : owner.Aim));
+                                }
+                            }
+                            // TODO: Reload, etc.
+                            // TODO: Sticky bombs, etc. No ammo clip!
+                            // Also, sticky bomb remote detonation.
+                        }
+                        character.ammo = cammo;
+                        bool tjump = Game.Player.Character.IsJumping;
+                        if (tjump && !character.pjump)
+                        {
+                            for (int i = 0; i < Connections.Count; i++)
+                            {
+                                Connections[i].SendPacket(new JumpPacketOut(ped));
+                            }
+                        }
+                        character.pjump = tjump;
+                        bool isInVehicle = ped.IsSittingInVehicle();
+                        if (isInVehicle && (!character.wasInVehicle || DateTime.Now.Subtract(character.nextVehicleReminder).TotalSeconds > 1.0))
+                        {
+                            character.nextVehicleReminder = DateTime.Now;
+                            connection.SendPacket(new EnterVehiclePacketOut(ped, ped.CurrentVehicle, ped.SeatIndex));
+                        }
+                        else if (!isInVehicle && character.wasInVehicle)
+                        {
+                            connection.SendPacket(new ExitVehiclePacketOut(ped));
+                        }
+                        character.wasInVehicle = isInVehicle;
+                    }
+                }
+            }
+            foreach (int id in pids)
+            {
+                Characters.Remove(id);
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    if (!connection.KnownCharHistory.Remove(id))
+                    {
+                        connection.SendPacket(new RemovePedPacketOut(id));
+                    }
+                }
+            }
         }
 
         bool pHadModel;
 
         int pModel;
-
-        bool wasInVehicle = false;
-
-        DateTime nextVehicleReminder = DateTime.Now;
         
         DateTime nextVehicleUpdate = DateTime.Now;
         
-        int ammo = 0;
-        WeaponHash weap = WeaponHash.Unarmed;
-
-        bool pjump = false;
-        
         public static HashSet<int> Vehicles = new HashSet<int>();
+
+        public static Dictionary<int, PedInfo> Characters = new Dictionary<int, PedInfo>();
 
         public void Listen(ushort port)
         {
