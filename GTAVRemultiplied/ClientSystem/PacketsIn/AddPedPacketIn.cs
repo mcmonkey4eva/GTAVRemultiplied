@@ -29,6 +29,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 ped.IsPersistent = true;
                 ped.IsInvincible = true;
+                ped.BlockPermanentEvents = true;
+                ped.Task.ClearAllImmediately();
                 ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
                 ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
             }
