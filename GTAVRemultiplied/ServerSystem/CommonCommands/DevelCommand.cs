@@ -11,6 +11,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAVRemultiplied.ServerSystem.TagObjects;
+using GTAVRemultiplied.ServerSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ServerSystem.CommonCommands
 {
@@ -116,6 +117,34 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     if (entry.ShouldShowGood(queue))
                     {
                         entry.Good(queue, "Clothing set!");
+                    }
+                    break;
+                case "addRegion":
+                    if (arg2.ToString() == "yankton")
+                    {
+                        GTAVUtilities.SpawnNorthYankton();
+                    }
+                    else if (arg2.ToString() == "carrier")
+                    {
+                        GTAVUtilities.SpawnCarrier();
+                    }
+                    foreach (GTAVServerClientConnection client in GTAVFreneticServer.Connections.Connections)
+                    {
+                        client.SendPacket(new SetIPLDataPacketOut());
+                    }
+                    break;
+                case "removeRegion":
+                    if (arg2.ToString() == "yankton")
+                    {
+                        GTAVUtilities.RemoveNorthYankton();
+                    }
+                    else if (arg2.ToString() == "carrier")
+                    {
+                        GTAVUtilities.RemoveCarrier();
+                    }
+                    foreach (GTAVServerClientConnection client in GTAVFreneticServer.Connections.Connections)
+                    {
+                        client.SendPacket(new SetIPLDataPacketOut());
                     }
                     break;
                 default:

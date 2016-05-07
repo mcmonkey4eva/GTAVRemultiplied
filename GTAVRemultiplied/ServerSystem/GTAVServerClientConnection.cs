@@ -48,6 +48,7 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 SendPacket(new AddPedPacketOut(new Ped(ped)));
             }
+            SendPacket(new SetIPLDataPacketOut());
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
