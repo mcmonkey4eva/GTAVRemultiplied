@@ -131,7 +131,25 @@ namespace GTAVRemultiplied.ServerSystem
                 }
             }
             wasInVehicle = isInVehicle;
+            bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
+            if (hasModel)
+            {
+                int cModel = ModelEnforcementScript.WantedModel.Value.Hash;
+                if (pModel != cModel)
+                {
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        connection.SendPacket(new SetModelPacketOut(cModel));
+                    }
+                    pModel = cModel;
+                }
+            }
+            pHadModel = hasModel;
         }
+
+        bool pHadModel;
+
+        int pModel;
 
         bool wasInVehicle = false;
 

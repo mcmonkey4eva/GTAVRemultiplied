@@ -20,7 +20,20 @@ public class ClientConnectionScript : Script
         Tick += ClientConnectionScript_Tick;
     }
 
+    public static Model CharacterModel = PedHash.DeadHooker;
+
     public static Ped Character;
+
+    public static void SpawnCharacter()
+    {
+        Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
+        Character.IsPersistent = true;
+        Character.IsInvincible = true;
+        Character.IsFireProof = true;
+        Character.IsExplosionProof = true;
+        Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
+        Character.Weapons.Select(held);
+    }
 
     byte[] known = new byte[8192 * 10];
 
@@ -47,13 +60,7 @@ public class ClientConnectionScript : Script
                 {
                     pcon = true;
                     Log.Message("Connection", "Connected to a server now!");
-                    Character = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
-                    Character.IsPersistent = true;
-                    Character.IsInvincible = true;
-                    Character.IsFireProof = true;
-                    Character.IsExplosionProof = true;
-                    Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
-                    Character.Weapons.Select(held);
+                    SpawnCharacter();
                 }
                 if (Connected)
                 {
@@ -95,6 +102,9 @@ public class ClientConnectionScript : Script
                                         break;
                                     case ServerToClientPacket.EXIT_VEHICLE:
                                         pack = new ExitVehiclePacketIn();
+                                        break;
+                                    case ServerToClientPacket.SET_MODEL:
+                                        pack = new SetModelPacketIn();
                                         break;
                                     case ServerToClientPacket.ADD_VEHICLE:
                                         pack = new AddVehiclePacketIn();
@@ -169,6 +179,17 @@ public class ClientConnectionScript : Script
                         SendPacket(new ExitVehiclePacketOut());
                     }
                     wasInVehicle = isInVehicle;
+                    bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
+                    if (hasModel)
+                    {
+                        int cModel = ModelEnforcementScript.WantedModel.Value.Hash;
+                        if (pModel != cModel)
+                        {
+                            SendPacket(new RequestModelPacketOut(cModel));
+                            pModel = cModel;
+                        }
+                    }
+                    pHadModel = hasModel;
                 }
             }
         }
@@ -184,6 +205,10 @@ public class ClientConnectionScript : Script
     }
 
     bool pcon = false;
+
+    bool pHadModel;
+
+    int pModel;
 
     public static bool firsttele = false;
 
@@ -211,6 +236,10 @@ public class ClientConnectionScript : Script
     {
         try
         {
+            if (!ModelEnforcementScript.WantedModel.HasValue)
+            {
+                GTAVUtilities.SwitchCharacter(PedHash.DeadHooker);
+            }
             Connected = false;
             // TODO: Reasonably choose between ipv4 and ipv6.
             Connection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);

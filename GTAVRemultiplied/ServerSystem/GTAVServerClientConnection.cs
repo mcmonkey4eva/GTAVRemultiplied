@@ -17,22 +17,29 @@ namespace GTAVRemultiplied.ServerSystem
     {
         public Socket Sock;
 
+        public Model CharacterModel = PedHash.DeadHooker;
+
         public Ped Character;
-        
-        public void Spawn()
+
+        public void SpawnCharacter()
         {
-            Character = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
+            Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
             Character.IsPersistent = true;
             Character.IsInvincible = true;
             Character.IsFireProof = true;
             Character.IsExplosionProof = true;
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
+        }
+
+        public void Spawn()
+        {
+            SpawnCharacter();
             foreach (int vehicle in GTAVServerConnection.Vehicles)
             {
                 SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
             }
-                Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
+            Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
         byte[] known = new byte[8192 * 10];
@@ -78,6 +85,9 @@ namespace GTAVRemultiplied.ServerSystem
                                 break;
                             case ClientToServerPacket.EXIT_VEHICLE:
                                 pack = new ExitVehiclePacketIn();
+                                break;
+                            case ClientToServerPacket.REQUEST_MODEL:
+                                pack = new RequestModelPacketIn();
                                 break;
                         }
                         if (pack == null)

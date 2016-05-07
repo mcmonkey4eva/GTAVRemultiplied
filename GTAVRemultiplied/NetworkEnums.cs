@@ -12,7 +12,8 @@ namespace GTAVRemultiplied
         FIRED_SHOT = 1,
         JUMP = 2,
         ENTER_VEHICLE = 3,
-        EXIT_VEHICLE = 4
+        EXIT_VEHICLE = 4,
+        REQUEST_MODEL = 5
     }
 
     public enum ServerToClientPacket : byte
@@ -22,8 +23,9 @@ namespace GTAVRemultiplied
         JUMP = 2,
         ENTER_VEHICLE = 3,
         EXIT_VEHICLE = 4,
-        ADD_VEHICLE = 5,
-        REMOVE_VEHICLE = 6,
-        UPDATE_VEHICLE = 7
+        SET_MODEL = 5,
+        ADD_VEHICLE = 6,
+        REMOVE_VEHICLE = 7,
+        UPDATE_VEHICLE = 8
     }
 }

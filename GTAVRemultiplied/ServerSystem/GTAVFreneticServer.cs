@@ -11,6 +11,9 @@ using System.IO;
 using GTAVRemultiplied.ServerSystem.CommonCommands;
 using GTAVRemultiplied.ServerSystem.WorldCommands;
 using GTAVRemultiplied.ServerSystem.TagBases;
+using GTA;
+using GTA.Math;
+using GTA.Native;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -61,6 +64,10 @@ namespace GTAVRemultiplied.ServerSystem
                 return;
             }
             Enabled = true;
+            if (!ModelEnforcementScript.WantedModel.HasValue)
+            {
+                GTAVUtilities.SwitchCharacter(PedHash.DeadHooker);
+            }
             Connections = new GTAVServerConnection();
             Connections.Listen(port);
             Output = new GTAVFreneticServerOutputter();
