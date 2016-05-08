@@ -57,6 +57,7 @@ public class ClientConnectionScript : Script
                 if (Connected && !pcon)
                 {
                     pcon = true;
+                    Function.Call(Hash.SET_RANDOM_TRAINS, false);
                     Log.Message("Connection", "Connected to a server now!");
                 }
                 if (Connected)
