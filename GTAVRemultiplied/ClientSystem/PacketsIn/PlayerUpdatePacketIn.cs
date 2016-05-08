@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 16 + 12 + 4 + 12 + 4)
+            if (data.Length != 16 + 12 + 4 + 12 + 4 + 1)
             {
                 return false;
             }
@@ -69,6 +69,18 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
             vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
             ped.Velocity = vel;
+            byte flags = data[16 + 12 + 4 + 12 + 4];
+            bool isDead = (flags & 1) == 1;
+            if (isDead && !ped.IsDead)
+            {
+                ped.IsInvincible = false;
+                ped.Kill();
+            }
+            else if (!isDead && ped.IsDead)
+            {
+                ped.Health = 1;
+                ped.IsInvincible = true;
+            }
             return true;
         }
     }

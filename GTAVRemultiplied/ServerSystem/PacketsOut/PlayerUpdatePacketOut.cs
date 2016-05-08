@@ -15,7 +15,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         {
             // TODO: Player ID!
             ID = ServerToClientPacket.PLAYER_UPDATE;
-            Data = new byte[16 + 12 + 4 + 12 + 4];
+            Data = new byte[16 + 12 + 4 + 12 + 4 + 1];
             BitConverter.GetBytes(character.Position.X).CopyTo(Data, 0);
             BitConverter.GetBytes(character.Position.Y).CopyTo(Data, 4);
             BitConverter.GetBytes(character.Position.Z).CopyTo(Data, 8);
@@ -28,6 +28,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(character.Velocity.Y).CopyTo(Data, 16 + 12 + 4 + 4);
             BitConverter.GetBytes(character.Velocity.Z).CopyTo(Data, 16 + 12 + 4 + 8);
             BitConverter.GetBytes(character.Handle).CopyTo(Data, 16 + 12 + 4 + 12);
+            Data[16 + 12 + 4 + 12 + 4] = (byte)(character.IsDead ? 1 : 0);
         }
     }
 }

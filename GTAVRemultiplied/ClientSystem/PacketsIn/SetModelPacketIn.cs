@@ -35,6 +35,9 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.ServerPedKnownPosition[serverPed] = new PedInfo();
                 ped.IsPersistent = true;
                 ped.IsInvincible = true;
+                ped.BlockPermanentEvents = true;
+                ped.Task.ClearAllImmediately();
+                ped.SetDefaultClothes();
             }
             else
             {

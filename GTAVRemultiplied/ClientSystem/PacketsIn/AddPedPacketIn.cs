@@ -31,6 +31,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ped.IsInvincible = true;
                 ped.BlockPermanentEvents = true;
                 ped.Task.ClearAllImmediately();
+                ped.SetDefaultClothes();
                 ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
                 ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
                 ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
@@ -43,6 +44,9 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 {
                     ped.IsPersistent = true;
                     ped.IsInvincible = true;
+                    ped.BlockPermanentEvents = true;
+                    ped.Task.ClearAllImmediately();
+                    ped.SetDefaultClothes();
                     ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
                     ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
                     ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
