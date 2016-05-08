@@ -10,6 +10,7 @@ using FreneticScript.TagHandlers.Objects;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ClientSystem.CommonCommands
 {
@@ -86,14 +87,22 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         (uint)weap, Game.Player.Character.Handle, true, true, -1);
                     break;
                 case "quickSpin":
-                    entry.Good(queue, "Your velocity was: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
+                    entry.Good(queue, "Your rotation velocity was: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
                     GTAVUtilities.SetRotationVelocity(Game.Player.Character.CurrentVehicle, GTAVUtilities.StringToVector(arg2.ToString()));
-                    entry.Good(queue, "Your velocity is now: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
+                    break;
+                case "spawnRandomYachts":
+                    Random rand = new Random();
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        YachtHelper.SpawnYacht(i, rand.Next(1, 3), rand.Next(100) > 50, lightOpts[rand.Next(lightOpts.Length)]);
+                    }
                     break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
             }
         }
+
+        static string[] lightOpts = new string[] { "1a", "1b", "1c", "1d", "2a", "2b", "2c", "2d"};
     }
 }

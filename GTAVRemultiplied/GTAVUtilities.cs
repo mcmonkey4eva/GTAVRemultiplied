@@ -86,7 +86,7 @@ namespace GTAVRemultiplied
             Function.Call(Hash._LOAD_MP_DLC_MAPS);
             Function.Call(Hash._ENABLE_MP_DLC_MAPS, true);
         }
-
+        
         public static void SpawnNorthYankton()
         {
             foreach (string str in ny)
