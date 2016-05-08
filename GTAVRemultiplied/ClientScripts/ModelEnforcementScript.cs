@@ -61,7 +61,7 @@ public class ModelEnforcementScript : Script
         for (int i = 0; i < hashes.Length; i++)
         {
             hads[i] = Game.Player.Character.Weapons.HasWeapon(hashes[i]);
-            // TODO: Get Ammo for each?
+            // TODO: Get Ammo count for each?
         }
         WeaponHash current = Game.Player.Character.Weapons.Current.Hash;
         Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, mod.Hash);

@@ -18,7 +18,9 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             if (client.Character.CurrentVehicle != null)
             {
                 client.Character.Task.LeaveVehicle(client.Character.CurrentVehicle, false);
+                client.Character.Task.LeaveVehicle();
             }
+            client.InVehicle = false;
             return true;
         }
     }

@@ -19,6 +19,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             if (ped.CurrentVehicle != null)
             {
                 ped.Task.LeaveVehicle(ped.CurrentVehicle, false);
+                ped.Task.LeaveVehicle();
             }
             return true;
         }

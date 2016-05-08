@@ -19,6 +19,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             // TODO: Validate vehicle ID!
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             client.Character.SetIntoVehicle(new Vehicle(veh), seat);
+            client.InVehicle = true;
             return true;
         }
     }

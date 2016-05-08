@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
     {
         public override bool ParseAndExecute(GTAVServerClientConnection client, byte[] data)
         {
-            if (data.Length != 16 + 12 + 4 + 12)
+            if (data.Length != 16 + 12 + 4 + 12 + 12)
             {
                 return false;
             }
@@ -21,7 +21,15 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             vec.X = BitConverter.ToSingle(data, 0);
             vec.Y = BitConverter.ToSingle(data, 4);
             vec.Z = BitConverter.ToSingle(data, 8);
-            client.Character.Heading = BitConverter.ToSingle(data, 12);
+            float head = BitConverter.ToSingle(data, 12);
+            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            {
+                client.Character.CurrentVehicle.Heading = head;
+            }
+            else
+            {
+                client.Character.Heading = head;
+            }
             float dist = vec.DistanceToSquared2D(client.Character.Position);
             Vector3 aim = new Vector3();
             aim.X = BitConverter.ToSingle(data, 16);
@@ -62,11 +70,30 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
                 client.Character.Weapons.Give(weap, 1000, true, true);
                 client.Character.Weapons.Select(weap);
             }
+            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            {
+                client.Character.CurrentVehicle.PositionNoOffset = vec;
+            }
             Vector3 vel = new Vector3();
             vel.X = BitConverter.ToSingle(data, 16 + 12 + 4);
             vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
             vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
-            client.Character.Velocity = vel;
+            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            {
+                client.Character.CurrentVehicle.Velocity = vel;
+            }
+            else
+            {
+                client.Character.Velocity = vel;
+            }
+            Vector3 rot = new Vector3();
+            rot.X = BitConverter.ToSingle(data, 16 + 12 + 4 + 12);
+            rot.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 12 + 4);
+            rot.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 12 + 8);
+            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            {
+                client.Character.CurrentVehicle.Rotation = rot;
+            }
             return true;
         }
     }

@@ -35,9 +35,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
             {
                 Vehicle vehicle = new Vehicle(veh);
-                vehicle.PositionNoOffset = pos;
-                vehicle.Velocity = vel;
-                vehicle.Rotation = rot;
+                Vehicle cveh = Game.Player.Character.CurrentVehicle;
+                if (cveh == null || cveh.Handle != vehicle.Handle)
+                {
+                    vehicle.PositionNoOffset = pos;
+                    vehicle.Velocity = vel;
+                    vehicle.Rotation = rot;
+                }
                 if (isDead && !vehicle.IsDead)
                 {
                     vehicle.IsInvincible = false;

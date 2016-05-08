@@ -17,6 +17,8 @@ namespace GTAVRemultiplied.ServerSystem
     {
         public Socket Sock;
 
+        public bool InVehicle = false;
+
         public Model CharacterModel = PedHash.DeadHooker;
 
         public Ped Character;
