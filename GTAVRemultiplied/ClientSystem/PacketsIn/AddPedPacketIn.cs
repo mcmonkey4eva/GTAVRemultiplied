@@ -33,6 +33,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ped.Task.ClearAllImmediately();
                 ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
                 ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
+                ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
             }
             else
             {
@@ -44,6 +45,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     ped.IsInvincible = true;
                     ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
                     ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
+                    ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
                 }
                 else
                 {

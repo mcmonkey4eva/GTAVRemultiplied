@@ -17,11 +17,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 return false;
             }
-            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[BitConverter.ToInt32(data, 16 + 12 + 4 + 12)]);
+            int serverPed = BitConverter.ToInt32(data, 16 + 12 + 4 + 12);
+            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[serverPed]);
             Vector3 vec = new Vector3();
             vec.X = BitConverter.ToSingle(data, 0);
             vec.Y = BitConverter.ToSingle(data, 4);
             vec.Z = BitConverter.ToSingle(data, 8);
+            ClientConnectionScript.ServerPedKnownPosition[serverPed].WorldPos = vec;
             ped.Heading = BitConverter.ToSingle(data, 12);
             float dist = vec.DistanceToSquared2D(ped.Position);
             Vector3 aim = new Vector3();

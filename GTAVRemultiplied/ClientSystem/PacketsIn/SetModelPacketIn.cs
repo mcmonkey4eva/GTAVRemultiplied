@@ -21,10 +21,18 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             Model mod = new Model(BitConverter.ToInt32(data, 0));
             Vector3 pos = ped.Position;
             float heading = ped.Heading;
+            int hand = ped.Handle;
             ped.Delete();
             ped = World.CreatePed(mod, pos, heading);
             if (ped != null)
             {
+                int serverPed = ClientConnectionScript.ServerToClientPed[hand];
+                ClientConnectionScript.ServerToClientPed.Remove(serverPed);
+                ClientConnectionScript.ServerPedKnownPosition.Remove(serverPed);
+                ClientConnectionScript.ClientToServerPed.Remove(hand);
+                ClientConnectionScript.ServerToClientPed[serverPed] = ped.Handle;
+                ClientConnectionScript.ClientToServerPed[ped.Handle] = serverPed;
+                ClientConnectionScript.ServerPedKnownPosition[serverPed] = new PedInfo();
                 ped.IsPersistent = true;
                 ped.IsInvincible = true;
             }

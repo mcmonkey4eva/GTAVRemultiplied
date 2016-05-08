@@ -39,6 +39,8 @@ public class ClientConnectionScript : Script
 
     public static Dictionary<int, int> ClientToServerPed = new Dictionary<int, int>();
 
+    public static Dictionary<int, PedInfo> ServerPedKnownPosition = new Dictionary<int, PedInfo>();
+
     bool dlcEnabled = false;
 
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
@@ -59,6 +61,22 @@ public class ClientConnectionScript : Script
                 }
                 if (Connected)
                 {
+                    if (DebugPositionScript.Enabled)
+                    {
+                        foreach (KeyValuePair<int, PedInfo> peddata in ServerPedKnownPosition)
+                        {
+                            Ped p = new Ped(ServerToClientPed[peddata.Key]);
+                            PedHash model = (PedHash)unchecked((uint)p.Model.Hash);
+                            string modname = model.ToString();
+                            Vector3 pos = peddata.Value.WorldPos;
+                            System.Drawing.Point point = UI.WorldToScreen(pos);
+                            Vector3 camPos = GameplayCamera.Position;
+                            float dist = camPos.DistanceTo(pos);
+                            float scale = 5f / dist;
+                            UIText text = new UIText("<" + modname + ">", point, scale);
+                            text.Draw();
+                        }
+                    }
                     SendPacket(new SelfUpdatePacketOut());
                     while (Connection.Available > 0 && count < known.Length)
                     {

@@ -25,6 +25,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ped.Delete();
                 ClientConnectionScript.ServerToClientPed.Remove(id);
                 ClientConnectionScript.ClientToServerPed.Remove(pd);
+                ClientConnectionScript.ServerPedKnownPosition.Remove(id);
             }
             else
             {
