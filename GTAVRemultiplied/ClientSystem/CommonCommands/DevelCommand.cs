@@ -38,6 +38,7 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "fixPos":
                     ClientConnectionScript.firsttele = false;
                     break;
+                    // EG: switchCharacter DeadHooker
                 case "switchCharacter":
                     PedHash mod;
                     if (Enum.TryParse(arg2.ToString(), true, out mod))
@@ -70,6 +71,19 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     {
                         Game.Player.Character.Weapons.Give(hash, 999, false, true);
                     }
+                    break;
+                case "testJerkoff":
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "SWITCH@TREVOR@JERKING_OFF");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Game.Player.Character.Handle, "SWITCH@TREVOR@JERKING_OFF", "trev_jerking_off_loop",
+                        8f, 1f, 5000, 1, 1f, false, false, false);
+                    break;
+                    // EG: quickShot RPG
+                case "quickShot":
+                    Vector3 playerpos = Game.Player.Character.Position;
+                    Vector3 playertarget = Game.Player.Character.Position + GameplayCamera.Direction * 50;
+                    WeaponHash weap = (WeaponHash)Enum.Parse(typeof(WeaponHash), arg2.ToString(), true);
+                    Function.Call(Hash.SHOOT_SINGLE_BULLET_BETWEEN_COORDS, playerpos.X, playerpos.Y, playerpos.Z, playertarget.X, playertarget.Y, playertarget.Z, Game.Player.Character.Health, true,
+                        (uint)weap, Game.Player.Character.Handle, true, true, -1);
                     break;
                 default:
                     queue.HandleError(entry, "What?");

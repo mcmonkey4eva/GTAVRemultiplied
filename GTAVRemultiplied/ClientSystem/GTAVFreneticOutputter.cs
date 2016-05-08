@@ -17,12 +17,12 @@ namespace GTAVRemultiplied.ClientSystem
 
         public override void Bad(string tagged_text, DebugMode mode)
         {
-            Log.Message("Warning", Syst.TagSystem.ParseTagsFromText(tagged_text, "^r^3", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true), 'Y');
+            Log.Message("Warning", Syst.TagSystem.ParseTagsFromText(tagged_text, "", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true), 'Y');
         }
 
         public override void Good(string tagged_text, DebugMode mode)
         {
-            Log.Message("Info", Syst.TagSystem.ParseTagsFromText(tagged_text, "^r^2", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true));
+            Log.Message("Info", Syst.TagSystem.ParseTagsFromText(tagged_text, "", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true));
         }
 
         public override string ReadTextFile(string name)
