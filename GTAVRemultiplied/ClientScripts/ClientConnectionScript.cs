@@ -73,8 +73,7 @@ public class ClientConnectionScript : Script
                             System.Drawing.Point point = UI.WorldToScreen(pos);
                             Vector3 camPos = GameplayCamera.Position;
                             float dist = camPos.DistanceTo(pos);
-                            float scale = 5f / dist;
-                            // TODO: Account for weapon zoom, etc. -> GameplayCamera.Zoom?
+                            float scale = 5f / (dist / GameplayCamera.Zoom);
                             UIText text = new UIText("<" + modname + ">", point, scale);
                             text.Draw();
                         }
