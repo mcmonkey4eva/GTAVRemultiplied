@@ -36,7 +36,8 @@ namespace GTAVRemultiplied
 
         public static void SetRotationVelocity(Entity e, Vector3 rotvel)
         {
-            // TODO: Implement me! (e.ApplyForce? Hash.APPLY_FORCE_TO_ENTITY?) Probably will require some math.
+            Vector3 rvel = rotvel - GetRotationVelocity(e);
+            Function.Call(Hash.APPLY_FORCE_TO_ENTITY, e.Handle, 5, rvel.X, rvel.Y, rvel.Z, 0f, 0f, 0f, 0, 1, 0, 1, 0, 1);
         }
 
         static string[] all_ipls = new string[]

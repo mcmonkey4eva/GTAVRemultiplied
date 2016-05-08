@@ -12,7 +12,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 4 + 12 + 12 + 12 + 1)
+            if (data.Length != 4 + 12 + 12 + 12 + 1 + 12)
             {
                 return false;
             }
@@ -29,6 +29,10 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             rot.X = BitConverter.ToSingle(data, 4 + 12 + 12);
             rot.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 4);
             rot.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 8);
+            Vector3 rotvel;
+            rotvel.X = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1);
+            rotvel.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 4);
+            rotvel.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 8);
             byte flags = data[4 + 12 + 12 + 12];
             bool isDead = (flags & 1) == 1;
             int veh;
@@ -41,6 +45,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     vehicle.PositionNoOffset = pos;
                     vehicle.Velocity = vel;
                     vehicle.Rotation = rot;
+                    GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                 }
                 if (isDead && !vehicle.IsDead)
                 {

@@ -85,6 +85,11 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     Function.Call(Hash.SHOOT_SINGLE_BULLET_BETWEEN_COORDS, playerpos.X, playerpos.Y, playerpos.Z, playertarget.X, playertarget.Y, playertarget.Z, Game.Player.Character.Health, true,
                         (uint)weap, Game.Player.Character.Handle, true, true, -1);
                     break;
+                case "quickSpin":
+                    entry.Good(queue, "Your velocity was: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
+                    GTAVUtilities.SetRotationVelocity(Game.Player.Character.CurrentVehicle, GTAVUtilities.StringToVector(arg2.ToString()));
+                    entry.Good(queue, "Your velocity is now: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
