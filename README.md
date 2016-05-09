@@ -18,7 +18,7 @@ More information coming soon!
 - Install https://github.com/crosire/scripthookvdotnet/releases using their resources or the copy contained in this source.
 - Build this project from the source available here, using Visual Studio 2015 (or acquire the dll's from a release copy).
 - Copy the resultant dll's (GTAVRemultiplied, YAMLDotNet, FreneticScript) of this project's build into your `GTAV/scripts/` folder.
-- In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "client" and one labeled "server", in each, add a server labeled "scripts".
+- In your GTAV folder, create a folder labeled "frenetic", and in that one labeled "client" and one labeled "server", in each, add a folder labeled "scripts".
 - You are now ready to play!
 
 ### Notes to GTAV-RMP developers

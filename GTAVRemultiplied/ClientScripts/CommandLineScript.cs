@@ -90,7 +90,7 @@ public class CommandLineScript : Script
             if (p && GTAVFreneticServer.Enabled && !WasDownLast2)
             {
                 OSK();
-                Mode = false;
+                Mode = true;
             }
             WasDownLast2 = p;
         }
