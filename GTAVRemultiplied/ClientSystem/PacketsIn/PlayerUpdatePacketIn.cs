@@ -31,19 +31,17 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             aim.Y = BitConverter.ToSingle(data, 16 + 4);
             aim.Z = BitConverter.ToSingle(data, 16 + 8);
             WeaponHash weap = (WeaponHash)BitConverter.ToUInt32(data, 16 + 12);
-            ped.Task.ClearAll();
+            byte flags = data[16 + 12 + 4 + 12 + 4];
             if (dist > 10f)
             {
-                ped.Task.StandStill(1000);
                 if (aim.LengthSquared() > 0.1)
                 {
                     ped.Task.AimAt(ped.Position + aim * 50, 1000);
                 }
                 ped.PositionNoOffset = vec;
             }
-            else if (dist < 0.7f)
+            else if (dist < 0.25f)
             {
-                ped.Task.StandStill(1000);
                 if (aim.LengthSquared() > 0.1)
                 {
                     ped.Task.AimAt(ped.Position + aim * 50, 1000);
@@ -51,7 +49,14 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             else
             {
-                ped.Task.GoTo(vec, true);
+                if (!ped.IsJumping)
+                {
+                    bool isRunning = (flags & 2) == 1;
+                    bool isSprinting = (flags & 4) == 4;
+                    float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
+                    // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
+                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped.Handle, vec.X, vec.Y, vec.Z, speed, -1, 0.0f, 0.0f);
+                }
                 if (aim.LengthSquared() > 0.1)
                 {
                     Vector3 taim = ped.Position + aim * 50;
@@ -69,7 +74,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
             vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
             ped.Velocity = vel;
-            byte flags = data[16 + 12 + 4 + 12 + 4];
             bool isDead = (flags & 1) == 1;
             if (isDead && !ped.IsDead)
             {

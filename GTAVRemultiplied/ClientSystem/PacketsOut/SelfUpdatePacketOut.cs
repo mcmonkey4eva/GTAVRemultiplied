@@ -14,7 +14,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
         public SelfUpdatePacketOut()
         {
             ID = ClientToServerPacket.SELF_UPDATE;
-            Data = new byte[16 + 12 + 4 + 12 + 12];
+            Data = new byte[16 + 12 + 4 + 12 + 12 + 1];
             Vector3 pos = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Position : Game.Player.Character.Position);
             float head = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Heading : Game.Player.Character.Heading);
             Vector3 vel = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Velocity : Game.Player.Character.Velocity);
@@ -38,6 +38,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
             BitConverter.GetBytes(rot.X).CopyTo(Data, 16 + 12 + 4 + 12);
             BitConverter.GetBytes(rot.Y).CopyTo(Data, 16 + 12 + 4 + 12 + 4);
             BitConverter.GetBytes(rot.Z).CopyTo(Data, 16 + 12 + 4 + 12 + 8);
+            Data[16 + 12 + 4 + 12 + 12] = (byte)((Game.Player.Character.IsRunning ? 1 : 0) | (Game.Player.Character.IsSprinting ? 2 : 0));
         }
     }
 }
