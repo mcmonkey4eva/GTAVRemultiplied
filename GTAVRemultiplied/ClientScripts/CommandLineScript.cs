@@ -11,6 +11,8 @@ using System.Windows.Forms;
 using GTAVRemultiplied;
 using GTAVRemultiplied.ServerSystem;
 using GTAVRemultiplied.ClientSystem;
+using System.Threading;
+using System.Globalization;
 
 /// <summary>
 /// Shows a command line for players to type into.
@@ -24,6 +26,9 @@ public class CommandLineScript : Script
 
     public CommandLineScript()
     {
+        Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
         KeyDown += CommandLineScript_KeyDown;
         Tick += CommandLineScript_Tick;
     }
