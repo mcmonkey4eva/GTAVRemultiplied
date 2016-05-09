@@ -172,5 +172,16 @@ namespace GTAVRemultiplied
                 return output.ToArray();
             }
         }
+
+        static bool allUnlocked = false;
+
+        public static void UnlockAllObjects()
+        {
+            if (allUnlocked)
+            {
+                return;
+            }
+            MemoryAccess.UnlockAllObjects();
+        }
     }
 }

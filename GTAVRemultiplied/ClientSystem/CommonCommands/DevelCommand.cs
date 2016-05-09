@@ -97,6 +97,12 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         YachtHelper.SpawnYacht(i, rand.Next(1, 3), rand.Next(100) > 50, lightOpts[rand.Next(lightOpts.Length)]);
                     }
                     break;
+                    // EG: quickProp prop_fan_palm_01a
+                case "quickProp":
+                    GTAVUtilities.UnlockAllObjects();
+                    int id = Function.Call<int>(Hash.GET_HASH_KEY, arg2.ToString());
+                    World.CreateProp(new Model(id), Game.Player.Character.Position, true, false);
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
