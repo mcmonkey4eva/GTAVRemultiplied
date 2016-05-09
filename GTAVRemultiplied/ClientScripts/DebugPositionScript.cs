@@ -10,7 +10,7 @@ using GTAVRemultiplied;
 
 /// <summary>
 /// Shows debug information indicating a player's world position on-screen.
-/// Toggled by command.
+/// Toggled by client command: "debugposition true/false"
 /// </summary>
 public class DebugPositionScript : Script
 {
@@ -44,7 +44,6 @@ public class DebugPositionScript : Script
     {
         try
         {
-            // TODO: Toggler command!
             if (Enabled)
             {
                 PX.Caption = "PosX: " + Game.Player.Character.Position.X;

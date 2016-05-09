@@ -21,27 +21,21 @@ using System.Globalization;
 /// </summary>
 public class CommandLineScript : Script
 {
-    UIRectangle BackRect = new UIRectangle(new Point(UI.WIDTH / 2 - 128, UI.HEIGHT / 2), new Size(512, 64), Color.Black);
-    UIText Rendered = new UIText("", new Point(UI.WIDTH / 2 - 128, UI.HEIGHT / 2), 0.5f, Color.White, GTA.Font.ChaletLondon, false);
-
     public CommandLineScript()
     {
         Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-        KeyDown += CommandLineScript_KeyDown;
         Tick += CommandLineScript_Tick;
     }
-
-    bool Visible = false;
-
+    
     bool Mode = false;
 
     bool WasDownLast = false;
 
     bool WasDownLast2 = false;
-
-    string cText = "";
+    
+    bool OSKVisible = false;
     
     public void RunCommand(string cmd)
     {
@@ -59,68 +53,46 @@ public class CommandLineScript : Script
             GTAVFrenetic.CommandSystem.ExecuteCommands(cmd, null);
         }
     }
-    
-    private void CommandLineScript_KeyDown(object sender, KeyEventArgs e)
-    {
-        if (!Visible)
-        {
-            return;
-        }
-        if (e.KeyCode == Keys.Escape)
-        {
-            Visible = false;
-            return;
-        }
-        if (e.KeyCode == Keys.Enter)
-        {
-            RunCommand(cText);
-            cText = "";
-            Visible = false;
-            return;
-        }
-        if (e.KeyCode == Keys.Back)
-        {
-            if (cText.Length > 0)
-            {
-                cText = cText.Substring(0, cText.Length - 1);
-            }
-            return;
-        }
-        char c = StringUtilities.GetCharFrom(e.KeyCode, e.Shift || Console.CapsLock);
-        if (c == '\0')
-        {
-            return;
-        }
-        cText += c;
-    }
 
+    private void OSK()
+    {
+        OSKVisible = true;
+        Function.Call(Hash.DISPLAY_ONSCREEN_KEYBOARD, 6, "FMMC_KEY_TIP8", "", "", "", "", "", 1024);
+    }
+    
     private void CommandLineScript_Tick(object sender, EventArgs e)
     {
         try
         {
+            if (OSKVisible)
+            {
+                int id = Function.Call<int>(Hash.UPDATE_ONSCREEN_KEYBOARD);
+                if (id == 2)
+                {
+                    OSKVisible = false;
+                }
+                else if (id == 1)
+                {
+                    OSKVisible = false;
+                    string res = Function.Call<string>(Hash.GET_ONSCREEN_KEYBOARD_RESULT);
+                    RunCommand(res);
+                }
+                return;
+            }
             bool p = Game.IsKeyPressed(Keys.Divide);
             if (p && !WasDownLast)
             {
-                cText = "";
-                Visible = !Visible;
+                OSK();
                 Mode = false;
             }
             WasDownLast = p;
             p = Game.IsKeyPressed(Keys.Multiply);
             if (p && GTAVFreneticServer.Enabled && !WasDownLast2)
             {
-                cText = "";
-                Visible = !Visible;
-                Mode = true;
+                OSK();
+                Mode = false;
             }
             WasDownLast2 = p;
-            if (Visible)
-            {
-                Game.DisableAllControlsThisFrame(2);
-                Rendered.Caption = cText;
-                BackRect.Draw();
-                Rendered.Draw();
-            }
         }
         catch (Exception ex)
         {
