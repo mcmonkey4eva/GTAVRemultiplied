@@ -11,7 +11,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         public SetIPLDataPacketOut()
         {
             ID = ServerToClientPacket.SET_IPL_DATA;
-            Data = GTAVUtilities.GetIPLData();
+            Data = GTAVUtilities.GZip(GTAVUtilities.GetIPLData());
         }
     }
 }

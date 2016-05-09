@@ -10,7 +10,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            GTAVUtilities.SetIPLData(data);
+            GTAVUtilities.SetIPLData(GTAVUtilities.UnGZip(data));
             return true;
         }
     }
