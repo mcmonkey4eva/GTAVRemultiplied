@@ -34,8 +34,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             else
             {
-                // TODO: SetModel later!
-                vehicle = World.CreateVehicle(VehicleHash.Kuruma, Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
+                vehicle = World.CreateVehicle(new Model(hash), Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
                 if (vehicle != null)
                 {
                     vehicle.IsPersistent = true;

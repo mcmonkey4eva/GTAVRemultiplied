@@ -29,6 +29,7 @@ public class ModelEnforcementScript : Script
             if (Game.Player.IsDead && WantedModel.HasValue && Game.Player.Character.Model == WantedModel.Value)
             {
                 SetModel(PedHash.Michael);
+                Wait(2000); // Give it time to respawn safely
                 return;
             }
             if (!Game.Player.IsDead && WantedModel.HasValue && WantedModel.Value != Game.Player.Character.Model)
