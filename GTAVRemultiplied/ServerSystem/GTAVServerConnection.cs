@@ -186,6 +186,14 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                 }
             }
+            if (DateTime.Now.Subtract(nextWorldUpdate).TotalMilliseconds > 1000)
+            {
+                nextWorldUpdate = DateTime.Now;
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    connection.SendPacket(new WorldStatusPacketOut());
+                }
+            }
         }
 
         bool pHadModel;
@@ -193,6 +201,8 @@ namespace GTAVRemultiplied.ServerSystem
         int pModel;
         
         DateTime nextVehicleUpdate = DateTime.Now;
+
+        DateTime nextWorldUpdate = DateTime.Now;
         
         public static HashSet<int> Vehicles = new HashSet<int>();
 

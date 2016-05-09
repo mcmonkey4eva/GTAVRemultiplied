@@ -138,6 +138,9 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.SET_IPL_DATA:
                                         pack = new SetIPLDataPacketIn();
                                         break;
+                                    case ServerToClientPacket.WORLD_STATUS:
+                                        pack = new WorldStatusPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {

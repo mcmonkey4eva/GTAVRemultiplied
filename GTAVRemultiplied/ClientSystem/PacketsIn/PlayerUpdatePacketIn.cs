@@ -51,7 +51,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 if (!ped.IsJumping)
                 {
-                    bool isRunning = (flags & 2) == 1;
+                    bool isRunning = (flags & 2) == 2;
                     bool isSprinting = (flags & 4) == 4;
                     float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
                     // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
