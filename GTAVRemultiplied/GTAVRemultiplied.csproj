@@ -43,6 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientSystem\PacketsIn\AddBlipPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddPedPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\EnterVehiclePacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\ExitVehiclePacketIn.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="ClientSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ClientSystem\PedInfo.cs" />
+    <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\RemovePedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\SetIPLDataPacketOut.cs" />

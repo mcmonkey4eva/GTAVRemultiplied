@@ -30,6 +30,7 @@ namespace GTAVRemultiplied
         ADD_PED = 9,
         REMOVE_PED = 10,
         SET_IPL_DATA = 11,
-        WORLD_STATUS = 12
+        WORLD_STATUS = 12,
+        ADD_BLIP = 13
     }
 }

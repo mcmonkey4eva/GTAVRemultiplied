@@ -103,18 +103,6 @@ namespace GTAVRemultiplied.ServerSystem
             HashSet<int> pids = new HashSet<int>(Characters.Keys);
             foreach (Ped ped in World.GetAllPeds())
             {
-                if (!Characters.ContainsKey(ped.Handle))
-                {
-                    Characters[ped.Handle] = new PedInfo();
-                    foreach (GTAVServerClientConnection connection in Connections)
-                    {
-                        if (connection.Character.Handle != ped.Handle)
-                        {
-                            connection.SendPacket(new AddPedPacketOut(ped));
-                        }
-                    }
-                }
-                pids.Remove(ped.Handle);
                 GTAVServerClientConnection owner = null;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
@@ -124,6 +112,22 @@ namespace GTAVRemultiplied.ServerSystem
                         break;
                     }
                 }
+                if (!Characters.ContainsKey(ped.Handle))
+                {
+                    Characters[ped.Handle] = new PedInfo();
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        if (connection.Character.Handle != ped.Handle)
+                        {
+                            connection.SendPacket(new AddPedPacketOut(ped));
+                            if (owner != null)
+                            {
+                                connection.SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
+                            }
+                        }
+                    }
+                }
+                pids.Remove(ped.Handle);
                 PedInfo character = Characters[ped.Handle];
                 foreach (GTAVServerClientConnection connection in Connections)
                 {

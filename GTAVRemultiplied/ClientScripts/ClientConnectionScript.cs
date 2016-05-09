@@ -141,6 +141,9 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.WORLD_STATUS:
                                         pack = new WorldStatusPacketIn();
                                         break;
+                                    case ServerToClientPacket.ADD_BLIP:
+                                        pack = new AddBlipPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {

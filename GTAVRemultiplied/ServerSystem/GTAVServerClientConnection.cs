@@ -30,6 +30,9 @@ namespace GTAVRemultiplied.ServerSystem
         public void SpawnCharacter()
         {
             Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
+            Blip blip = Character.AddBlip();
+            blip.Sprite = BlipSprite.Standard;
+            blip.Color = BlipColor.Blue;
             Character.IsPersistent = true;
             Character.IsInvincible = true;
             Character.IsFireProof = true;
@@ -46,10 +49,25 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
             }
-            foreach (int ped in GTAVServerConnection.Characters.Keys)
+            foreach (int id in GTAVServerConnection.Characters.Keys)
             {
-                SendPacket(new AddPedPacketOut(new Ped(ped)));
+                Ped ped = new Ped(id);
+                GTAVServerClientConnection owner = null;
+                foreach (GTAVServerClientConnection connection in GTAVFreneticServer.Connections.Connections)
+                {
+                    if (connection.Character.Handle == ped.Handle)
+                    {
+                        owner = connection;
+                        break;
+                    }
+                }
+                SendPacket(new AddPedPacketOut(ped));
+                if (owner != null)
+                {
+                    SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
+                }
             }
+            SendPacket(new AddBlipPacketOut(Game.Player.Character, BlipSprite.Standard, BlipColor.Blue));
             SendPacket(new SetIPLDataPacketOut());
             SendPacket(new WorldStatusPacketOut());
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
