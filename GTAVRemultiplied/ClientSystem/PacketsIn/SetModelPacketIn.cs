@@ -26,7 +26,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             ped = World.CreatePed(mod, pos, heading);
             if (ped != null)
             {
-                int serverPed = ClientConnectionScript.ServerToClientPed[hand];
+                int serverPed = ClientConnectionScript.ClientToServerPed[hand];
                 ClientConnectionScript.ServerToClientPed.Remove(serverPed);
                 ClientConnectionScript.ServerPedKnownPosition.Remove(serverPed);
                 ClientConnectionScript.ClientToServerPed.Remove(hand);
