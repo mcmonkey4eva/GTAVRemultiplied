@@ -28,16 +28,21 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 int serverPed = ClientConnectionScript.ClientToServerPed[hand];
                 ClientConnectionScript.ServerToClientPed.Remove(serverPed);
-                ClientConnectionScript.ServerPedKnownPosition.Remove(serverPed);
                 ClientConnectionScript.ClientToServerPed.Remove(hand);
                 ClientConnectionScript.ServerToClientPed[serverPed] = ped.Handle;
                 ClientConnectionScript.ClientToServerPed[ped.Handle] = serverPed;
-                ClientConnectionScript.ServerPedKnownPosition[serverPed] = new PedInfo();
                 ped.IsPersistent = true;
                 ped.IsInvincible = true;
                 ped.BlockPermanentEvents = true;
                 ped.Task.ClearAllImmediately();
                 ped.SetDefaultClothes();
+                PedInfo pinfo = ClientConnectionScript.ServerPedKnownPosition[serverPed];
+                if (pinfo.hasBlip)
+                {
+                    Blip blip = ped.AddBlip();
+                    blip.Sprite = pinfo.blipSprite;
+                    blip.Color = pinfo.blipColor;
+                }
             }
             else
             {

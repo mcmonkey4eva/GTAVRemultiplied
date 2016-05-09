@@ -22,6 +22,10 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             Blip blip = ped.AddBlip();
             blip.Sprite = sprite;
             blip.Color = color;
+            PedInfo pinfo = ClientConnectionScript.ServerPedKnownPosition[serverPed];
+            pinfo.hasBlip = true;
+            pinfo.blipSprite = sprite;
+            pinfo.blipColor = color;
             return true;
         }
     }

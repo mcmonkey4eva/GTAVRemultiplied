@@ -27,12 +27,19 @@ namespace GTAVRemultiplied.ServerSystem
 
         public Vector3 Aim = Vector3.Zero;
 
+        public Blip blip;
+
+        public void AddBlip()
+        {
+            blip = Character.AddBlip();
+            blip.Sprite = BlipSprite.Standard;
+            blip.Color = BlipColor.Blue;
+        }
+
         public void SpawnCharacter()
         {
             Character = World.CreatePed(CharacterModel, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 2);
-            Blip blip = Character.AddBlip();
-            blip.Sprite = BlipSprite.Standard;
-            blip.Color = BlipColor.Blue;
+            AddBlip();
             Character.IsPersistent = true;
             Character.IsInvincible = true;
             Character.IsFireProof = true;

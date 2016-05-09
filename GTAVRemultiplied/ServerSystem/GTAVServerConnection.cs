@@ -122,7 +122,7 @@ namespace GTAVRemultiplied.ServerSystem
                             connection.SendPacket(new AddPedPacketOut(ped));
                             if (owner != null)
                             {
-                                connection.SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
+                                connection.SendPacket(new AddBlipPacketOut(ped, owner.blip.Sprite, owner.blip.Color));
                             }
                         }
                     }
