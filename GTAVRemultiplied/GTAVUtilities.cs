@@ -181,6 +181,7 @@ namespace GTAVRemultiplied
             {
                 return;
             }
+            allUnlocked = true;
             MemoryAccess.UnlockAllObjects();
         }
     }
