@@ -213,7 +213,7 @@ public class ClientConnectionScript : Script
                             ped.Delete();
                         }
                     }
-                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle();
+                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.IsControlPressed(2, Control.VehicleExit);
                     if (isInVehicle && !wasInVehicle)
                     {
                         SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
