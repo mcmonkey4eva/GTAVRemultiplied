@@ -54,12 +54,6 @@ namespace GTAVRemultiplied.ServerSystem
                 }
             }
             HashSet<int> ids = new HashSet<int>(Vehicles);
-            // TODO: Network vehicle updates more cleverly.
-            bool needsVehUpdate = DateTime.Now.Subtract(nextVehicleUpdate).TotalMilliseconds > 100;
-            if (needsVehUpdate)
-            {
-                nextVehicleUpdate = DateTime.Now;
-            }
             foreach (Vehicle vehicle in World.GetAllVehicles())
             {
                 if (Vehicles.Add(vehicle.Handle))
@@ -70,12 +64,9 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                 }
                 ids.Remove(vehicle.Handle);
-                if (needsVehUpdate)
+                foreach (GTAVServerClientConnection connection in Connections)
                 {
-                    foreach (GTAVServerClientConnection connection in Connections)
-                    {
-                        connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
-                    }
+                    connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
                 }
             }
             foreach (int id in ids)
@@ -185,7 +176,7 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                 }
             }
-            if (DateTime.Now.Subtract(nextWorldUpdate).TotalMilliseconds > 1000)
+            if (DateTime.Now.Subtract(nextWorldUpdate).TotalMilliseconds > 500)
             {
                 nextWorldUpdate = DateTime.Now;
                 foreach (GTAVServerClientConnection connection in Connections)
@@ -199,8 +190,6 @@ namespace GTAVRemultiplied.ServerSystem
 
         int pModel;
         
-        DateTime nextVehicleUpdate = DateTime.Now;
-
         DateTime nextWorldUpdate = DateTime.Now;
         
         public static HashSet<int> Vehicles = new HashSet<int>();
