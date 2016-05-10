@@ -28,7 +28,9 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(character.Velocity.Y).CopyTo(Data, 16 + 12 + 4 + 4);
             BitConverter.GetBytes(character.Velocity.Z).CopyTo(Data, 16 + 12 + 4 + 8);
             BitConverter.GetBytes(character.Handle).CopyTo(Data, 16 + 12 + 4 + 12);
-            Data[16 + 12 + 4 + 12 + 4] = (byte)((character.IsDead ? 1 : 0) | (character.IsRunning ? 2 : 0) | (character.IsSprinting ? 4 : 0));
+            Data[16 + 12 + 4 + 12 + 4] = (byte)((character.IsDead ? PedFlags.DEAD : 0)
+                | (character.IsRunning ? PedFlags.RUNNING : 0)
+                | (character.IsSprinting ? PedFlags.SPRINTING : 0));
         }
     }
 }

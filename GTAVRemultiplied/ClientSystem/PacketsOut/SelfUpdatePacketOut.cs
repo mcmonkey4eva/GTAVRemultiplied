@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using FreneticScript;
+using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsOut
 {
@@ -38,7 +39,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
             BitConverter.GetBytes(rot.X).CopyTo(Data, 16 + 12 + 4 + 12);
             BitConverter.GetBytes(rot.Y).CopyTo(Data, 16 + 12 + 4 + 12 + 4);
             BitConverter.GetBytes(rot.Z).CopyTo(Data, 16 + 12 + 4 + 12 + 8);
-            Data[16 + 12 + 4 + 12 + 12] = (byte)((Game.Player.Character.IsRunning ? 1 : 0) | (Game.Player.Character.IsSprinting ? 2 : 0));
+            Data[16 + 12 + 4 + 12 + 12] = (byte)((Game.Player.Character.IsRunning ? PedFlags.RUNNING : 0)
+                | (Game.Player.Character.IsSprinting ? PedFlags.SPRINTING : 0));
         }
     }
 }

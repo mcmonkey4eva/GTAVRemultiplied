@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
@@ -31,7 +32,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             aim.Y = BitConverter.ToSingle(data, 16 + 4);
             aim.Z = BitConverter.ToSingle(data, 16 + 8);
             WeaponHash weap = (WeaponHash)BitConverter.ToUInt32(data, 16 + 12);
-            byte flags = data[16 + 12 + 4 + 12 + 4];
+            PedFlags flags = (PedFlags)data[16 + 12 + 4 + 12 + 4];
             if (dist > 10f)
             {
                 if (aim.LengthSquared() > 0.1)
@@ -51,8 +52,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 if (!ped.IsJumping)
                 {
-                    bool isRunning = (flags & 2) == 2;
-                    bool isSprinting = (flags & 4) == 4;
+                    bool isRunning = flags.HasFlag(PedFlags.RUNNING);
+                    bool isSprinting = flags.HasFlag(PedFlags.SPRINTING);
                     float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
                     // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
                     Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped.Handle, vec.X, vec.Y, vec.Z, speed, -1, 0.0f, 0.0f);
@@ -74,7 +75,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
             vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
             ped.Velocity = vel;
-            bool isDead = (flags & 1) == 1;
+            bool isDead = flags.HasFlag(PedFlags.DEAD);
             if (isDead && !ped.IsDead)
             {
                 ped.IsInvincible = false;

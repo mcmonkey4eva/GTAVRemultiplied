@@ -37,7 +37,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             aim.Z = BitConverter.ToSingle(data, 16 + 8);
             client.Aim = aim;
             WeaponHash weap = (WeaponHash)BitConverter.ToUInt32(data, 16 + 12);
-            byte flags = data[16 + 12 + 4 + 12 + 12];
+            PedFlags flags = (PedFlags)data[16 + 12 + 4 + 12 + 12];
             if (dist > 10f)
             {
                 if (aim.LengthSquared() > 0.1)
@@ -57,8 +57,8 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             {
                 if (!client.Character.IsJumping)
                 {
-                    bool isRunning = (flags & 1) == 1;
-                    bool isSprinting = (flags & 2) == 2;
+                    bool isRunning = flags.HasFlag(PedFlags.RUNNING);
+                    bool isSprinting = flags.HasFlag(PedFlags.SPRINTING);
                     float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
                     // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
                     Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, client.Character.Handle, vec.X, vec.Y, vec.Z, speed, -1, 0.0f, 0.0f);
