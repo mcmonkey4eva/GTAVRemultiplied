@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using FreneticScript;
-using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsOut
 {

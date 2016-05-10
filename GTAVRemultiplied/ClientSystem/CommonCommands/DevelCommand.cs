@@ -103,6 +103,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     int id = Function.Call<int>(Hash.GET_HASH_KEY, arg2.ToString());
                     World.CreateProp(new Model(id), Game.Player.Character.Position, true, false);
                     break;
+                case "ragdoll":
+                    Function.Call(Hash.SET_PED_TO_RAGDOLL, Game.Player.Character.Handle, 4000, 5000, 1, 1, 1, 0);
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;

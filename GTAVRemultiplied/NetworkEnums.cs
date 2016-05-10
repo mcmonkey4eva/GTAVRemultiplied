@@ -33,4 +33,12 @@ namespace GTAVRemultiplied
         WORLD_STATUS = 12,
         ADD_BLIP = 13
     }
+
+    public enum PedFlags
+    {
+        DEAD = 1,
+        RUNNING = 2,
+        SPRINTING = 4,
+        JACKING = 8
+    }
 }

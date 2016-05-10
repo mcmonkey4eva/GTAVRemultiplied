@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
-using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {

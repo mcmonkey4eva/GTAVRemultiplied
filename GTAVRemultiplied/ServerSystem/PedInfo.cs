@@ -17,12 +17,4 @@ namespace GTAVRemultiplied.ServerSystem
         public WeaponHash weap = WeaponHash.Unarmed;
         public DateTime nextVehicleReminder = DateTime.Now;
     }
-    
-    public enum PedFlags
-    {
-        DEAD = 1,
-        RUNNING = 2,
-        SPRINTING = 4,
-        JACKING = 8
-    }
 }
