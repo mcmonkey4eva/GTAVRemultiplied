@@ -13,7 +13,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 4 + 4 + 12 + 4)
+            int ind = 4 + 4 + 12 + 4 + 8 + 2 + 4;
+            if (data.Length != ind + 5)
             {
                 return false;
             }
@@ -25,28 +26,32 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
             Vehicle vehicle = World.CreateVehicle(new Model(hash), pos, heading);
-            if (vehicle != null)
-            {
-                vehicle.IsPersistent = true;
-                vehicle.IsInvincible = true;
-                ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
-                ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
-            }
-            else
+            if (vehicle == null)
             {
                 vehicle = World.CreateVehicle(new Model(hash), Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
-                if (vehicle != null)
-                {
-                    vehicle.IsPersistent = true;
-                    vehicle.IsInvincible = true;
-                    ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
-                    ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
-                }
-                else
+                if (vehicle == null)
                 {
                     Log.Message("Warning", "Null vehicle spawned: " + hash, 'Y');
+                    return true;
                 }
             }
+            vehicle.IsPersistent = true;
+            vehicle.IsInvincible = true;
+            string numPlate = "";
+            for (int i = 0; i < 8; i++)
+            {
+                numPlate += (char)data[4 + 4 + 12 + 4 + i];
+            }
+            vehicle.NumberPlate = numPlate.Trim();
+            vehicle.NumberPlateType = (NumberPlateType)data[4 + 4 + 12 + 4 + 8];
+            vehicle.ColorCombination = BitConverter.ToInt32(data, 4 + 4 + 12 + 4 + 8 + 2);
+            vehicle.PrimaryColor = (VehicleColor)data[ind];
+            vehicle.SecondaryColor = (VehicleColor)data[ind + 1];
+            vehicle.PearlescentColor = (VehicleColor)data[ind + 2];
+            vehicle.TrimColor = (VehicleColor)data[ind + 3];
+            vehicle.RimColor = (VehicleColor)data[ind + 4];
+            ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
+            ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
             return true;
         }
     }

@@ -12,7 +12,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 4 + 12 + 12 + 12 + 1 + 12 + 4)
+            int ind = 4 + 12 + 12 + 12 + 1 + 12 + 4;
+            if (data.Length != ind + 4)
             {
                 return false;
             }
@@ -36,6 +37,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             rot.W = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 12);
             byte flags = data[4 + 12 + 12 + 12];
             bool isDead = (flags & 1) == 1;
+            float speed = BitConverter.ToSingle(data, ind);
             int veh;
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
             {
@@ -46,6 +48,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     vehicle.PositionNoOffset = pos;
                     vehicle.Velocity = vel;
                     vehicle.Quaternion = rot;
+                    vehicle.Speed = speed;
+                    // TODO: Find a way to set steering angle? Perhaps use driver AI magic?
                     GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                 }
                 if (isDead && !vehicle.IsDead)
