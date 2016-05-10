@@ -34,11 +34,11 @@ namespace GTAVRemultiplied
         ADD_BLIP = 13
     }
 
+    [Flags]
     public enum PedFlags
     {
         DEAD = 1,
         RUNNING = 2,
-        SPRINTING = 4,
-        JACKING = 8
+        SPRINTING = 4
     }
 }

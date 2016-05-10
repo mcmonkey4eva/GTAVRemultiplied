@@ -129,54 +129,49 @@ namespace GTAVRemultiplied.ServerSystem
                 }
                 pids.Remove(ped.Handle);
                 PedInfo character = Characters[ped.Handle];
+                WeaponHash cweap = ped.Weapons.Current.Hash;
+                int cammo = ped.Weapons.Current.AmmoInClip;
+                bool tjump = Game.Player.Character.IsJumping;
+                bool isInVehicle = ped.IsSittingInVehicle();
+                bool vehRem = isInVehicle && (!character.wasInVehicle || DateTime.Now.Subtract(character.nextVehicleReminder).TotalSeconds > 1.0);
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
                     if (connection.Character.Handle != ped.Handle)
                     {
                         connection.SendPacket(new PlayerUpdatePacketOut(ped,
                             (ped.Handle == Game.Player.Character.Handle && Game.Player.IsAiming) ? GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
-                        WeaponHash cweap = ped.Weapons.Current.Hash;
-                        int cammo = ped.Weapons.Current.AmmoInClip;
-                        if (cweap != character.weap)
+                        if (cweap == character.weap && character.ammo > cammo)
                         {
-                            character.weap = cweap;
-                        }
-                        else
-                        {
-                            if (character.ammo > cammo)
-                            {
-                                for (int i = 0; i < Connections.Count; i++)
-                                {
-                                    Connections[i].SendPacket(new FiredShotPacketOut(ped,
-                                        (ped.Handle == Game.Player.Character.Handle) ? GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
-                                }
-                            }
+                            connection.SendPacket(new FiredShotPacketOut(ped,
+                                (ped.Handle == Game.Player.Character.Handle) ? GameplayCamera.Direction : ((owner == null) ? ped.ForwardVector : owner.lastShotAim)));
                             // TODO: Reload, etc.
                             // TODO: Sticky bombs, etc. No ammo clip!
                             // Also, sticky bomb remote detonation.
                         }
-                        character.ammo = cammo;
-                        bool tjump = Game.Player.Character.IsJumping;
                         if (tjump && !character.pjump)
                         {
-                            for (int i = 0; i < Connections.Count; i++)
-                            {
-                                Connections[i].SendPacket(new JumpPacketOut(ped));
-                            }
+                            connection.SendPacket(new JumpPacketOut(ped));
                         }
-                        character.pjump = tjump;
-                        bool isInVehicle = ped.IsSittingInVehicle();
-                        if (isInVehicle && (!character.wasInVehicle || DateTime.Now.Subtract(character.nextVehicleReminder).TotalSeconds > 1.0))
+                        if (vehRem)
                         {
-                            character.nextVehicleReminder = DateTime.Now;
                             connection.SendPacket(new EnterVehiclePacketOut(ped, ped.CurrentVehicle, ped.SeatIndex));
                         }
                         else if (!isInVehicle && character.wasInVehicle)
                         {
                             connection.SendPacket(new ExitVehiclePacketOut(ped));
                         }
-                        character.wasInVehicle = isInVehicle;
                     }
+                }
+                if (cweap == character.weap)
+                {
+                    character.weap = cweap;
+                }
+                character.ammo = cammo;
+                character.pjump = tjump;
+                character.wasInVehicle = isInVehicle;
+                if (vehRem)
+                {
+                    character.nextVehicleReminder = DateTime.Now;
                 }
             }
             foreach (int id in pids)

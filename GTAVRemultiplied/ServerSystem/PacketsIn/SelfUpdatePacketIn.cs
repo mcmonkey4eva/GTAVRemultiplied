@@ -40,11 +40,11 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             PedFlags flags = (PedFlags)data[16 + 12 + 4 + 12 + 12];
             if (dist > 10f)
             {
+                client.Character.PositionNoOffset = vec;
                 if (aim.LengthSquared() > 0.1)
                 {
                     client.Character.Task.AimAt(client.Character.Position + aim * 50, 1000);
                 }
-                client.Character.PositionNoOffset = vec;
             }
             else if (dist < 0.25f)
             {

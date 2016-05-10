@@ -27,6 +27,8 @@ namespace GTAVRemultiplied.ServerSystem
 
         public Vector3 Aim = Vector3.Zero;
 
+        public Vector3 lastShotAim = Vector3.Zero;
+
         public Blip blip;
 
         public void AddBlip()
