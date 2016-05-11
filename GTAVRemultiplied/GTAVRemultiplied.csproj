@@ -43,6 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientSystem\NetworkCommands\StopServerCommand.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddBlipPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddPedPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\EnterVehiclePacketIn.cs" />

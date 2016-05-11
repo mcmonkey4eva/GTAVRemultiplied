@@ -51,6 +51,7 @@ namespace GTAVRemultiplied.ServerSystem
                 return;
             }
             Enabled = false;
+            Connections.Listener.Stop();
         }
 
         public static ushort CurrentPort = 28010;

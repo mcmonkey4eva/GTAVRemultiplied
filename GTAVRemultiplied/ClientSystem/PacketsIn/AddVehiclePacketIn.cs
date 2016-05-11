@@ -42,7 +42,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 numPlate += (char)data[4 + 4 + 12 + 4 + i];
             }
-            vehicle.NumberPlate = numPlate.Trim();
+            //vehicle.NumberPlate = numPlate.Trim();
             vehicle.NumberPlateType = (NumberPlateType)data[4 + 4 + 12 + 4 + 8];
             vehicle.ColorCombination = BitConverter.ToInt32(data, 4 + 4 + 12 + 4 + 8 + 2);
             vehicle.PrimaryColor = (VehicleColor)data[ind];

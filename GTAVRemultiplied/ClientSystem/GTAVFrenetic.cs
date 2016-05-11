@@ -48,6 +48,7 @@ namespace GTAVRemultiplied.ClientSystem
             // Network Commands
             CommandSystem.RegisterCommand(new ConnectCommand());
             CommandSystem.RegisterCommand(new StartServerCommand());
+            CommandSystem.RegisterCommand(new StopServerCommand());
             // Wrap up
             CommandSystem.PostInit();
             AutorunScripts();
