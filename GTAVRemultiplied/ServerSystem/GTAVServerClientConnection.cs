@@ -133,7 +133,7 @@ namespace GTAVRemultiplied.ServerSystem
             }
             Vector3 rel = lGoal - lPos;
             float rlen = rel.Length();
-            if (rlen > 0 && speed > 0)
+            if (rlen > 0.01f && speed > 0.01f)
             {
                 rel /= rlen;
                 if (speed * GTAVFreneticServer.cDelta > rlen || rlen > 10)
@@ -152,6 +152,8 @@ namespace GTAVRemultiplied.ServerSystem
             else
             {
                 StopMove();
+                lPos = lGoal;
+                Character.PositionNoOffset = lGoal;
             }
             while (Sock.Available > 0 && count < known.Length)
             {
