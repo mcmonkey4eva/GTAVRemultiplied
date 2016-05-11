@@ -41,6 +41,10 @@ public class ClientConnectionScript : Script
 
     public static Dictionary<int, PedInfo> ServerPedKnownPosition = new Dictionary<int, PedInfo>();
 
+    public static Dictionary<int, int> ServerToClientProp = new Dictionary<int, int>();
+
+    public static Dictionary<int, int> ClientToServerProp = new Dictionary<int, int>();
+
     bool dlcEnabled = false;
 
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
@@ -144,6 +148,15 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.ADD_BLIP:
                                         pack = new AddBlipPacketIn();
                                         break;
+                                    case ServerToClientPacket.ADD_PROP:
+                                        pack = new AddPropPacketIn();
+                                        break;
+                                    case ServerToClientPacket.REMOVE_PROP:
+                                        pack = new RemovePropPacketIn();
+                                        break;
+                                    case ServerToClientPacket.UPDATE_PROP:
+                                        pack = new UpdatePropPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -199,6 +212,13 @@ public class ClientConnectionScript : Script
                         SendPacket(new JumpPacketOut());
                     }
                     pjump = tjump;
+                    /*foreach (Prop prop in World.GetAllProps())
+                    {
+                        if (!ClientToServerProp.ContainsKey(prop.Handle))
+                        {
+                            prop.Delete();
+                        }
+                    }*/
                     foreach (Vehicle vehicle in World.GetAllVehicles())
                     {
                         if (!ClientToServerVehicle.ContainsKey(vehicle.Handle))
@@ -293,6 +313,8 @@ public class ClientConnectionScript : Script
             Connected = false;
             // TODO: Reasonably choose between ipv4 and ipv6.
             Connection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            Connection.SendBufferSize = 1024 * 1024;
+            Connection.ReceiveBufferSize = 1024 * 1024;
             Connection.BeginConnect(ip, port, (a) =>
             {
                 try

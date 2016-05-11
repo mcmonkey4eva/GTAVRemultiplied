@@ -31,7 +31,10 @@ namespace GTAVRemultiplied
         REMOVE_PED = 10,
         SET_IPL_DATA = 11,
         WORLD_STATUS = 12,
-        ADD_BLIP = 13
+        ADD_BLIP = 13,
+        ADD_PROP = 14,
+        REMOVE_PROP = 15,
+        UPDATE_PROP = 16
     }
 
     [Flags]

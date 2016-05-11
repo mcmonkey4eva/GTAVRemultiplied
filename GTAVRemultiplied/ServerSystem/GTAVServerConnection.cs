@@ -77,6 +77,39 @@ namespace GTAVRemultiplied.ServerSystem
                     connection.SendPacket(new RemoveVehiclePacketOut(id));
                 }
             }
+            /*HashSet<int> propids = new HashSet<int>(Props);
+            deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
+            foreach (Prop prop in World.GetAllProps())
+            {
+                if (Props.Add(prop.Handle))
+                {
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        connection.SendPacket(new AddPropPacketOut(prop));
+                    }
+                }
+                propids.Remove(prop.Handle);
+                if (deltaTilPropUpdate < 0)
+                {
+                    // TODO: Don't update if it hasn't moved!
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        connection.SendPacket(new UpdatePropPacketOut(prop));
+                    }
+                }
+            }
+            if (deltaTilPropUpdate < 0)
+            {
+                deltaTilPropUpdate = 100;
+            }
+            foreach (int id in propids)
+            {
+                Props.Remove(id);
+                foreach (GTAVServerClientConnection connection in Connections)
+                {
+                    connection.SendPacket(new RemovePropPacketOut(id));
+                }
+            }*/
             bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
             if (hasModel)
             {
@@ -173,9 +206,10 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                 }
             }
-            if (DateTime.Now.Subtract(nextWorldUpdate).TotalMilliseconds > 500)
+            deltaTilWorldUpdate -= GTAVFreneticServer.cDelta;
+            if (deltaTilWorldUpdate < 0)
             {
-                nextWorldUpdate = DateTime.Now;
+                deltaTilWorldUpdate = 500;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
                     connection.SendPacket(new WorldStatusPacketOut());
@@ -186,10 +220,13 @@ namespace GTAVRemultiplied.ServerSystem
         bool pHadModel;
 
         int pModel;
-        
-        DateTime nextWorldUpdate = DateTime.Now;
+
+        //float deltaTilPropUpdate = 0;
+        float deltaTilWorldUpdate = 0;
         
         public static HashSet<int> Vehicles = new HashSet<int>();
+
+        public static HashSet<int> Props = new HashSet<int>();
 
         public static Dictionary<int, PedInfo> Characters = new Dictionary<int, PedInfo>();
 
