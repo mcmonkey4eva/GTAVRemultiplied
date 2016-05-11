@@ -25,37 +25,24 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
             Ped ped = World.CreatePed(new Model(hash), pos, heading);
-            if (ped != null)
+            if (ped == null)
             {
-                ped.IsPersistent = true;
-                ped.IsInvincible = true;
-                ped.BlockPermanentEvents = true;
-                ped.Task.ClearAllImmediately();
-                ped.SetDefaultClothes();
-                ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
-                ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
-                ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
-            }
-            else
-            {
-                // TODO: SetModel later!
-                ped = World.CreatePed(PedHash.DeadHooker, Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
-                if (ped != null)
-                {
-                    ped.IsPersistent = true;
-                    ped.IsInvincible = true;
-                    ped.BlockPermanentEvents = true;
-                    ped.Task.ClearAllImmediately();
-                    ped.SetDefaultClothes();
-                    ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
-                    ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
-                    ClientConnectionScript.ServerPedKnownPosition[id] = new PedInfo();
-                }
-                else
+                ped = World.CreatePed(new Model(hash), Game.Player.Character.Position + new Vector3(10, 10, 10), heading);
+                if (ped == null)
                 {
                     Log.Error("Null character spawned: " + hash + ", " + id + ", " + pos);
+                    return true;
                 }
             }
+            ped.IsPersistent = true;
+            ped.IsInvincible = true;
+            ped.BlockPermanentEvents = true;
+            ped.Task.ClearAllImmediately();
+            ped.SetDefaultClothes();
+            ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
+            ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
+            PedInfo pinf = new PedInfo();
+            ClientConnectionScript.ServerPedKnownPosition[id] = pinf;
             return true;
         }
     }

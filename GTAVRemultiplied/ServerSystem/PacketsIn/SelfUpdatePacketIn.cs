@@ -61,7 +61,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
                     bool isSprinting = flags.HasFlag(PedFlags.SPRINTING);
                     float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
                     // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
-                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, client.Character.Handle, vec.X, vec.Y, vec.Z, speed, -1, 0.0f, 0.0f);
+                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, client.Character.Handle, vec.X, vec.Y, vec.Z, speed, -1, 40000f, 0.5f);
                 }
                 if (aim.LengthSquared() > 0.1)
                 {

@@ -21,10 +21,7 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
             Description = "Stops a locally running server.";
             MinimumArguments = 0;
             MaximumArguments = 0;
-            ObjectTypes = new List<Func<TemplateObject, TemplateObject>>()
-            {
-                IntegerTag.TryFor
-            };
+            ObjectTypes = new List<Func<TemplateObject, TemplateObject>>();
         }
 
         public override void Execute(CommandQueue queue, CommandEntry entry)

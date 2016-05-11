@@ -23,7 +23,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vec.X = BitConverter.ToSingle(data, 0);
             vec.Y = BitConverter.ToSingle(data, 4);
             vec.Z = BitConverter.ToSingle(data, 8);
-            ClientConnectionScript.ServerPedKnownPosition[serverPed].WorldPos = vec;
+            PedInfo pinf = ClientConnectionScript.ServerPedKnownPosition[serverPed];
+            pinf.WorldPos = vec;
             ped.Heading = BitConverter.ToSingle(data, 12);
             float dist = vec.DistanceToSquared2D(ped.Position);
             Vector3 aim = new Vector3();
@@ -55,7 +56,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     bool isSprinting = flags.HasFlag(PedFlags.SPRINTING);
                     float speed = isSprinting ? 5.0f : isRunning ? 4.0f : 1.0f;
                     // void TASK_GO_STRAIGHT_TO_COORD(Ped ped, float x, float y, float z, float speed, int timeout, float targetHeading, float distanceToSlide)
-                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped.Handle, vec.X, vec.Y, vec.Z, speed, -1, 0.0f, 0.0f);
+                    Function.Call(Hash.TASK_GO_STRAIGHT_TO_COORD, ped.Handle, vec.X, vec.Y, vec.Z, speed, -1, 40000f, 0.5f);
+
                 }
                 if (aim.LengthSquared() > 0.1)
                 {

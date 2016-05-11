@@ -111,7 +111,7 @@ namespace GTAVRemultiplied.ServerSystem
                         if (connection.Character.Handle != ped.Handle)
                         {
                             connection.SendPacket(new AddPedPacketOut(ped));
-                            if (owner != null)
+                            if (owner != null || Game.Player.Character.Handle == ped.Handle)
                             {
                                 connection.SendPacket(new AddBlipPacketOut(ped, owner.blip.Sprite, owner.blip.Color));
                             }
@@ -153,10 +153,7 @@ namespace GTAVRemultiplied.ServerSystem
                         }
                     }
                 }
-                if (cweap == character.weap)
-                {
-                    character.weap = cweap;
-                }
+                character.weap = cweap;
                 character.ammo = cammo;
                 character.pjump = tjump;
                 character.wasInVehicle = isInVehicle;

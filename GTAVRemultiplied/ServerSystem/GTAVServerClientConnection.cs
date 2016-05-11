@@ -76,7 +76,6 @@ namespace GTAVRemultiplied.ServerSystem
                     SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
                 }
             }
-            SendPacket(new AddBlipPacketOut(Game.Player.Character, BlipSprite.Standard, BlipColor.Blue));
             SendPacket(new SetIPLDataPacketOut());
             SendPacket(new WorldStatusPacketOut());
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
