@@ -212,13 +212,13 @@ public class ClientConnectionScript : Script
                         SendPacket(new JumpPacketOut());
                     }
                     pjump = tjump;
-                    /*foreach (Prop prop in World.GetAllProps())
+                    foreach (Prop prop in World.GetAllProps())
                     {
                         if (!ClientToServerProp.ContainsKey(prop.Handle))
                         {
                             prop.Delete();
                         }
-                    }*/
+                    }
                     foreach (Vehicle vehicle in World.GetAllVehicles())
                     {
                         if (!ClientToServerVehicle.ContainsKey(vehicle.Handle))

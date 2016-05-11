@@ -77,7 +77,7 @@ namespace GTAVRemultiplied.ServerSystem
                     connection.SendPacket(new RemoveVehiclePacketOut(id));
                 }
             }
-            /*HashSet<int> propids = new HashSet<int>(Props);
+            HashSet<int> propids = new HashSet<int>(Props);
             deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
             foreach (Prop prop in World.GetAllProps())
             {
@@ -109,7 +109,7 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     connection.SendPacket(new RemovePropPacketOut(id));
                 }
-            }*/
+            }
             bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
             if (hasModel)
             {
@@ -221,7 +221,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         int pModel;
 
-        //float deltaTilPropUpdate = 0;
+        float deltaTilPropUpdate = 0;
         float deltaTilWorldUpdate = 0;
         
         public static HashSet<int> Vehicles = new HashSet<int>();

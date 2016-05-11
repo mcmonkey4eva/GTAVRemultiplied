@@ -24,16 +24,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pos.Y = BitConverter.ToSingle(data, 4 + 4 + 4);
             pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
-            Prop prop = World.CreateProp(new Model(hash), pos, new Vector3(0, 0, heading), false, false);
-            if (prop == null)
+            if (!Function.Call<bool>(Hash.IS_MODEL_VALID, hash))
             {
-                prop = World.CreateProp(new Model(hash), Game.Player.Character.Position + new Vector3(10, 10, 10), new Vector3(0, 0, heading), false, false);
-                if (prop == null)
-                {
-                    Log.Message("Warning", "Null prop spawned: " + hash, 'Y');
-                    return true;
-                }
+                Log.Message("Warning", "Tried to create invalid prop: " + hash, 'Y');
             }
+            Function.Call(Hash.REQUEST_MODEL, hash);
+            Prop prop = new Prop(Function.Call<int>(Hash.CREATE_OBJECT, hash, pos.X, pos.Y, pos.Z, 1, 1, false));
             prop.IsPersistent = true;
             prop.IsInvincible = true;
             prop.FreezePosition = true; //(data[4 + 4 + 12 + 4] & 1) == 1;

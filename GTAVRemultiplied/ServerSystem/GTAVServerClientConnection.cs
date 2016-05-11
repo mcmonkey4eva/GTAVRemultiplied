@@ -65,10 +65,10 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
             }
-            /*foreach (int prop in GTAVServerConnection.Props)
+            foreach (int prop in GTAVServerConnection.Props)
             {
                 SendPacket(new AddPropPacketOut(new Prop(prop)));
-            }*/
+            }
             foreach (int id in GTAVServerConnection.Characters.Keys)
             {
                 Ped ped = new Ped(id);
