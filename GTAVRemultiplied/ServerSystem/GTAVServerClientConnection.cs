@@ -31,6 +31,12 @@ namespace GTAVRemultiplied.ServerSystem
 
         public Blip blip;
 
+        public Vector3 lPos = Vector3.Zero;
+
+        public Vector3 lGoal = Vector3.Zero;
+
+        public float speed = 0;
+
         public void AddBlip()
         {
             blip = Character.AddBlip();
@@ -49,6 +55,7 @@ namespace GTAVRemultiplied.ServerSystem
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
             KnownCharHistory.Add(Character.Handle);
+            //Character.FreezePosition = true;
         }
 
         public void Spawn()
@@ -69,9 +76,9 @@ namespace GTAVRemultiplied.ServerSystem
                         owner = connection;
                         break;
                     }
-                }
+                } 
                 SendPacket(new AddPedPacketOut(ped));
-                if (owner != null)
+                if (owner != null || Game.Player.Character.Handle == ped.Handle)
                 {
                     SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
                 }
@@ -85,11 +92,66 @@ namespace GTAVRemultiplied.ServerSystem
 
         int count = 0;
 
+        double lastRun = 0;
+
+        bool running = false;
+
+        public void AnimateMove(bool run)
+        {
+            if (GTAVFreneticServer.GlobalTickTime - lastRun > 5)
+            {
+                if (run)
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@MULTIPLAYER");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 5000, 1, 1f, false, false, false);
+                }
+                else
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@NON_CHALANT");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@NON_CHALANT", "walk", 8f, 1f, 5000, 1, 1f, false, false, false);
+                }
+                lastRun = GTAVFreneticServer.GlobalTickTime;
+                running = true;
+            }
+        }
+
+        public void StopMove()
+        {
+            lastRun = 0.0;
+            if (running)
+            {
+                Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 0, 1, 1f, false, false, false);
+                running = false;
+            }
+        }
+
         public void Tick()
         {
             if (dcon)
             {
                 throw new Exception("Disconnected");
+            }
+            Vector3 rel = lGoal - lPos;
+            float rlen = rel.Length();
+            if (rlen > 0 && speed > 0)
+            {
+                rel /= rlen;
+                if (speed * GTAVFreneticServer.cDelta > rlen || rlen > 10)
+                {
+                    StopMove();
+                    lPos = lGoal;
+                    Character.PositionNoOffset = lGoal;
+                }
+                else
+                {
+                    AnimateMove(speed > 3);
+                    lPos = lPos + rel * speed * GTAVFreneticServer.cDelta;
+                    Character.PositionNoOffset = lPos;
+                }
+            }
+            else
+            {
+                StopMove();
             }
             while (Sock.Available > 0 && count < known.Length)
             {

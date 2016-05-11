@@ -42,6 +42,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
             ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
             PedInfo pinf = new PedInfo();
+            pinf.Character = ped;
             ClientConnectionScript.ServerPedKnownPosition[id] = pinf;
             return true;
         }

@@ -234,6 +234,10 @@ public class ClientConnectionScript : Script
                         }
                     }
                     pHadModel = hasModel;
+                    foreach (PedInfo pinf in ServerPedKnownPosition.Values)
+                    {
+                        pinf.Tick();
+                    }
                 }
             }
         }

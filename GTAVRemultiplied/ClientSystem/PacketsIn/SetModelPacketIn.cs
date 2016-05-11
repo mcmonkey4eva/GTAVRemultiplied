@@ -37,6 +37,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ped.Task.ClearAllImmediately();
                 ped.SetDefaultClothes();
                 PedInfo pinfo = ClientConnectionScript.ServerPedKnownPosition[serverPed];
+                pinfo.Character = ped;
                 if (pinfo.hasBlip)
                 {
                     Blip blip = ped.AddBlip();

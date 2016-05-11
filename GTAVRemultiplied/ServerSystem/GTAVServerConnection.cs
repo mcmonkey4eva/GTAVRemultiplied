@@ -113,7 +113,7 @@ namespace GTAVRemultiplied.ServerSystem
                             connection.SendPacket(new AddPedPacketOut(ped));
                             if (owner != null || Game.Player.Character.Handle == ped.Handle)
                             {
-                                connection.SendPacket(new AddBlipPacketOut(ped, owner.blip.Sprite, owner.blip.Color));
+                                connection.SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
                             }
                         }
                     }

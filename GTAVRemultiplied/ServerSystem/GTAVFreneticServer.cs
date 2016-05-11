@@ -36,8 +36,14 @@ namespace GTAVRemultiplied.ServerSystem
             CommandSystem.RunPrecalculated();
         }
 
+        public static float cDelta = 0;
+
+        public static double GlobalTickTime = 100;
+
         public static void Tick(float delta)
         {
+            cDelta = delta;
+            GlobalTickTime += cDelta;
             if (Enabled)
             {
                 CommandSystem.Tick(delta);
