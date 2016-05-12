@@ -106,6 +106,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "ragdoll":
                     Function.Call(Hash.SET_PED_TO_RAGDOLL, Game.Player.Character.Handle, 4000, 5000, 1, 1, 1, 0);
                     break;
+                case "debugProps":
+                    ClientConnectionScript.DebugProps = !ClientConnectionScript.DebugProps;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;

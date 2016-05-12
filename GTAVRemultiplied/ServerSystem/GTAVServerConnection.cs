@@ -86,7 +86,7 @@ namespace GTAVRemultiplied.ServerSystem
             deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
             foreach (Prop prop in World.GetAllProps())
             {
-                if (!prop.Model.IsValid || !PropList.propLookup.ContainsKey(prop.Model.Hash)) // TODO: ???
+                if (!prop.Model.IsValid || !Enum.IsDefined(typeof(PropHash), prop.Model.Hash)) // TODO: ???
                 {
                     continue;
                 }

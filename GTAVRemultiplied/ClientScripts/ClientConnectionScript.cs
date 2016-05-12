@@ -19,11 +19,9 @@ public class ClientConnectionScript : Script
     public ClientConnectionScript()
     {
         Tick += ClientConnectionScript_Tick;
-        foreach (string str in PropList.props)
-        {
-            PropList.propLookup.Add(Function.Call<int>(Hash.GET_HASH_KEY, str), str);
-        }
     }
+
+    public static bool DebugProps = false;
     
     byte[] known = new byte[8192 * 10];
 
@@ -56,6 +54,23 @@ public class ClientConnectionScript : Script
     {
         try
         {
+            if (DebugProps)
+            {
+                Vector3 camPos = GameplayCamera.Position;
+                foreach (Prop prop in World.GetAllProps())
+                {
+                    Vector3 pos = prop.Position;
+                    if (camPos.DistanceToSquared(pos) < 400)
+                    {
+                        System.Drawing.Point point = UI.WorldToScreen(pos);
+                        string modname = ((PropHash)prop.Model.Hash).ToString();
+                        float dist = camPos.DistanceTo(pos);
+                        float scale = 5f / (dist / GameplayCamera.Zoom);
+                        UIText text = new UIText("<" + modname + ">", point, scale);
+                        text.Draw();
+                    }
+                }
+            }
             if (!dlcEnabled)
             {
                 GTAVUtilities.EnableDLC();
@@ -219,7 +234,7 @@ public class ClientConnectionScript : Script
                     pjump = tjump;
                     foreach (Prop prop in World.GetAllProps())
                     {
-                        if (!prop.Model.IsValid || !PropList.propLookup.ContainsKey(prop.Model.Hash))
+                        if (!prop.Model.IsValid || !Enum.IsDefined(typeof(PropHash), prop.Model.Hash))
                         {
                             continue;
                         }
