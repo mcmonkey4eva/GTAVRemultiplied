@@ -56,6 +56,10 @@ namespace GTAVRemultiplied.ServerSystem
             HashSet<int> ids = new HashSet<int>(Vehicles);
             foreach (Vehicle vehicle in World.GetAllVehicles())
             {
+                if (!vehicle.Model.IsValid) // TODO: ???
+                {
+                    continue;
+                }
                 if (Vehicles.Add(vehicle.Handle))
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
@@ -81,6 +85,10 @@ namespace GTAVRemultiplied.ServerSystem
             deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
             foreach (Prop prop in World.GetAllProps())
             {
+                if (!prop.Model.IsValid || prop.IsAttached()) // TODO: ???
+                {
+                    continue;
+                }
                 if (Props.Add(prop.Handle))
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
@@ -127,6 +135,10 @@ namespace GTAVRemultiplied.ServerSystem
             HashSet<int> pids = new HashSet<int>(Characters.Keys);
             foreach (Ped ped in World.GetAllPeds())
             {
+                if (!ped.Model.IsValid) // TODO: ???
+                {
+                    continue;
+                }
                 GTAVServerClientConnection owner = null;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {

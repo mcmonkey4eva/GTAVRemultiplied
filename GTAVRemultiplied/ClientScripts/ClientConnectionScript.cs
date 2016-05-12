@@ -214,6 +214,10 @@ public class ClientConnectionScript : Script
                     pjump = tjump;
                     foreach (Prop prop in World.GetAllProps())
                     {
+                        if (!prop.Model.IsValid || prop.IsAttached())
+                        {
+                            continue;
+                        }
                         if (!ClientToServerProp.ContainsKey(prop.Handle))
                         {
                             prop.Delete();

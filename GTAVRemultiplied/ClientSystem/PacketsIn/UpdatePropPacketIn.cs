@@ -36,10 +36,10 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             rot.W = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 12);
             byte flags = data[4 + 12 + 12 + 12];
             bool isDead = (flags & 1) == 1;
-            int veh;
-            if (ClientConnectionScript.ServerToClientProp.TryGetValue(id, out veh))
+            int prp;
+            if (ClientConnectionScript.ServerToClientProp.TryGetValue(id, out prp))
             {
-                Prop prop = new Prop(veh);
+                Prop prop = new Prop(prp);
                 prop.PositionNoOffset = pos;
                 prop.Velocity = vel;
                 prop.Quaternion = rot;
@@ -56,6 +56,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             else
             {
+                for (int i = 0; i < PropSpawnScript.propsToSpawn.Length; i++)
+                {
+                    if (PropSpawnScript.propsToSpawn[i].Item3 == id)
+                    {
+                        return true;
+                    }
+                }
                 Log.Message("Warning", "Unknown prop updated!", 'Y');
             }
             return true;
