@@ -61,6 +61,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                         vehicle.Health = 0;
                     }
                 }
+                else if (vehicle.IsDead && !isDead)
+                {
+                    vehicle.IsInvincible = true;
+                    vehicle.Repair();
+                }
             }
             else
             {

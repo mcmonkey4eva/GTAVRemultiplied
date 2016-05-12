@@ -10,6 +10,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTAVRemultiplied.ServerSystem.PacketsOut;
+using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ServerSystem
 {
@@ -85,7 +86,7 @@ namespace GTAVRemultiplied.ServerSystem
             deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
             foreach (Prop prop in World.GetAllProps())
             {
-                if (!prop.Model.IsValid || prop.IsAttached()) // TODO: ???
+                if (!prop.Model.IsValid || !PropList.propLookup.ContainsKey(prop.Model.Hash)) // TODO: ???
                 {
                     continue;
                 }
@@ -108,7 +109,7 @@ namespace GTAVRemultiplied.ServerSystem
             }
             if (deltaTilPropUpdate < 0)
             {
-                deltaTilPropUpdate = 100;
+                deltaTilPropUpdate = 0.1f;
             }
             foreach (int id in propids)
             {
@@ -221,7 +222,7 @@ namespace GTAVRemultiplied.ServerSystem
             deltaTilWorldUpdate -= GTAVFreneticServer.cDelta;
             if (deltaTilWorldUpdate < 0)
             {
-                deltaTilWorldUpdate = 500;
+                deltaTilWorldUpdate = 0.5f;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
                     connection.SendPacket(new WorldStatusPacketOut());

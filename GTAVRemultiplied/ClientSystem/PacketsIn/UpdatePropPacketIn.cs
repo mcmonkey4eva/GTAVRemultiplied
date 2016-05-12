@@ -40,10 +40,15 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             if (ClientConnectionScript.ServerToClientProp.TryGetValue(id, out prp))
             {
                 Prop prop = new Prop(prp);
+                if (!prop.Exists())
+                {
+                    Log.Message("Warning", "Prop disappeared: " + prp, 'Y');
+                    return true;
+                }
                 prop.PositionNoOffset = pos;
-                prop.Velocity = vel;
+                //prop.Velocity = vel;
                 prop.Quaternion = rot;
-                GTAVUtilities.SetRotationVelocity(prop, rotvel);
+                /*GTAVUtilities.SetRotationVelocity(prop, rotvel);
                 if (isDead && !prop.IsDead)
                 {
                     prop.IsInvincible = false;
@@ -53,6 +58,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                         prop.Health = 0;
                     }
                 }
+                else if (!isDead && prop.IsDead)
+                {
+                    prop.IsInvincible = true;
+                    prop.Health = 1;
+                }*/
             }
             else
             {

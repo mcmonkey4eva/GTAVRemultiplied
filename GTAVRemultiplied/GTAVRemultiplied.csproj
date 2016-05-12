@@ -90,6 +90,7 @@
     <Compile Include="ServerSystem\PacketsOut\SetModelPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\UpdateVehiclePacketOut.cs" />
     <Compile Include="SharedSystems\IPLList.cs" />
+    <Compile Include="SharedSystems\PropList.cs" />
     <Compile Include="SharedSystems\YachtHelper.cs" />
     <Compile Include="StringUtilities.cs" />
     <Compile Include="ClientScripts\ChatTextScript.cs" />
