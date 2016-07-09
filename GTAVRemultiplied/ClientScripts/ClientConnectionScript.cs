@@ -232,7 +232,7 @@ public class ClientConnectionScript : Script
                         SendPacket(new JumpPacketOut());
                     }
                     pjump = tjump;
-                    foreach (Prop prop in World.GetAllProps())
+                    /*foreach (Prop prop in World.GetAllProps())
                     {
                         if (!prop.Model.IsValid || !Enum.IsDefined(typeof(PropHash), prop.Model.Hash))
                         {
@@ -242,7 +242,7 @@ public class ClientConnectionScript : Script
                         {
                             prop.Delete();
                         }
-                    }
+                    }*/
                     foreach (Vehicle vehicle in World.GetAllVehicles())
                     {
                         if (!ClientToServerVehicle.ContainsKey(vehicle.Handle))

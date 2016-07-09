@@ -84,7 +84,7 @@ namespace GTAVRemultiplied.ServerSystem
             }
             HashSet<int> propids = new HashSet<int>(Props);
             deltaTilPropUpdate -= GTAVFreneticServer.cDelta;
-            foreach (Prop prop in World.GetAllProps())
+            /*foreach (Prop prop in World.GetAllProps())
             {
                 if (!prop.Model.IsValid || !Enum.IsDefined(typeof(PropHash), prop.Model.Hash)) // TODO: ???
                 {
@@ -118,7 +118,7 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     connection.SendPacket(new RemovePropPacketOut(id));
                 }
-            }
+            }*/
             bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
             if (hasModel)
             {

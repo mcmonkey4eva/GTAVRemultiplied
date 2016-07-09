@@ -7,6 +7,7 @@ using GTA;
 using GTA.Math;
 using FreneticScript;
 using GTAVRemultiplied;
+using GTAVRemultiplied.SharedSystems;
 
 public class PropSpawnScript : Script
 {
@@ -24,13 +25,13 @@ public class PropSpawnScript : Script
             Prop prop = World.CreateProp(new Model(propsToSpawn[0].Item1), propsToSpawn[0].Item2, false, false);
             if (prop == null)
             {
-                Log.Message("Warning", "invalid prop: " + propsToSpawn[0].Item1, 'Y');
+                Log.Error("invalid prop: " + (PropHash)propsToSpawn[0].Item1);
             }
             else
             {
-                prop.IsPersistent = true;
-                prop.IsInvincible = true;
-                prop.FreezePosition = true;
+                //prop.IsPersistent = true;
+                //prop.IsInvincible = true;
+                //prop.FreezePosition = true;
                 ClientConnectionScript.ServerToClientProp[propsToSpawn[0].Item3] = prop.Handle;
                 ClientConnectionScript.ClientToServerProp[prop.Handle] = propsToSpawn[0].Item3;
             }
