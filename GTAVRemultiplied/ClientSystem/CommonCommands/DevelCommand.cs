@@ -99,7 +99,7 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     break;
                     // EG: quickProp prop_fan_palm_01a
                 case "quickProp":
-                    GTAVUtilities.UnlockAllObjects();
+                  //  GTAVUtilities.UnlockAllObjects();
                     int id = Function.Call<int>(Hash.GET_HASH_KEY, arg2.ToString());
                     World.CreateProp(new Model(id), Game.Player.Character.Position, true, false);
                     break;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GTA;
 using GTA.Native;
+using GTA.UI;
 using GTA.Math;
 using GTAVRemultiplied;
 
@@ -14,28 +15,28 @@ using GTAVRemultiplied;
 /// </summary>
 public class DebugPositionScript : Script
 {
-    UIText PX;
-    UIText PY;
-    UIText PZ;
-    UIText FX;
-    UIText FY;
-    UIText FZ;
-    UIText CX;
-    UIText CY;
-    UIText CZ;
+    Text PX;
+    Text PY;
+    Text PZ;
+    Text FX;
+    Text FY;
+    Text FZ;
+    Text CX;
+    Text CY;
+    Text CZ;
 
     public DebugPositionScript()
     {
         Tick += DebugPositionScript_Tick;
-        PX = new UIText("PosX: ", new System.Drawing.Point(0, 0), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        PY = new UIText("PosY: ", new System.Drawing.Point(0, 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        PZ = new UIText("PosZ: ", new System.Drawing.Point(0, 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FX = new UIText("ForX: ", new System.Drawing.Point(0, 48), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FY = new UIText("ForY: ", new System.Drawing.Point(0, 64), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        FZ = new UIText("ForZ: ", new System.Drawing.Point(0, 80), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CX = new UIText("CamX: ", new System.Drawing.Point(0, 96), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CY = new UIText("CamY: ", new System.Drawing.Point(0, 112), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
-        CZ = new UIText("CamZ: ", new System.Drawing.Point(0, 128), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, false);
+        PX = new Text("PosX: ", new System.Drawing.Point(0, 0), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        PY = new Text("PosY: ", new System.Drawing.Point(0, 16), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        PZ = new Text("PosZ: ", new System.Drawing.Point(0, 32), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        FX = new Text("ForX: ", new System.Drawing.Point(0, 48), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        FY = new Text("ForY: ", new System.Drawing.Point(0, 64), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        FZ = new Text("ForZ: ", new System.Drawing.Point(0, 80), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        CX = new Text("CamX: ", new System.Drawing.Point(0, 96), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        CY = new Text("CamY: ", new System.Drawing.Point(0, 112), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
+        CZ = new Text("CamZ: ", new System.Drawing.Point(0, 128), 0.5f, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Left);
     }
 
     public static bool Enabled = false;

@@ -40,7 +40,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 pinfo.Character = ped;
                 if (pinfo.hasBlip)
                 {
-                    Blip blip = ped.AddBlip();
+                    Blip blip = ped.AttachBlip();
                     blip.Sprite = pinfo.blipSprite;
                     blip.Color = pinfo.blipColor;
                 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTA.UI;
 using System.Net;
 using System.Net.Sockets;
 using GTAVRemultiplied;
@@ -62,11 +63,11 @@ public class ClientConnectionScript : Script
                     Vector3 pos = prop.Position;
                     if (camPos.DistanceToSquared(pos) < 400)
                     {
-                        System.Drawing.Point point = UI.WorldToScreen(pos);
+                        System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
                         string modname = ((PropHash)prop.Model.Hash).ToString();
                         float dist = camPos.DistanceTo(pos);
                         float scale = 5f / (dist / GameplayCamera.Zoom);
-                        UIText text = new UIText("<" + modname + ">", point, scale);
+                        Text text = new Text("<" + modname + ">", point, scale);
                         text.Draw();
                     }
                 }
@@ -94,11 +95,11 @@ public class ClientConnectionScript : Script
                             PedHash model = (PedHash)unchecked((uint)p.Model.Hash);
                             string modname = model.ToString();
                             Vector3 pos = peddata.Value.WorldPos;
-                            System.Drawing.Point point = UI.WorldToScreen(pos);
+                            System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
                             Vector3 camPos = GameplayCamera.Position;
                             float dist = camPos.DistanceTo(pos);
                             float scale = 5f / (dist / GameplayCamera.Zoom);
-                            UIText text = new UIText("<" + modname + ">", point, scale);
+                            Text text = new Text("<" + modname + ">", point, scale);
                             text.Draw();
                         }
                     }

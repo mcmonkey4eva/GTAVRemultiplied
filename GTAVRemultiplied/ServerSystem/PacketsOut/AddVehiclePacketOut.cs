@@ -22,7 +22,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(pos.Y).CopyTo(Data, 4 + 4 + 4);
             BitConverter.GetBytes(pos.Z).CopyTo(Data, 4 + 4 + 8);
             BitConverter.GetBytes(vehicle.Heading).CopyTo(Data, 4 + 4 + 12);
-            string numPlate = vehicle.NumberPlate;
+            string numPlate = vehicle.LicensePlate;
             for (int i = 0; i < numPlate.Length; i++)
             {
                 Data[4 + 4 + 12 + 4 + i] = (byte)numPlate[i];
@@ -31,7 +31,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             {
                 Data[4 + 4 + 12 + 4 + i] = (byte)' ';
             }
-            Data[4 + 4 + 12 + 4 + 8] = (byte)vehicle.NumberPlateType;
+            Data[4 + 4 + 12 + 4 + 8] = (byte)vehicle.LicensePlateType;
             Data[4 + 4 + 12 + 4 + 8 + 1] = 0; // Reserved: NumberPlateMounting setter?
             BitConverter.GetBytes(vehicle.ColorCombination).CopyTo(Data, 4 + 4 + 12 + 4 + 8 + 2);
             Data[ind] = (byte)vehicle.PrimaryColor;

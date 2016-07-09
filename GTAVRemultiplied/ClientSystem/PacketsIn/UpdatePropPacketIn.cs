@@ -17,7 +17,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int id = BitConverter.ToInt32(data, 0);
-            Vector3 pos;
+            Vector3 pos = new Vector3();
             pos.X = BitConverter.ToSingle(data, 4);
             pos.Y = BitConverter.ToSingle(data, 4 + 4);
             pos.Z = BitConverter.ToSingle(data, 4 + 8);

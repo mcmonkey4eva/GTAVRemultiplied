@@ -18,11 +18,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int id = BitConverter.ToInt32(data, 0);
-            Vector3 pos;
+            Vector3 pos = new Vector3();
             pos.X = BitConverter.ToSingle(data, 4);
             pos.Y = BitConverter.ToSingle(data, 4 + 4);
             pos.Z = BitConverter.ToSingle(data, 4 + 8);
-            Vector3 vel;
+            Vector3 vel = new Vector3();
             vel.X = BitConverter.ToSingle(data, 4 + 12);
             vel.Y = BitConverter.ToSingle(data, 4 + 12 + 4);
             vel.Z = BitConverter.ToSingle(data, 4 + 12 + 8);
@@ -30,7 +30,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             rot.X = BitConverter.ToSingle(data, 4 + 12 + 12);
             rot.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 4);
             rot.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 8);
-            Vector3 rotvel;
+            Vector3 rotvel = new Vector3();
             rotvel.X = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1);
             rotvel.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 4);
             rotvel.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 8);

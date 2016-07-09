@@ -173,7 +173,7 @@ namespace GTAVRemultiplied
             }
         }
 
-        static bool allUnlocked = false;
+        /*static bool allUnlocked = false;
 
         public static void UnlockAllObjects()
         {
@@ -183,6 +183,6 @@ namespace GTAVRemultiplied
             }
             allUnlocked = true;
             MemoryAccess.UnlockAllObjects();
-        }
+        }*/
     }
 }

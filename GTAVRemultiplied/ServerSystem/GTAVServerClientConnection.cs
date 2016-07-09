@@ -39,7 +39,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void AddBlip()
         {
-            blip = Character.AddBlip();
+            blip = Character.AttachBlip();
             blip.Sprite = BlipSprite.Standard;
             blip.Color = BlipColor.Blue;
         }

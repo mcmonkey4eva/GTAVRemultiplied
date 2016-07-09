@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GTA;
+using GTA.UI;
 using GTA.Native;
 using GTA.Math;
 using System.Drawing;
@@ -26,15 +27,15 @@ public class ChatTextScript : Script
     
     const int Height = 12;
 
-    int CPos = UI.HEIGHT / 3 - Height;
+    int CPos = (int)GTA.UI.Screen.Height / 3 - Height;
 
-    public UIText GenOne()
+    public Text GenOne()
     {
         CPos += Height;
-        return new UIText("", new Point(0, CPos), 0.33f, Color.White, GTA.Font.ChaletLondon, false, true, false);
+        return new Text("", new Point(0, CPos), 0.33f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false);
     }
 
-    public List<UIText> ChatTextSlot = new List<UIText>();
+    public List<Text> ChatTextSlot = new List<Text>();
 
     List<string> AllText = new List<string>();
 

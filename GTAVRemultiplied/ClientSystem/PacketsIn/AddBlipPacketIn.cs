@@ -19,7 +19,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[serverPed]);
             BlipSprite sprite = (BlipSprite)BitConverter.ToInt32(data, 4);
             BlipColor color = (BlipColor)BitConverter.ToInt32(data, 8);
-            Blip blip = ped.AddBlip();
+            Blip blip = ped.AttachBlip();
             blip.Sprite = sprite;
             blip.Color = color;
             PedInfo pinfo = ClientConnectionScript.ServerPedKnownPosition[serverPed];

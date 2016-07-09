@@ -104,7 +104,7 @@ namespace GTAVRemultiplied.SharedSystems
             {
                 if (prop != null)
                 {
-                    prop.FreezePosition = true;
+                    prop.IsPositionFrozen = true;
                     prop.IsPersistent = true;
                 }
                 // TODO: else, enforce prop better?
