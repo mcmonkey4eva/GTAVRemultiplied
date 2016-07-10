@@ -89,6 +89,7 @@
     <Compile Include="ServerSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\SetModelPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\UpdateVehiclePacketOut.cs" />
+    <Compile Include="ServerSystem\VehicleInfo.cs" />
     <Compile Include="SharedSystems\IPLList.cs" />
     <Compile Include="SharedSystems\PropList.cs" />
     <Compile Include="SharedSystems\YachtHelper.cs" />

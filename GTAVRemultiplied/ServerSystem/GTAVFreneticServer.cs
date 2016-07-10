@@ -93,5 +93,18 @@ namespace GTAVRemultiplied.ServerSystem
             CommandSystem.PostInit();
             AutorunScripts();
         }
+
+        public static bool IsInRangeOfPlayer(Vector3 location, float range = 100)
+        {
+            float rsq = range * range;
+            for (int i = 0; i < Connections.Connections.Count; i++)
+            {
+                if (Connections.Connections[i].lPos.DistanceToSquared2D(location) < rsq)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace GTAVRemultiplied.ServerSystem
         public int ammo = 0;
         public WeaponHash weap = WeaponHash.Unarmed;
         public DateTime nextVehicleReminder = DateTime.Now;
+        public bool ForcePersistent = false;
     }
 }

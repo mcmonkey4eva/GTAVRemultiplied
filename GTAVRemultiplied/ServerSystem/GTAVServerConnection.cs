@@ -54,21 +54,35 @@ namespace GTAVRemultiplied.ServerSystem
                     i--;
                 }
             }
-            HashSet<int> ids = new HashSet<int>(Vehicles);
+            HashSet<int> ids = new HashSet<int>(Vehicles.Keys);
             foreach (Vehicle vehicle in World.GetAllVehicles())
             {
                 if (!vehicle.Model.IsValid) // TODO: ???
                 {
                     continue;
                 }
-                if (Vehicles.Add(vehicle.Handle))
+                if (!Vehicles.ContainsKey(vehicle.Handle))
                 {
+                    VehicleInfo vi = new VehicleInfo();
+                    Vehicles.Add(vehicle.Handle, vi);
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
                         connection.SendPacket(new AddVehiclePacketOut(vehicle));
                     }
                 }
                 ids.Remove(vehicle.Handle);
+                VehicleInfo vinf = Vehicles[vehicle.Handle];
+                bool inRange = GTAVFreneticServer.IsInRangeOfPlayer(vehicle.Position);
+                if (inRange && !vehicle.IsPersistent && !vinf.ForcePersistent)
+                {
+                    vinf.ForcePersistent = true;
+                    vehicle.IsPersistent = true;
+                }
+                if (!inRange && vinf.ForcePersistent)
+                {
+                    vinf.ForcePersistent = false;
+                    vehicle.IsPersistent = false;
+                }
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
                     connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
@@ -166,6 +180,17 @@ namespace GTAVRemultiplied.ServerSystem
                 }
                 pids.Remove(ped.Handle);
                 PedInfo character = Characters[ped.Handle];
+                bool inRange = GTAVFreneticServer.IsInRangeOfPlayer(ped.Position);
+                if (inRange && !ped.IsPersistent && !character.ForcePersistent)
+                {
+                    character.ForcePersistent = true;
+                    ped.IsPersistent = true;
+                }
+                if (!inRange && character.ForcePersistent)
+                {
+                    character.ForcePersistent = false;
+                    ped.IsPersistent = false;
+                }
                 WeaponHash cweap = ped.Weapons.Current.Hash;
                 int cammo = ped.Weapons.Current.AmmoInClip;
                 bool tjump = Game.Player.Character.IsJumping;
@@ -237,7 +262,7 @@ namespace GTAVRemultiplied.ServerSystem
         float deltaTilPropUpdate = 0;
         float deltaTilWorldUpdate = 0;
         
-        public static HashSet<int> Vehicles = new HashSet<int>();
+        public static Dictionary<int, VehicleInfo> Vehicles = new Dictionary<int, VehicleInfo>();
 
         public static HashSet<int> Props = new HashSet<int>();
 

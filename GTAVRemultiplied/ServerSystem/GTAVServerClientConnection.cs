@@ -61,7 +61,7 @@ namespace GTAVRemultiplied.ServerSystem
         public void Spawn()
         {
             SpawnCharacter();
-            foreach (int vehicle in GTAVServerConnection.Vehicles)
+            foreach (int vehicle in GTAVServerConnection.Vehicles.Keys)
             {
                 SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
             }
