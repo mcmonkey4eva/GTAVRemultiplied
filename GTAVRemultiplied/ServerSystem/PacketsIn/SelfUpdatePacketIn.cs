@@ -22,7 +22,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             vec.Y = BitConverter.ToSingle(data, 4);
             vec.Z = BitConverter.ToSingle(data, 8);
             float head = BitConverter.ToSingle(data, 12);
-            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            if (client.Character.IsInVehicle())
             {
                 client.Character.CurrentVehicle.Heading = head;
             }
@@ -53,11 +53,11 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
                 client.Character.Weapons.Give(weap, 1000, true, true);
                 client.Character.Weapons.Select(weap);
             }
-            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            if (client.Character.IsInVehicle())
             {
                 client.Character.CurrentVehicle.PositionNoOffset = vec;
             }
-            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            if (client.Character.IsInVehicle())
             {
                 client.Character.CurrentVehicle.Velocity = vel;
             }
@@ -65,7 +65,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             rot.X = BitConverter.ToSingle(data, 16 + 12 + 4 + 12);
             rot.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 12 + 4);
             rot.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 12 + 8);
-            if (client.Character.CurrentVehicle != null && client.InVehicle)
+            if (client.Character.IsInVehicle())
             {
                 client.Character.CurrentVehicle.Rotation = rot;
             }

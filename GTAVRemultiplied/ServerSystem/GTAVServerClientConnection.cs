@@ -102,6 +102,10 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void AnimateMove(bool run)
         {
+            if (Character.IsInVehicle())
+            {
+                return;
+            }
             if (GTAVFreneticServer.GlobalTickTime - lastRun > 5)
             {
                 if (run)
@@ -121,6 +125,10 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void StopMove()
         {
+            if (Character.IsInVehicle())
+            {
+                return;
+            }
             lastRun = 0.0;
             if (running)
             {
@@ -135,10 +143,6 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 throw new Exception("Disconnected");
             }
-            if (Character.IsInVehicle())
-            {
-                return;
-            }
             Vector3 rel = lGoal - lPos;
             float rlen = rel.Length();
             if (rlen > 0.01f && speed > 0.01f)
@@ -148,20 +152,41 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     StopMove();
                     lPos = lGoal;
-                    Character.PositionNoOffset = lGoal;
+                    if (Character.IsInVehicle())
+                    {
+                        Character.CurrentVehicle.PositionNoOffset = lGoal;
+                    }
+                    else
+                    {
+                        Character.PositionNoOffset = lGoal;
+                    }
                 }
                 else
                 {
                     AnimateMove(speed > 3);
                     lPos = lPos + rel * speed * GTAVFreneticServer.cDelta;
-                    Character.PositionNoOffset = lPos;
+                    if (Character.IsInVehicle())
+                    {
+                        Character.CurrentVehicle.PositionNoOffset = lPos;
+                    }
+                    else
+                    {
+                        Character.PositionNoOffset = lPos;
+                    }
                 }
             }
             else
             {
                 StopMove();
                 lPos = lGoal;
-                Character.PositionNoOffset = lGoal;
+                if (Character.IsInVehicle())
+                {
+                    Character.CurrentVehicle.PositionNoOffset = lGoal;
+                }
+                else
+                {
+                    Character.PositionNoOffset = lGoal;
+                }
             }
             while (Sock.Available > 0 && count < known.Length)
             {
