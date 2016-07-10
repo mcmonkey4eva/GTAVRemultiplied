@@ -294,6 +294,7 @@ public class ClientConnectionScript : Script
                 Connected = false;
                 // TODO: Disconnect properly!
             }
+            // TODO: /maybe/ disconnect anyway?
         }
     }
 

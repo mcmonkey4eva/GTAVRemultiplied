@@ -26,6 +26,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pinfo.hasBlip = true;
             pinfo.blipSprite = sprite;
             pinfo.blipColor = color;
+            pinfo.Character.CanBeDraggedOutOfVehicle = false; // TODO: Better way to identify unjackable players!
             return true;
         }
     }

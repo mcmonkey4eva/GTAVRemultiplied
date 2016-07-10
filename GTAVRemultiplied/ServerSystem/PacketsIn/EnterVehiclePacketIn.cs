@@ -17,6 +17,9 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             }
             int veh = BitConverter.ToInt32(data, 0);
             // TODO: Validate vehicle ID!
+            // TODO: Validate the seat!
+            // TODO: Make sure we're not forcing anyone out of their seat!
+            // TODO: Make sure the character can validly move into this vehicle, and isn't using vehicles to teleport!
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             client.Character.SetIntoVehicle(new Vehicle(veh), seat);
             client.InVehicle = true;

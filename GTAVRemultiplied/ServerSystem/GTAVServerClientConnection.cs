@@ -54,6 +54,7 @@ namespace GTAVRemultiplied.ServerSystem
             Character.IsExplosionProof = true;
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
+            Character.CanBeDraggedOutOfVehicle = false;
             KnownCharHistory.Add(Character.Handle);
             //Character.FreezePosition = true;
         }
