@@ -52,25 +52,32 @@ public class ClientConnectionScript : Script
 
     bool dlcEnabled = false;
 
+    public static void Text3D(Vector3 pos, string text)
+    {
+        if (camPos.DistanceToSquared(pos) < 400)
+        {
+            System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
+            float dist = camPos.DistanceTo(pos);
+            float scale = 5f / (dist / GameplayCamera.Zoom);
+            Text utext = new Text(text, point, scale, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Center, true, false);
+            utext.Draw();
+        }
+    }
+
+    public static Vector3 camPos;
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
         {
+            camPos = GameplayCamera.Position;
             if (DebugProps)
             {
-                Vector3 camPos = GameplayCamera.Position;
                 foreach (Prop prop in World.GetAllProps())
                 {
                     Vector3 pos = prop.Position;
-                    if (camPos.DistanceToSquared(pos) < 400)
-                    {
-                        System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
-                        string modname = ((PropHash)prop.Model.Hash).ToString();
-                        float dist = camPos.DistanceTo(pos);
-                        float scale = 5f / (dist / GameplayCamera.Zoom);
-                        Text text = new Text("<" + modname + ">", point, scale);
-                        text.Draw();
-                    }
+                    string modname = ((PropHash)prop.Model.Hash).ToString();
+                    Text3D(prop.Position, "<" + modname + ">");
                 }
             }
             if (!dlcEnabled)

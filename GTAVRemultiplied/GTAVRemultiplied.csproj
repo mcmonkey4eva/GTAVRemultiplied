@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientScripts\PropSpawnScript.cs" />
+    <Compile Include="ClientScripts\VehicleEnterScript.cs" />
     <Compile Include="ClientSystem\NetworkCommands\StopServerCommand.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddBlipPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddPedPacketIn.cs" />
