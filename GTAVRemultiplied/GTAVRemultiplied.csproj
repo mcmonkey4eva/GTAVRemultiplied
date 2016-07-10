@@ -67,6 +67,7 @@
     <Compile Include="ClientSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ClientSystem\PedInfo.cs" />
+    <Compile Include="ClientSystem\TagBases\ControlTagBase.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPropPacketOut.cs" />

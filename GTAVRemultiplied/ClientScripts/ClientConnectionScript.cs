@@ -14,6 +14,7 @@ using GTAVRemultiplied.ClientSystem;
 using GTAVRemultiplied.ClientSystem.PacketsOut;
 using GTAVRemultiplied.ClientSystem.PacketsIn;
 using GTAVRemultiplied.SharedSystems;
+using GTAVRemultiplied.ClientSystem.TagBases;
 
 public class ClientConnectionScript : Script
 {
@@ -258,7 +259,7 @@ public class ClientConnectionScript : Script
                             ped.Delete();
                         }
                     }
-                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.IsControlPressed(2, Control.VehicleExit);
+                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !ControlTagBase.ControlDown(Control.VehicleExit);
                     if (isInVehicle && !wasInVehicle)
                     {
                         SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));

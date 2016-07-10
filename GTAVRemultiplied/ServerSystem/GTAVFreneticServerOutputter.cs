@@ -51,5 +51,9 @@ namespace GTAVRemultiplied.ServerSystem
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, data);
         }
+
+        public override void Reload()
+        {
+        }
     }
 }

@@ -10,6 +10,7 @@ using FreneticScript.TagHandlers.Objects;
 using System.IO;
 using GTAVRemultiplied.ClientSystem.CommonCommands;
 using GTAVRemultiplied.ClientSystem.NetworkCommands;
+using GTAVRemultiplied.ClientSystem.TagBases;
 
 namespace GTAVRemultiplied.ClientSystem
 {
@@ -55,6 +56,8 @@ namespace GTAVRemultiplied.ClientSystem
             CommandSystem.RegisterCommand(new ConnectCommand());
             CommandSystem.RegisterCommand(new StartServerCommand());
             CommandSystem.RegisterCommand(new StopServerCommand());
+            // Tag Bases
+            CommandSystem.TagSystem.Register(new ControlTagBase());
             // Wrap up
             CommandSystem.PostInit();
             AutorunScripts();
