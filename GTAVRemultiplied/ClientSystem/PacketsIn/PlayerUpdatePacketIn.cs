@@ -25,7 +25,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vec.Z = BitConverter.ToSingle(data, 8);
             PedInfo pinf = ClientConnectionScript.ServerPedKnownPosition[serverPed];
             pinf.WorldPos = vec;
-            ped.Heading = BitConverter.ToSingle(data, 12);
             float dist = vec.DistanceToSquared2D(ped.Position);
             Vector3 aim = new Vector3();
             aim.X = BitConverter.ToSingle(data, 16);
@@ -33,22 +32,26 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             aim.Z = BitConverter.ToSingle(data, 16 + 8);
             WeaponHash weap = (WeaponHash)BitConverter.ToUInt32(data, 16 + 12);
             PedFlags flags = (PedFlags)data[16 + 12 + 4 + 12 + 4];
-            if (aim.LengthSquared() > 0.1)
+            if (!ped.IsInVehicle())
             {
-                ped.Task.AimAt(ped.Position + aim * 50, 1000);
+                ped.Heading = BitConverter.ToSingle(data, 12);
+                if (aim.LengthSquared() > 0.1)
+                {
+                    ped.Task.AimAt(ped.Position + aim * 50, 1000);
+                }
+                if (ped.Weapons.Current.Hash != weap)
+                {
+                    ped.Weapons.Give(weap, 1000, true, true);
+                    ped.Weapons.Select(weap);
+                }
+                Vector3 vel = new Vector3();
+                vel.X = BitConverter.ToSingle(data, 16 + 12 + 4);
+                vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
+                vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
+                pinf.lGoal = vec;
+                pinf.speed = vel.Length();
+                //ped.Velocity = vel;
             }
-            if (ped.Weapons.Current.Hash != weap)
-            {
-                ped.Weapons.Give(weap, 1000, true, true);
-                ped.Weapons.Select(weap);
-            }
-            Vector3 vel = new Vector3();
-            vel.X = BitConverter.ToSingle(data, 16 + 12 + 4);
-            vel.Y = BitConverter.ToSingle(data, 16 + 12 + 4 + 4);
-            vel.Z = BitConverter.ToSingle(data, 16 + 12 + 4 + 8);
-            pinf.lGoal = vec;
-            pinf.speed = vel.Length();
-            //ped.Velocity = vel;
             bool isDead = flags.HasFlag(PedFlags.DEAD);
             if (isDead && !ped.IsDead)
             {

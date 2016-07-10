@@ -33,6 +33,10 @@ namespace GTAVRemultiplied.ClientSystem
 
         public void Tick()
         {
+            if (Character.IsInVehicle())
+            {
+                return;
+            }
             Vector3 rel = lGoal - lPos;
             float rlen = rel.Length();
             if (rlen > 0.01f && speed > 0.01f)

@@ -16,10 +16,24 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int veh = BitConverter.ToInt32(data, 0);
-            // TODO: Validate vehicle ID!
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             int ped = BitConverter.ToInt32(data, 5);
-            new Ped(ClientConnectionScript.ServerToClientPed[ped]).SetIntoVehicle(new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]), seat);
+            Ped p = new Ped(ClientConnectionScript.ServerToClientPed[ped]);
+            Vehicle v = new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]);
+            if (!v.IsSeatFree(seat))
+            {
+                Ped problem = v.GetPedOnSeat(seat);
+                if (problem.Handle != p.Handle)
+                {
+                    problem.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            p.SetIntoVehicle(v, seat);
+            Console.WriteLine("Ped " + ped + " forced into " + veh + ", at spot " + seat + ", confirmed: " + p.IsInVehicle());
             return true;
         }
     }
