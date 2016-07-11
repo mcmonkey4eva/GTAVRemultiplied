@@ -37,6 +37,10 @@ public class VehicleEnterScript : Script
 
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
+        if (!ClientConnectionScript.Connected)
+        {
+            return;
+        }
         if (Game.Player.Character.IsInVehicle())
         {
             LastVehicle = GTAVFrenetic.GlobalTickTime;
