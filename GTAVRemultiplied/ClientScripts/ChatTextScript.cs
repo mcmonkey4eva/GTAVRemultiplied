@@ -122,14 +122,33 @@ public class ChatTextScript : Script
 
     private void ChatTextScript_Tick(object sender, EventArgs e)
     {
-        // NOTE: If our log renderer errors... just give up and let it crash!
-        // TODO: Smooth fade out?
-        if (DateTime.Now.Subtract(LastUpdate).TotalSeconds <= 8)
+        try
         {
-            for (int i = 0; i < ChatTextSlot.Count; i++)
+            // TODO: Smooth fade out?
+            double dist = DateTime.Now.Subtract(LastUpdate).TotalSeconds;
+            if (dist <= 8)
             {
-                ChatTextSlot[i].Draw();
+                for (int i = 0; i < ChatTextSlot.Count; i++)
+                {
+                    Color col = ChatTextSlot[i].Color;
+                    ChatTextSlot[i].Color = Color.FromArgb(255, col.R, col.G, col.B);
+                    ChatTextSlot[i].Draw();
+                }
             }
+            else if (dist <= 10)
+            {
+                byte A = (byte)((1f - (((float)dist - 8f) / 2f)) * 255f);
+                for (int i = 0; i < ChatTextSlot.Count; i++)
+                {
+                    Color col = ChatTextSlot[i].Color;
+                    ChatTextSlot[i].Color = Color.FromArgb(A, col.R, col.G, col.B);
+                    ChatTextSlot[i].Draw();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.Exception(ex);
         }
         sw.Stop();
         float delt = sw.ElapsedTicks / (float)Stopwatch.Frequency;
