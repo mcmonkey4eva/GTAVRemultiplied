@@ -12,7 +12,7 @@ using GTA.Math;
 using GTA.Native;
 using GTAVRemultiplied.ServerSystem.TagObjects;
 
-namespace GTAVRemultiplied.ServerSystem.WorldCommands
+namespace GTAVRemultiplied.ServerSystem.EntityCommands
 {
     class ModVehicleCommand : AbstractCommand
     {
@@ -28,9 +28,14 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
             ObjectTypes = new List<Func<TemplateObject, TemplateObject>>()
             {
                 TemplateObject.Basic_For,
-                TextTag.For,
+                GetLowText,
                 TemplateObject.Basic_For
             };
+        }
+
+        public TemplateObject GetLowText(TemplateObject input)
+        {
+            return new TextTag(input.ToString().ToLowerFast());
         }
 
         public override void Execute(CommandQueue queue, CommandEntry entry)
@@ -90,12 +95,6 @@ namespace GTAVRemultiplied.ServerSystem.WorldCommands
                 case "window_tint":
                     // TODO: Functionality here?
                     veh.Internal.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
-                    break;
-                case "repair":
-                    if (BooleanTag.TryFor(val).Internal)
-                    {
-                        veh.Internal.Repair();
-                    }
                     break;
                 default:
                     queue.HandleError(entry, "Unknown option!");

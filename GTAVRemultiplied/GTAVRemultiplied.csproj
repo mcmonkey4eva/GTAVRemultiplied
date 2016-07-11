@@ -69,6 +69,7 @@
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ClientSystem\PedInfo.cs" />
     <Compile Include="ClientSystem\TagBases\ControlTagBase.cs" />
+    <Compile Include="ServerSystem\EntityCommands\RepairVehicleCommand.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPropPacketOut.cs" />
@@ -128,7 +129,7 @@
     <Compile Include="ServerSystem\TagBases\GameTagBase.cs" />
     <Compile Include="ServerSystem\TagObjects\CharacterTag.cs" />
     <Compile Include="ServerSystem\TagObjects\VehicleTag.cs" />
-    <Compile Include="ServerSystem\WorldCommands\ModVehicleCommand.cs" />
+    <Compile Include="ServerSystem\EntityCommands\ModVehicleCommand.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

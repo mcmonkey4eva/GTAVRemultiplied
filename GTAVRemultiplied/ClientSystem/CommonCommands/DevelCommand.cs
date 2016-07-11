@@ -55,36 +55,22 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         queue.HandleError(entry, "Invalid input!");
                     }
                     break;
-                case "spawnNY":
-                    GTAVUtilities.SpawnNorthYankton();
-                    break;
-                case "spawnHC":
-                    GTAVUtilities.SpawnCarrier();
-                    break;
-                case "removeNY":
-                    GTAVUtilities.RemoveNorthYankton();
-                    break;
-                case "removeHC":
-                    GTAVUtilities.RemoveCarrier();
-                    break;
                 case "getWeapons":
                     foreach (WeaponHash hash in ModelEnforcementScript.hashes)
                     {
                         Game.Player.Character.Weapons.Give(hash, 999, false, true);
                     }
                     break;
-                case "testJerkoff":
-                    Function.Call(Hash.REQUEST_ANIM_DICT, "SWITCH@TREVOR@JERKING_OFF");
-                    Function.Call(Hash.TASK_PLAY_ANIM, Game.Player.Character.Handle, "SWITCH@TREVOR@JERKING_OFF", "trev_jerking_off_loop",
-                        8f, 1f, 5000, 1, 1f, false, false, false);
-                    break;
+                    // TODO: To Server
                     // EG: quickShot RPG
                 case "quickShot":
-                    Vector3 playerpos = Game.Player.Character.Position;
-                    Vector3 playertarget = Game.Player.Character.Position + GameplayCamera.Direction * 50;
-                    WeaponHash weap = (WeaponHash)Enum.Parse(typeof(WeaponHash), arg2.ToString(), true);
-                    Function.Call(Hash.SHOOT_SINGLE_BULLET_BETWEEN_COORDS, playerpos.X, playerpos.Y, playerpos.Z, playertarget.X, playertarget.Y, playertarget.Z, Game.Player.Character.Health, true,
-                        (uint)weap, Game.Player.Character.Handle, true, true, -1);
+                    {
+                        Vector3 playerpos = Game.Player.Character.Position;
+                        Vector3 playertarget = Game.Player.Character.Position + GameplayCamera.Direction * 50;
+                        WeaponHash weap = (WeaponHash)Enum.Parse(typeof(WeaponHash), arg2.ToString(), true);
+                        Function.Call(Hash.SHOOT_SINGLE_BULLET_BETWEEN_COORDS, playerpos.X, playerpos.Y, playerpos.Z, playertarget.X, playertarget.Y, playertarget.Z, Game.Player.Character.Health, true,
+                            (uint)weap, Game.Player.Character.Handle, true, true, -1);
+                    }
                     break;
                 case "quickSpin":
                     entry.Good(queue, "Your rotation velocity was: " + GTAVUtilities.GetRotationVelocity(Game.Player.Character.CurrentVehicle));
@@ -97,17 +83,26 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         YachtHelper.SpawnYacht(i, rand.Next(1, 3), rand.Next(100) > 50, lightOpts[rand.Next(lightOpts.Length)]);
                     }
                     break;
-                    // EG: quickProp prop_fan_palm_01a
-                case "quickProp":
-                  //  GTAVUtilities.UnlockAllObjects();
-                    int id = Function.Call<int>(Hash.GET_HASH_KEY, arg2.ToString());
-                    World.CreateProp(new Model(id), Game.Player.Character.Position, true, false);
-                    break;
                 case "ragdoll":
                     Function.Call(Hash.SET_PED_TO_RAGDOLL, Game.Player.Character.Handle, 4000, 5000, 1, 1, 1, 0);
                     break;
                 case "debugProps":
                     ClientConnectionScript.DebugProps = !ClientConnectionScript.DebugProps;
+                    break;
+                case "enforceWeapon":
+                    {
+                        WeaponHash weap = (WeaponHash)Enum.Parse(typeof(WeaponHash), arg2.ToString(), true);
+                        foreach (Ped ped in World.GetAllPeds())
+                        {
+                            ped.Weapons.Select(weap);
+                        }
+                    }
+                    break;
+                case "shootEm":
+                    foreach (Ped ped in World.GetAllPeds())
+                    {
+                        ped.Task.ShootAt(Game.Player.Character.Position + Game.Player.Character.ForwardVector);
+                    }
                     break;
                 default:
                     queue.HandleError(entry, "What?");

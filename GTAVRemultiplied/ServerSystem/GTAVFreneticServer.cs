@@ -9,7 +9,7 @@ using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using System.IO;
 using GTAVRemultiplied.ServerSystem.CommonCommands;
-using GTAVRemultiplied.ServerSystem.WorldCommands;
+using GTAVRemultiplied.ServerSystem.EntityCommands;
 using GTAVRemultiplied.ServerSystem.TagBases;
 using GTA;
 using GTA.Math;
@@ -84,8 +84,9 @@ namespace GTAVRemultiplied.ServerSystem
             CommandSystem.Init();
             // Common Commands
             CommandSystem.RegisterCommand(new DevelCommand());
-            // World Commands
+            // Entity Commands
             CommandSystem.RegisterCommand(new ModVehicleCommand());
+            CommandSystem.RegisterCommand(new RepairVehicleCommand());
             // Tag Bases
             CommandSystem.TagSystem.Register(new GameTagBase());
             // TODO: Register tag types!
