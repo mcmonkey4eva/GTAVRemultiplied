@@ -38,10 +38,24 @@ namespace GTAVRemultiplied
     }
 
     [Flags]
-    public enum PedFlags
+    public enum PedFlags : byte
     {
-        DEAD = 1,
-        RUNNING = 2,
-        SPRINTING = 4
+        NONE = 0x00,
+        DEAD = 0x01,
+        RUNNING = 0x02,
+        SPRINTING = 0x04
+    }
+
+    [Flags]
+    public enum VehicleFlags : byte
+    {
+        NONE = 0x00,
+        SIREN_ON = 0x01,
+        DEAD = 0x02,
+        LIGHTS = 0x04,
+        SEARCH_LIGHTS = 0x08,
+        INTERIOR_LIGHTS = 0x10,
+        TAXI_LIGHTS = 0x20
+
     }
 }

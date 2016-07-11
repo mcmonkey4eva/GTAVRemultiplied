@@ -35,8 +35,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             rotvel.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 4);
             rotvel.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 8);
             rot.W = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 12);
-            byte flags = data[4 + 12 + 12 + 12];
-            bool isDead = (flags & 1) == 1;
+            VehicleFlags flags = (VehicleFlags)data[4 + 12 + 12 + 12];
+            bool isDead = flags.HasFlag(VehicleFlags.DEAD);
+            bool siren = flags.HasFlag(VehicleFlags.SIREN_ON);
+            bool lights = flags.HasFlag(VehicleFlags.LIGHTS);
+            bool lights_search = flags.HasFlag(VehicleFlags.SEARCH_LIGHTS);
+            bool lights_int = flags.HasFlag(VehicleFlags.INTERIOR_LIGHTS);
+            bool lights_taxi = flags.HasFlag(VehicleFlags.TAXI_LIGHTS);
             float speed = BitConverter.ToSingle(data, ind);
             int veh;
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
@@ -49,6 +54,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     vehicle.Velocity = vel;
                     vehicle.Quaternion = rot;
                     vehicle.Speed = speed;
+                    vehicle.SirenActive = siren;
+                    vehicle.LightsOn = lights;
+                    vehicle.SearchLightOn = lights_search;
+                    vehicle.TaxiLightOn = lights_taxi;
+                    vehicle.InteriorLightOn = lights_int;
                     // TODO: Find a way to set steering angle? Perhaps use driver AI magic?
                     GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                 }

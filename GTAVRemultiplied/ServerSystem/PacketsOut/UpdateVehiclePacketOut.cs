@@ -25,7 +25,12 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(veh.Quaternion.X).CopyTo(Data, 4 + 12 + 12);
             BitConverter.GetBytes(veh.Quaternion.Y).CopyTo(Data, 4 + 12 + 12 + 4);
             BitConverter.GetBytes(veh.Quaternion.Z).CopyTo(Data, 4 + 12 + 12 + 8);
-            Data[4 + 12 + 12 + 12] = (byte)(veh.IsDead ? 1 : 0);
+            Data[4 + 12 + 12 + 12] = (byte)((veh.IsDead ? VehicleFlags.DEAD : VehicleFlags.NONE)
+                | (veh.SirenActive ? VehicleFlags.SIREN_ON : VehicleFlags.NONE)
+                | (veh.LightsOn ? VehicleFlags.LIGHTS : VehicleFlags.NONE)
+                | (veh.SearchLightOn ? VehicleFlags.SEARCH_LIGHTS : VehicleFlags.NONE)
+                | (veh.InteriorLightOn ? VehicleFlags.INTERIOR_LIGHTS : VehicleFlags.NONE)
+                | (veh.TaxiLightOn ? VehicleFlags.TAXI_LIGHTS : VehicleFlags.NONE));
             Vector3 rvel = GTAVUtilities.GetRotationVelocity(veh);
             BitConverter.GetBytes(rvel.X).CopyTo(Data, 4 + 12 + 12 + 12 + 1);
             BitConverter.GetBytes(rvel.Y).CopyTo(Data, 4 + 12 + 12 + 12 + 1 + 4);
