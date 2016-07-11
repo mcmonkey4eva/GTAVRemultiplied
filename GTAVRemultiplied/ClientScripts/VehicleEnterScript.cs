@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
+using GTAVRemultiplied.ClientSystem;
 using GTAVRemultiplied.ClientSystem.TagBases;
 using GTAVRemultiplied;
 
@@ -19,8 +20,8 @@ public class VehicleEnterScript : Script
     {
         new Tuple<VehicleSeat, string>(VehicleSeat.Driver, "Driver"),
         new Tuple<VehicleSeat, string>(VehicleSeat.Passenger, "Passenger"),
-        new Tuple<VehicleSeat, string>(VehicleSeat.RightFront, "Right-Front"),
-        new Tuple<VehicleSeat, string>(VehicleSeat.LeftFront, "Left-Front"),
+        //new Tuple<VehicleSeat, string>(VehicleSeat.RightFront, "Right-Front"),
+        //new Tuple<VehicleSeat, string>(VehicleSeat.LeftFront, "Left-Front"),
         new Tuple<VehicleSeat, string>(VehicleSeat.RightRear, "Right-Rear"),
         new Tuple<VehicleSeat, string>(VehicleSeat.LeftRear, "Left-Rear"),
         new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat1, "Extra 1"),
@@ -31,11 +32,17 @@ public class VehicleEnterScript : Script
 
     Vehicle getinto = null;
     VehicleSeat spot = VehicleSeat.None;
+    
+    public static double LastVehicle = 0;
 
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
-        return; // TODO: FIXME!
         if (Game.Player.Character.IsInVehicle())
+        {
+            LastVehicle = GTAVFrenetic.GlobalTickTime;
+            return;
+        }
+        if (GTAVFrenetic.GlobalTickTime - LastVehicle < 3)
         {
             return;
         }
@@ -57,7 +64,7 @@ public class VehicleEnterScript : Script
                     {
                         // TODO: Less hilarious position finder! One that works at all!
                         Ped p = veh.CreatePedOnSeat(seatd.Item1, PedHash.DeadHooker);
-                        Vector3 pos = p.Position;
+                        Vector3 pos = p.GetBoneCoord(Bone.IK_Head);
                         p.Delete();
                         float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
                         if (dist < closest)
@@ -73,12 +80,13 @@ public class VehicleEnterScript : Script
             }
             if (getinto != null)
             {
-                ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, 2), "<RELEASE TO ENTER>");
+                ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), "<RELEASE TO ENTER>");
             }
         }
         else if (getinto != null)
         {
             Game.Player.Character.SetIntoVehicle(getinto, spot);
+            getinto = null;
         }
     }
 }
