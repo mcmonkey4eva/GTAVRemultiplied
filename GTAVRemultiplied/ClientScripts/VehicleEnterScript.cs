@@ -20,6 +20,7 @@ public class VehicleEnterScript : Script
     {
         new Tuple<VehicleSeat, string>(VehicleSeat.Driver, "Driver"),
         new Tuple<VehicleSeat, string>(VehicleSeat.Passenger, "Passenger"),
+        // Intentionally drop these two:
         //new Tuple<VehicleSeat, string>(VehicleSeat.RightFront, "Right-Front"),
         //new Tuple<VehicleSeat, string>(VehicleSeat.LeftFront, "Left-Front"),
         new Tuple<VehicleSeat, string>(VehicleSeat.RightRear, "Right-Rear"),
@@ -27,7 +28,8 @@ public class VehicleEnterScript : Script
         new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat1, "Extra 1"),
         new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat2, "Extra 2"),
         new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat3, "Extra 3"),
-        new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat4, "Extra 4"),
+        new Tuple<VehicleSeat, string>(VehicleSeat.ExtraSeat4, "Extra 4")
+        // TODO: other extras, probably.
     };
 
     Vehicle getinto = null;
@@ -56,6 +58,7 @@ public class VehicleEnterScript : Script
             getinto = null;
             Vector3 closepos = Vector3.Zero;
             Vector3 playerpos = Game.Player.Character.Position;
+            string seatName = null;
             foreach (Vehicle veh in World.GetAllVehicles())
             {
                 if (veh.Position.DistanceToSquared(playerpos) > 20f * 20f)
@@ -66,7 +69,7 @@ public class VehicleEnterScript : Script
                 {
                     if (veh.IsSeatFree(seatd.Item1))
                     {
-                        // TODO: Less hilarious position finder! One that works at all!
+                        // TODO: Less hilarious position finder?
                         Ped p = veh.CreatePedOnSeat(seatd.Item1, PedHash.DeadHooker);
                         Vector3 pos = p.GetBoneCoord(Bone.IK_Head);
                         p.Delete();
@@ -77,19 +80,23 @@ public class VehicleEnterScript : Script
                             getinto = veh;
                             spot = seatd.Item1;
                             closepos = pos;
+                            seatName = seatd.Item2;
                         }
-                        ClientConnectionScript.Text3D(pos, "[" + seatd.Item2 + "]");
+                        if (DebugPositionScript.Enabled)
+                        {
+                            ClientConnectionScript.Text3D(pos, "[" + seatd.Item2 + "]");
+                        }
                     }
                 }
             }
-            if (getinto != null)
+            if (getinto != null && seatName != null)
             {
-                ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), "<RELEASE TO ENTER>");
+                ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), seatName, System.Drawing.Color.Yellow);
             }
         }
         else if (getinto != null)
         {
-            Game.Player.Character.SetIntoVehicle(getinto, spot);
+            Game.Player.Character.Task.EnterVehicle(getinto, spot);
             getinto = null;
         }
     }

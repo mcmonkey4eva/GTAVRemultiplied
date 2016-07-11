@@ -54,12 +54,17 @@ public class ClientConnectionScript : Script
 
     public static void Text3D(Vector3 pos, string text)
     {
+        Text3D(pos, text, System.Drawing.Color.White);
+    }
+
+    public static void Text3D(Vector3 pos, string text, System.Drawing.Color color)
+    {
         if (camPos.DistanceToSquared(pos) < 400)
         {
             System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
             float dist = camPos.DistanceTo(pos);
             float scale = 5f / (dist / GameplayCamera.Zoom);
-            Text utext = new Text(text, point, scale, System.Drawing.Color.White, Font.ChaletLondon, Alignment.Center, true, false);
+            Text utext = new Text(text, point, scale, color, Font.ChaletLondon, Alignment.Center, true, false);
             utext.Draw();
         }
     }
