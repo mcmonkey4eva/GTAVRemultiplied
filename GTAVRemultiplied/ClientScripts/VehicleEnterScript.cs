@@ -8,6 +8,7 @@ using GTA.Math;
 using GTAVRemultiplied.ClientSystem;
 using GTAVRemultiplied.ClientSystem.TagBases;
 using GTAVRemultiplied;
+using GTAVRemultiplied.ServerSystem;
 
 public class VehicleEnterScript : Script
 {
@@ -39,7 +40,7 @@ public class VehicleEnterScript : Script
 
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
-        if (!ClientConnectionScript.Connected)
+        if (!ClientConnectionScript.Connected && !GTAVFreneticServer.Enabled)
         {
             return;
         }
