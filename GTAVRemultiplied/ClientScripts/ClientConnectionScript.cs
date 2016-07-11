@@ -7,6 +7,7 @@ using GTA;
 using GTA.Math;
 using GTA.Native;
 using GTA.UI;
+using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 using GTAVRemultiplied;
@@ -340,7 +341,7 @@ public class ClientConnectionScript : Script
     {
         SendPacket((byte)pack.ID, pack.Data);
     }
-
+    
     public static void Connect(string ip, ushort port)
     {
         try
@@ -361,15 +362,44 @@ public class ClientConnectionScript : Script
                     Connection.EndConnect(a);
                     if (Connection.Connected)
                     {
-                        lock (Locker)
+                        string sess = AccountHelper.GetWebSession();
+                        Connection.Send(GTAVUtilities.Enc.GetBytes(AccountHelper.Username + "\n" + sess + "\n\n"));
+                        int count = 0;
+                        string b = "";
+                        while (count < 100)
                         {
-                            Connected = true;
+                            while (Connection.Available > 0)
+                            {
+                                byte[] hb = new byte[1];
+                                int c = Connection.Receive(hb, 1, SocketFlags.None);
+                                b += GTAVUtilities.Enc.GetString(hb, 0, c);
+                                if (b.EndsWith("\n\n"))
+                                {
+                                    if (b.StartsWith("ACCEPT"))
+                                    {
+                                        lock (Locker)
+                                        {
+                                            Connected = true;
+                                            return;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Connection rejected by server!");
+                                    }
+                                }
+                            }
+                            Thread.Sleep(100);
+                            count++;
                         }
+                        throw new Exception("Failed to connect: timeout!");
                     }
                 }
                 catch (Exception ex)
                 {
                     Log.Exception(ex);
+                    Connection.Close();
+                    Connected = false;
                 }
             }, null);
         }

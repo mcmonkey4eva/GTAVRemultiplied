@@ -11,7 +11,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            if (data.Length != 4 + 4 + 4)
+            if (data.Length < 4 + 4 + 4 + 4)
             {
                 return false;
             }
@@ -26,7 +26,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             pinfo.hasBlip = true;
             pinfo.blipSprite = sprite;
             pinfo.blipColor = color;
-            pinfo.Character.CanBeDraggedOutOfVehicle = false; // TODO: Better way to identify unjackable players!
+            int len = BitConverter.ToInt32(data, 12);
+            if (len > 0)
+            {
+                string name = GTAVUtilities.Enc.GetString(data, 16, len);
+                pinfo.Name = name;
+                pinfo.Character.CanBeDraggedOutOfVehicle = false;
+            }
             return true;
         }
     }

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ClientScripts\PropSpawnScript.cs" />
     <Compile Include="ClientScripts\VehicleEnterScript.cs" />
+    <Compile Include="ClientSystem\NetworkCommands\LoginCommand.cs" />
     <Compile Include="ClientSystem\NetworkCommands\StopServerCommand.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddBlipPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddPedPacketIn.cs" />
@@ -92,11 +93,13 @@
     <Compile Include="ServerSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\SetModelPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\UpdateVehiclePacketOut.cs" />
+    <Compile Include="ServerSystem\PendingConnection.cs" />
     <Compile Include="ServerSystem\VehicleInfo.cs" />
+    <Compile Include="SharedSystems\AccountHelper.cs" />
     <Compile Include="SharedSystems\IPLList.cs" />
     <Compile Include="SharedSystems\PropList.cs" />
+    <Compile Include="SharedSystems\Scheduler.cs" />
     <Compile Include="SharedSystems\YachtHelper.cs" />
-    <Compile Include="StringUtilities.cs" />
     <Compile Include="ClientScripts\ChatTextScript.cs" />
     <Compile Include="ClientScripts\ClientConnectionScript.cs" />
     <Compile Include="ClientScripts\CommandLineScript.cs" />

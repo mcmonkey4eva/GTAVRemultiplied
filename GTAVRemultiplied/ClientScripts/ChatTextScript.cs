@@ -124,7 +124,6 @@ public class ChatTextScript : Script
     {
         try
         {
-            // TODO: Smooth fade out?
             double dist = DateTime.Now.Subtract(LastUpdate).TotalSeconds;
             if (dist <= 8)
             {

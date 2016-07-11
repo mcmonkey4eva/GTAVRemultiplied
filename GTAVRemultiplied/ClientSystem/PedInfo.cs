@@ -31,6 +31,8 @@ namespace GTAVRemultiplied.ClientSystem
 
         bool running = false;
 
+        public string Name = null;
+
         public void Tick()
         {
             if (Character.IsInVehicle())

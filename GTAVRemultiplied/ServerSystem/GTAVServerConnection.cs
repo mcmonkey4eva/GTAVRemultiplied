@@ -18,25 +18,66 @@ namespace GTAVRemultiplied.ServerSystem
     {
         public TcpListener Listener;
 
+        public List<PendingConnection> Waiting = new List<PendingConnection>();
+
         public List<GTAVServerClientConnection> Connections = new List<GTAVServerClientConnection>();
 
         public void CheckForConnections()
         {
             while (Listener.Pending())
             {
-                GTAVServerClientConnection client = new GTAVServerClientConnection();
-                try
+                PendingConnection pcon = new PendingConnection();
+                pcon.Sock = Listener.AcceptSocket();
+                pcon.Sock.Blocking = false;
+                pcon.Sock.SendBufferSize = 1024 * 1024;
+                pcon.Sock.ReceiveBufferSize = 1024 * 1024;
+                pcon.Data = "";
+                Waiting.Add(pcon);
+            }
+            for (int i = Waiting.Count - 1; i >= 0; i--)
+            {
+                PendingConnection conn = Waiting[i];
+                // TODO: Timeout here.
+                while (conn.Sock.Available > 0)
                 {
-                    client.Sock = Listener.AcceptSocket();
-                    client.Sock.Blocking = false;
-                    client.Sock.SendBufferSize = 1024 * 1024;
-                    client.Sock.ReceiveBufferSize = 1024 * 1024;
-                    Connections.Add(client);
-                    client.Spawn();
-                }
-                catch (Exception ex)
-                {
-                    Log.Exception(ex);
+                    byte[] hb = new byte[1];
+                    int c = conn.Sock.Receive(hb, 1, SocketFlags.None);
+                    conn.Data += GTAVUtilities.Enc.GetString(hb, 0, c);
+                    if (conn.Data.EndsWith("\n\n"))
+                    {
+                        string[] split = conn.Data.SplitFast('\n');
+                        Waiting.Remove(conn);
+                        GTAVFreneticServer.Schedule.StartASyncTask(() =>
+                        {
+                            try
+                            {
+                                AccountHelper.CheckWebSession(conn.Sock, split[0], split[1]);
+                                GTAVFreneticServer.Schedule.ScheduleSyncTask(() =>
+                                {
+                                    GTAVServerClientConnection client = new GTAVServerClientConnection();
+                                    try
+                                    {
+                                        conn.Sock.Send(GTAVUtilities.Enc.GetBytes("ACCEPT\n\n"));
+                                        client.Sock = conn.Sock;
+                                        Connections.Add(client);
+                                        client.Spawn();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Log.Exception(ex);
+                                    }
+                                });
+                            }
+                            catch (Exception ex)
+                            {
+                                GTAVFreneticServer.Schedule.ScheduleSyncTask(() =>
+                                {
+                                    Log.Exception(ex);
+                                });
+                                conn.Sock.Close();
+                            }
+                        });
+                    }
                 }
             }
             for (int i = 0; i < Connections.Count; i++)
@@ -173,7 +214,7 @@ namespace GTAVRemultiplied.ServerSystem
                             connection.SendPacket(new AddPedPacketOut(ped));
                             if (owner != null || Game.Player.Character.Handle == ped.Handle)
                             {
-                                connection.SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
+                                connection.SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
                             }
                         }
                     }

@@ -14,16 +14,27 @@ using GTAVRemultiplied.ServerSystem.TagBases;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ServerSystem
 {
     public class GTAVFreneticServer
     {
+        public static string HostAccount
+        {
+            get
+            {
+                return AccountHelper.Username;
+            }
+        }
+
         public static bool Enabled = false;
 
         public static GTAVFreneticServerOutputter Output;
 
         public static Commands CommandSystem;
+
+        public static Scheduler Schedule = new Scheduler();
 
         public static void AutorunScripts()
         {
@@ -46,6 +57,7 @@ namespace GTAVRemultiplied.ServerSystem
             GlobalTickTime += cDelta;
             if (Enabled)
             {
+                Schedule.RunAllSyncTasks(delta);
                 CommandSystem.Tick(delta);
             }
         }

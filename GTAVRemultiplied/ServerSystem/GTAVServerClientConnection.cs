@@ -37,6 +37,8 @@ namespace GTAVRemultiplied.ServerSystem
 
         public float speed = 0;
 
+        public string Name = null;
+
         public void AddBlip()
         {
             blip = Character.AttachBlip();
@@ -85,7 +87,7 @@ namespace GTAVRemultiplied.ServerSystem
                 SendPacket(new AddPedPacketOut(ped));
                 if (owner != null || Game.Player.Character.Handle == ped.Handle)
                 {
-                    SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue));
+                    SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
                 }
             }
             SendPacket(new SetIPLDataPacketOut());

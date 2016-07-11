@@ -11,6 +11,7 @@ using System.IO;
 using GTAVRemultiplied.ClientSystem.CommonCommands;
 using GTAVRemultiplied.ClientSystem.NetworkCommands;
 using GTAVRemultiplied.ClientSystem.TagBases;
+using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ClientSystem
 {
@@ -19,6 +20,8 @@ namespace GTAVRemultiplied.ClientSystem
         public static GTAVFreneticOutputter Output;
 
         public static Commands CommandSystem;
+
+        public static Scheduler Schedule = new Scheduler();
 
         public static void AutorunScripts()
         {
@@ -39,6 +42,7 @@ namespace GTAVRemultiplied.ClientSystem
         {
             cDelta = delta;
             GlobalTickTime += cDelta;
+            Schedule.RunAllSyncTasks(delta);
             CommandSystem.Tick(delta);
         }
 
@@ -54,6 +58,7 @@ namespace GTAVRemultiplied.ClientSystem
             CommandSystem.RegisterCommand(new DevelCommand());
             // Network Commands
             CommandSystem.RegisterCommand(new ConnectCommand());
+            CommandSystem.RegisterCommand(new LoginCommand());
             CommandSystem.RegisterCommand(new StartServerCommand());
             CommandSystem.RegisterCommand(new StopServerCommand());
             // Tag Bases
