@@ -54,6 +54,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public override void Reload()
         {
+            GTAVFreneticServer.AutorunScripts();
         }
     }
 }
