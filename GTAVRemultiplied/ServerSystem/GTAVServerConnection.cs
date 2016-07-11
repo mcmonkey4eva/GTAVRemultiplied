@@ -58,6 +58,7 @@ namespace GTAVRemultiplied.ServerSystem
                                     try
                                     {
                                         conn.Sock.Send(GTAVUtilities.Enc.GetBytes("ACCEPT\n\n"));
+                                        client.Name = split[0];
                                         client.Sock = conn.Sock;
                                         Connections.Add(client);
                                         client.Spawn();

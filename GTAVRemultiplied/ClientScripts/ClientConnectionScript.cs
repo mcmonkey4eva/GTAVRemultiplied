@@ -55,16 +55,20 @@ public class ClientConnectionScript : Script
 
     public static void Text3D(Vector3 pos, string text)
     {
-        Text3D(pos, text, System.Drawing.Color.White);
+        Text3D(pos, text, System.Drawing.Color.White, 5f);
     }
 
-    public static void Text3D(Vector3 pos, string text, System.Drawing.Color color)
+    public static void Text3D(Vector3 pos, string text, System.Drawing.Color color, float sfact)
     {
         if (camPos.DistanceToSquared(pos) < 400)
         {
             System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
+            if (point.Y <= 0 || point.Y >= Screen.Height || point.X <= 0 || point.X >= Screen.Width)
+            {
+                return;
+            }
             float dist = camPos.DistanceTo(pos);
-            float scale = 5f / (dist / GameplayCamera.Zoom);
+            float scale = sfact / (dist / GameplayCamera.Zoom);
             Text utext = new Text(text, point, scale, color, Font.ChaletLondon, Alignment.Center, true, false);
             utext.Draw();
         }
@@ -296,6 +300,10 @@ public class ClientConnectionScript : Script
                     foreach (PedInfo pinf in ServerPedKnownPosition.Values)
                     {
                         pinf.Tick();
+                        if (pinf.Name != null)
+                        {
+                            Text3D(pinf.Character.GetBoneCoord(Bone.IK_Head) + new Vector3(0, 0, 0.25f), pinf.Name, System.Drawing.Color.White, 2f);
+                        }
                     }
                 }
             }

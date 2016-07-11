@@ -30,6 +30,11 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
         
         public override void Execute(CommandQueue queue, CommandEntry entry)
         {
+            if (GTAVFreneticServer.HostAccount == null)
+            {
+                queue.HandleError(entry, "Cannot host: not logged in!");
+                return;
+            }
             ushort port = 28010;
             if (entry.Arguments.Count > 0)
             {
