@@ -40,65 +40,72 @@ public class VehicleEnterScript : Script
 
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
-        if (!ClientConnectionScript.Connected && !GTAVFreneticServer.Enabled)
+        try
         {
-            return;
-        }
-        if (Game.Player.Character.IsInVehicle())
-        {
-            LastVehicle = GTAVFrenetic.GlobalTickTime;
-            return;
-        }
-        if (GTAVFrenetic.GlobalTickTime - LastVehicle < 3)
-        {
-            return;
-        }
-        if (ControlTagBase.ControlDown(Control.Enter))
-        {
-            float closest = 8 * 8;
-            getinto = null;
-            Vector3 closepos = Vector3.Zero;
-            Vector3 playerpos = Game.Player.Character.Position;
-            string seatName = null;
-            foreach (Vehicle veh in World.GetAllVehicles())
+            if (!ClientConnectionScript.Connected && !GTAVFreneticServer.Enabled)
             {
-                if (veh.Position.DistanceToSquared(playerpos) > 20f * 20f)
+                return;
+            }
+            if (Game.Player.Character.IsInVehicle())
+            {
+                LastVehicle = GTAVFrenetic.GlobalTickTime;
+                return;
+            }
+            if (GTAVFrenetic.GlobalTickTime - LastVehicle < 3)
+            {
+                return;
+            }
+            if (ControlTagBase.ControlDown(Control.Enter))
+            {
+                float closest = 8 * 8;
+                getinto = null;
+                Vector3 closepos = Vector3.Zero;
+                Vector3 playerpos = Game.Player.Character.Position;
+                string seatName = null;
+                foreach (Vehicle veh in World.GetAllVehicles())
                 {
-                    continue;
-                }
-                foreach (Tuple<VehicleSeat, string> seatd in seatOptions)
-                {
-                    if (veh.IsSeatFree(seatd.Item1))
+                    if (veh.Position.DistanceToSquared(playerpos) > 20f * 20f)
                     {
-                        // TODO: Less hilarious position finder?
-                        Ped p = veh.CreatePedOnSeat(seatd.Item1, PedHash.DeadHooker);
-                        Vector3 pos = p.GetBoneCoord(Bone.IK_Head);
-                        p.Delete();
-                        float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
-                        if (dist < closest)
+                        continue;
+                    }
+                    foreach (Tuple<VehicleSeat, string> seatd in seatOptions)
+                    {
+                        if (veh.IsSeatFree(seatd.Item1))
                         {
-                            closest = dist;
-                            getinto = veh;
-                            spot = seatd.Item1;
-                            closepos = pos;
-                            seatName = seatd.Item2;
-                        }
-                        if (DebugPositionScript.Enabled)
-                        {
-                            ClientConnectionScript.Text3D(pos, "[" + seatd.Item2 + "]");
+                            // TODO: Less hilarious position finder?
+                            Ped p = veh.CreatePedOnSeat(seatd.Item1, PedHash.DeadHooker);
+                            Vector3 pos = p.GetBoneCoord(Bone.IK_Head);
+                            p.Delete();
+                            float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
+                            if (dist < closest)
+                            {
+                                closest = dist;
+                                getinto = veh;
+                                spot = seatd.Item1;
+                                closepos = pos;
+                                seatName = seatd.Item2;
+                            }
+                            if (DebugPositionScript.Enabled)
+                            {
+                                ClientConnectionScript.Text3D(pos, "[" + seatd.Item2 + "]");
+                            }
                         }
                     }
                 }
+                if (getinto != null && seatName != null)
+                {
+                    ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), seatName, System.Drawing.Color.Yellow, 5f);
+                }
             }
-            if (getinto != null && seatName != null)
+            else if (getinto != null)
             {
-                ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), seatName, System.Drawing.Color.Yellow, 5f);
+                Game.Player.Character.Task.EnterVehicle(getinto, spot);
+                getinto = null;
             }
         }
-        else if (getinto != null)
+        catch (Exception ex)
         {
-            Game.Player.Character.Task.EnterVehicle(getinto, spot);
-            getinto = null;
+            Log.Exception(ex);
         }
     }
 }

@@ -33,11 +33,20 @@ namespace GTAVRemultiplied.ClientSystem
 
         public string Name = null;
 
+        public bool InVehicle = false;
+        
         public void Tick()
         {
             if (Character.IsInVehicle())
             {
-                return;
+                if (!InVehicle)
+                {
+                    Character.Task.WarpOutOfVehicle(Character.CurrentVehicle);
+                }
+                else
+                {
+                    return;
+                }
             }
             Vector3 rel = lGoal - lPos;
             float rlen = rel.Length();

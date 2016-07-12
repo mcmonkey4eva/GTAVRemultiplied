@@ -15,7 +15,9 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 return false;
             }
-            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[BitConverter.ToInt32(data, 0)]);
+            int sped = BitConverter.ToInt32(data, 0);
+            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[sped]);
+            ClientConnectionScript.ServerPedKnownPosition[sped].InVehicle = false;
             if (ped.CurrentVehicle != null)
             {
                 ped.Task.LeaveVehicle(ped.CurrentVehicle, false);

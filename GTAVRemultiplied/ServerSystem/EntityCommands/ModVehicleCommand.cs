@@ -93,8 +93,10 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
                     veh.Internal.IsInvincible = BooleanTag.TryFor(val).Internal;
                     break;
                 case "window_tint":
-                    // TODO: Functionality here?
                     veh.Internal.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
+                    break;
+                case "devel_spawnrider": // TODO: Delete this.
+                    veh.Internal.CreateRandomPedOnSeat(VehicleSeat.Any);
                     break;
                 default:
                     queue.HandleError(entry, "Unknown option!");

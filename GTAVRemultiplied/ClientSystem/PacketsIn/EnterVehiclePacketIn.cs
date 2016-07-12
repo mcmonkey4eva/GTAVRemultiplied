@@ -20,6 +20,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int ped = BitConverter.ToInt32(data, 5);
             Ped p = new Ped(ClientConnectionScript.ServerToClientPed[ped]);
             Vehicle v = new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]);
+            ClientConnectionScript.ServerPedKnownPosition[ped].InVehicle = true;
             if (!v.IsSeatFree(seat))
             {
                 Ped problem = v.GetPedOnSeat(seat);
