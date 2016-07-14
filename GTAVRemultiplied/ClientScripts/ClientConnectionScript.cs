@@ -219,15 +219,16 @@ public class ClientConnectionScript : Script
                     }
                     if (!firsttele && ClientToServerPed.Count > 0)
                     {
-                        Game.Player.Character.PositionNoOffset = new Ped(ClientToServerPed.Keys.First()).Position;
+                        Vector3 pos = new Ped(ClientToServerPed.Keys.First()).Position;
                         foreach (int ped in ClientToServerPed.Keys)
                         {
                             if (new Ped(ped).Model.Hash == DefaultModel.Hash)
                             {
-                                Game.Player.Character.PositionNoOffset = new Ped(ped).Position;
+                                pos = new Ped(ped).Position;
                                 break;
                             }
                         }
+                        Game.Player.Character.PositionNoOffset = pos;
                         firsttele = true;
                     }
                     WeaponHash cweap = Game.Player.Character.Weapons.Current.Hash;
