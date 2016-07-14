@@ -9,6 +9,8 @@ using GTAVRemultiplied;
 
 public class ModelEnforcementScript : Script
 {
+    public static bool Enabled = true;
+
     public static Model? WantedModel = null;
 
     public ModelEnforcementScript()
@@ -20,7 +22,7 @@ public class ModelEnforcementScript : Script
 
     private void ModelEnforcementScript_Tick(object sender, EventArgs e)
     {
-        if (!CanTick)
+        if (!CanTick || !Enabled)
         {
             return;
         }

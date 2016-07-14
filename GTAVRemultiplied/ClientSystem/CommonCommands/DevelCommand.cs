@@ -55,6 +55,13 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         queue.HandleError(entry, "Invalid input!");
                     }
                     break;
+                case "modelEnforcement":
+                    ModelEnforcementScript.Enabled = !ModelEnforcementScript.Enabled;
+                    if (entry.ShouldShowGood(queue))
+                    {
+                        entry.Good(queue, "Model enforcement " + (ModelEnforcementScript.Enabled ? "enabled!" : "disabled!"));
+                    }
+                    break;
                 case "getWeapons":
                     foreach (WeaponHash hash in ModelEnforcementScript.hashes)
                     {
