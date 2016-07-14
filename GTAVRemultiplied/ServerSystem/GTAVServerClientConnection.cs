@@ -140,6 +140,15 @@ namespace GTAVRemultiplied.ServerSystem
             }
         }
 
+        public void SetCharacterPosition(Vector3 pos)
+        {
+            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.Mission_Entities | IntersectOptions.Objects, Character).DitHit)
+            {
+                return;
+            }
+            Character.PositionNoOffset = pos;
+        }
+
         public void Tick()
         {
             if (dcon)
@@ -161,7 +170,7 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                     else
                     {
-                        Character.PositionNoOffset = lGoal;
+                        SetCharacterPosition(lGoal);
                     }
                 }
                 else
@@ -174,7 +183,7 @@ namespace GTAVRemultiplied.ServerSystem
                     }
                     else
                     {
-                        Character.PositionNoOffset = lPos;
+                        SetCharacterPosition(lPos);
                     }
                 }
             }
@@ -188,7 +197,7 @@ namespace GTAVRemultiplied.ServerSystem
                 }
                 else
                 {
-                    Character.PositionNoOffset = lGoal;
+                    SetCharacterPosition(lGoal);
                 }
             }
             while (Sock.Available > 0 && count < known.Length)

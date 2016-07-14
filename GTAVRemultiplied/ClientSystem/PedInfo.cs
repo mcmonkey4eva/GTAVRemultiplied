@@ -34,6 +34,15 @@ namespace GTAVRemultiplied.ClientSystem
         public string Name = null;
 
         public bool InVehicle = false;
+
+        public void SetCharacterPosition(Vector3 pos)
+        {
+            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.Mission_Entities | IntersectOptions.Objects, Character).DitHit)
+            {
+                return;
+            }
+            Character.PositionNoOffset = pos;
+        }
         
         public void Tick()
         {
@@ -57,20 +66,20 @@ namespace GTAVRemultiplied.ClientSystem
                 {
                     StopMove();
                     lPos = lGoal;
-                    Character.PositionNoOffset = lGoal;
+                    SetCharacterPosition(lGoal);
                 }
                 else
                 {
                     AnimateMove(speed > 3);
                     lPos = lPos + rel * speed * GTAVFrenetic.cDelta;
-                    Character.PositionNoOffset = lPos;
+                    SetCharacterPosition(lPos);
                 }
             }
             else
             {
                 StopMove();
                 lPos = lGoal;
-                Character.PositionNoOffset = lGoal;
+                SetCharacterPosition(lGoal);
             }
         }
 
