@@ -115,7 +115,13 @@ namespace GTAVRemultiplied.SharedSystems
                 if (resp.StartsWith("ACCEPT=") && resp.EndsWith(";"))
                 {
                     string ip = resp.Substring("ACCEPT=".Length, resp.Length - 1 - "ACCEPT=".Length);
-                    if (rip.Contains("127.0.0.1") || rip.Contains("[::1]") || rip.Contains("192.168.0.") || rip.Contains(ip))
+                    if (
+                        rip.Contains("127.0.0.1")
+                        || rip.Contains("[::1]")
+                        || rip.Contains("192.168.0.")
+                        || rip.Contains("192.168.1.")
+                        || rip.Contains("10.0.0.")
+                        || rip.Contains(ip))
                     {
                         Log.Message("Server", "Connection from '" + rip + "' accepted with username: " + username);
                         return;
