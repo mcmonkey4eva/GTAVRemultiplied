@@ -117,6 +117,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "thermalVision":
                     Game.ThermalVision = BooleanTag.TryFor(arg2).Internal;
                     break;
+                case "nightVision":
+                    Game.Nightvision = BooleanTag.TryFor(arg2).Internal;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
