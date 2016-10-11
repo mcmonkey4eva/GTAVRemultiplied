@@ -32,7 +32,7 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
         static VehicleTag()
         {
             // TODO: Meta!
-            Handlers.Add("vehicle_window_tint_integer", new TagSubHandler() { Handle = (data, obj) => new IntegerTag((int)((VehicleTag)obj).Internal.WindowTint), ReturnTypeString = "integertag" });
+            Handlers.Add("vehicle_window_tint_integer", new TagSubHandler() { Handle = (data, obj) => new IntegerTag((int)((VehicleTag)obj).Internal.Mods.WindowTint), ReturnTypeString = "integertag" });
             // Documented in TextTag.
             Handlers.Add("duplicate", new TagSubHandler() { Handle = (data, obj) => new VehicleTag(((VehicleTag)obj).Internal), ReturnTypeString = "vehicletag" });
             // Documented in TextTag.

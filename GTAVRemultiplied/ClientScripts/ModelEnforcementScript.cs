@@ -71,7 +71,7 @@ public class ModelEnforcementScript : Script
         }
         WeaponHash current = Game.Player.Character.Weapons.Current.Hash;
         Function.Call(Hash.SET_PLAYER_MODEL, Game.Player.Handle, mod.Hash);
-        Game.Player.Character.SetDefaultClothes();
+        Game.Player.Character.Style.SetDefaultClothes();
         for (int i = 0; i < hashes.Length; i++)
         {
             if (hads[i])

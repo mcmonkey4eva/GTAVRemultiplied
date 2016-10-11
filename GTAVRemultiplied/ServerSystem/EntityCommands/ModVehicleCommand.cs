@@ -55,13 +55,13 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
                         string vs = val.ToString();
                         if (vs == "")
                         {
-                            veh.Internal.ClearCustomPrimaryColor();
+                            veh.Internal.Mods.ClearCustomPrimaryColor();
                         }
                         else
                         {
                             // TODO: Color tag!
                             Vector3 col = GTAVUtilities.StringToVector(vs);
-                            veh.Internal.CustomPrimaryColor = System.Drawing.Color.FromArgb((int)(col.X * 255), (int)(col.Y * 255), (int)(col.Z * 255));
+                            veh.Internal.Mods.CustomPrimaryColor = System.Drawing.Color.FromArgb((int)(col.X * 255), (int)(col.Y * 255), (int)(col.Z * 255));
                         }
                     }
                     break;
@@ -70,30 +70,30 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
                         string vs = val.ToString();
                         if (vs == "")
                         {
-                            veh.Internal.ClearCustomSecondaryColor();
+                            veh.Internal.Mods.ClearCustomSecondaryColor();
                         }
                         else
                         {
                             // TODO: Color tag!
                             Vector3 col = GTAVUtilities.StringToVector(vs);
-                            veh.Internal.CustomSecondaryColor = System.Drawing.Color.FromArgb((int)(col.X * 255), (int)(col.Y * 255), (int)(col.Z * 255));
+                            veh.Internal.Mods.CustomSecondaryColor = System.Drawing.Color.FromArgb((int)(col.X * 255), (int)(col.Y * 255), (int)(col.Z * 255));
                         }
                     }
                     break;
                 case "color_trim":
-                    veh.Internal.TrimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    veh.Internal.Mods.TrimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
                     break;
                 case "color_rim":
-                    veh.Internal.RimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    veh.Internal.Mods.RimColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
                     break;
                 case "color_shine":
-                    veh.Internal.PearlescentColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
+                    veh.Internal.Mods.PearlescentColor = (VehicleColor)Enum.Parse(typeof(VehicleColor), val.ToString(), true);
                     break;
                 case "invincible":
                     veh.Internal.IsInvincible = BooleanTag.TryFor(val).Internal;
                     break;
                 case "window_tint":
-                    veh.Internal.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
+                    veh.Internal.Mods.WindowTint = (VehicleWindowTint)Enum.Parse(typeof(VehicleWindowTint), val.ToString(), true);
                     break;
                 case "devel_spawnrider": // TODO: Delete this.
                     veh.Internal.CreateRandomPedOnSeat(VehicleSeat.Any);

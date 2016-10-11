@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         public AddVehiclePacketOut(Vehicle vehicle)
         {
             ID = ServerToClientPacket.ADD_VEHICLE;
-            int ind = 4 + 4 + 12 + 4 + 8 + 2 + 4;
+            int ind = 4 + 4 + 12 + 4 + 8 + 1 + 4;
             Data = new byte[ind + 5];
             BitConverter.GetBytes(vehicle.Handle).CopyTo(Data, 0);
             BitConverter.GetBytes(vehicle.Model.Hash).CopyTo(Data, 4);
@@ -22,7 +22,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             BitConverter.GetBytes(pos.Y).CopyTo(Data, 4 + 4 + 4);
             BitConverter.GetBytes(pos.Z).CopyTo(Data, 4 + 4 + 8);
             BitConverter.GetBytes(vehicle.Heading).CopyTo(Data, 4 + 4 + 12);
-            string numPlate = vehicle.LicensePlate;
+            string numPlate = vehicle.Mods.LicensePlate;
             for (int i = 0; i < numPlate.Length; i++)
             {
                 Data[4 + 4 + 12 + 4 + i] = (byte)numPlate[i];
@@ -31,14 +31,13 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
             {
                 Data[4 + 4 + 12 + 4 + i] = (byte)' ';
             }
-            Data[4 + 4 + 12 + 4 + 8] = (byte)vehicle.LicensePlateType;
-            Data[4 + 4 + 12 + 4 + 8 + 1] = 0; // Reserved: NumberPlateMounting setter?
-            BitConverter.GetBytes(vehicle.ColorCombination).CopyTo(Data, 4 + 4 + 12 + 4 + 8 + 2);
-            Data[ind] = (byte)vehicle.PrimaryColor;
-            Data[ind + 1] = (byte)vehicle.SecondaryColor;
-            Data[ind + 2] = (byte)vehicle.PearlescentColor;
-            Data[ind + 3] = (byte)vehicle.TrimColor;
-            Data[ind + 4] = (byte)vehicle.RimColor;
+            Data[4 + 4 + 12 + 4 + 8] = (byte)vehicle.Mods.LicensePlateStyle;
+            BitConverter.GetBytes(vehicle.Mods.ColorCombination).CopyTo(Data, 4 + 4 + 12 + 4 + 8 + 1);
+            Data[ind] = (byte)vehicle.Mods.PrimaryColor;
+            Data[ind + 1] = (byte)vehicle.Mods.SecondaryColor;
+            Data[ind + 2] = (byte)vehicle.Mods.PearlescentColor;
+            Data[ind + 3] = (byte)vehicle.Mods.TrimColor;
+            Data[ind + 4] = (byte)vehicle.Mods.RimColor;
         }
     }
 }

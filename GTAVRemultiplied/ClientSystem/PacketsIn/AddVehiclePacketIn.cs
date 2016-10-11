@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
     {
         public override bool ParseAndExecute(byte[] data)
         {
-            int ind = 4 + 4 + 12 + 4 + 8 + 2 + 4;
+            int ind = 4 + 4 + 12 + 4 + 8 + 1 + 4;
             if (data.Length != ind + 5)
             {
                 return false;
@@ -42,14 +42,14 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 numPlate += (char)data[4 + 4 + 12 + 4 + i];
             }
-            //vehicle.NumberPlate = numPlate.Trim();
-         //   vehicle.LicensePlateType = (LicensePlateType)data[4 + 4 + 12 + 4 + 8];
-            vehicle.ColorCombination = BitConverter.ToInt32(data, 4 + 4 + 12 + 4 + 8 + 2);
-            vehicle.PrimaryColor = (VehicleColor)data[ind];
-            vehicle.SecondaryColor = (VehicleColor)data[ind + 1];
-            vehicle.PearlescentColor = (VehicleColor)data[ind + 2];
-            vehicle.TrimColor = (VehicleColor)data[ind + 3];
-            vehicle.RimColor = (VehicleColor)data[ind + 4];
+            vehicle.Mods.LicensePlate = numPlate.Trim();
+            vehicle.Mods.LicensePlateStyle = (LicensePlateStyle)data[4 + 4 + 12 + 4 + 8];
+            vehicle.Mods.ColorCombination = BitConverter.ToInt32(data, 4 + 4 + 12 + 4 + 8 + 1);
+            vehicle.Mods.PrimaryColor = (VehicleColor)data[ind];
+            vehicle.Mods.SecondaryColor = (VehicleColor)data[ind + 1];
+            vehicle.Mods.PearlescentColor = (VehicleColor)data[ind + 2];
+            vehicle.Mods.TrimColor = (VehicleColor)data[ind + 3];
+            vehicle.Mods.RimColor = (VehicleColor)data[ind + 4];
             ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
             ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
             return true;

@@ -38,7 +38,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             ped.IsInvincible = true;
             ped.BlockPermanentEvents = true;
             ped.Task.ClearAllImmediately();
-            ped.SetDefaultClothes();
+            ped.Style.SetDefaultClothes();
             ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
             ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
             PedInfo pinf = new PedInfo();
