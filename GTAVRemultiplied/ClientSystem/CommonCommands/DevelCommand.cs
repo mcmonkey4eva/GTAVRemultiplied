@@ -114,6 +114,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "timeScale":
                     Game.TimeScale = (float)NumberTag.TryFor(arg2).Internal;
                     break;
+                case "thermalVision":
+                    Game.ThermalVision = BooleanTag.TryFor(arg2).Internal;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
