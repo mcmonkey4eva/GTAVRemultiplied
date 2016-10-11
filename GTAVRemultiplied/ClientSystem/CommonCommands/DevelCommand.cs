@@ -123,6 +123,15 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "lightNight":
                     LightTheNightScript.Light = BooleanTag.TryFor(arg2).Internal;
                     break;
+                case "explodeHere":
+                    Vector3 aim = Game.Player.Character.ForwardVector;
+                    if (Game.Player.IsAiming)
+                    {
+                        aim = GameplayCamera.Direction;
+                    }
+                    RaycastResult rcr = World.Raycast(Game.PlayerPed.GetBoneCoord(Bone.IK_Head), Game.PlayerPed.GetBoneCoord(Bone.IK_Head) + aim * 50, IntersectOptions.Everything, Game.PlayerPed);
+                    World.AddExplosion(rcr.HitPosition, ExplosionType.Blimp, 10, 5);
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
