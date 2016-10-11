@@ -217,6 +217,7 @@ public class ClientConnectionScript : Script
                             }
                         }
                     }
+                    // TODO: let the server decide a spawn point!
                     if (!firsttele && ClientToServerPed.Count > 0)
                     {
                         Vector3 pos = new Ped(ClientToServerPed.Keys.First()).Position;
