@@ -43,6 +43,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientScripts\LightTheNightScript.cs" />
     <Compile Include="ClientScripts\PropSpawnScript.cs" />
     <Compile Include="ClientScripts\VehicleEnterScript.cs" />
     <Compile Include="ClientSystem\NetworkCommands\LoginCommand.cs" />

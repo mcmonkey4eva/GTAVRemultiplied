@@ -120,6 +120,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "nightVision":
                     Game.Nightvision = BooleanTag.TryFor(arg2).Internal;
                     break;
+                case "lightNight":
+                    LightTheNightScript.Light = BooleanTag.TryFor(arg2).Internal;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
