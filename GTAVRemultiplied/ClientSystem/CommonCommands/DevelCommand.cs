@@ -111,6 +111,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         ped.Task.ShootAt(Game.Player.Character.Position + Game.Player.Character.ForwardVector);
                     }
                     break;
+                case "timeScale":
+                    Game.TimeScale = (float)NumberTag.TryFor(arg2).Internal;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
