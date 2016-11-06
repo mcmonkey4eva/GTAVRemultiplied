@@ -36,7 +36,7 @@ public class VehicleEnterScript : Script
     Vehicle getinto = null;
     VehicleSeat spot = VehicleSeat.None;
     
-    public static double LastVehicle = 0;
+    public double LastVehicle = 0;
 
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {

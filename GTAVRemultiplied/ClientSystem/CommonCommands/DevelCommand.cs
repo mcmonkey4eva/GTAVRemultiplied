@@ -136,8 +136,17 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     World.Blackout = BooleanTag.TryFor(arg2).Internal;
                     break;
                 case "playParticle":
-                    string[] arguments = arg2.ToString().SplitFast('=');
-                    new ParticleEffectsAsset(arguments[0]).StartNonLoopedAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                    {
+                        string[] arguments = arg2.ToString().SplitFast('=');
+                        new ParticleEffectsAsset(arguments[0]).StartNonLoopedAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                    }
+                    break;
+                case "loopParticle":
+                    {
+                        string[] arguments = arg2.ToString().SplitFast('=');
+                        CoordinateParticleEffect cpe = new ParticleEffectsAsset(arguments[0]).CreateEffectAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                        cpe.Start();
+                    }
                     break;
                 default:
                     queue.HandleError(entry, "What?");
