@@ -95,6 +95,7 @@ public class VehicleEnterScript : Script
                 if (getinto != null && seatName != null)
                 {
                     ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), seatName, System.Drawing.Color.Yellow, 5f);
+                    World.DrawSpotLight(closepos + new Vector3(0, 0, 3), new Vector3(0, 0, -1), System.Drawing.Color.Yellow, 10f, 3f, 1f, 20f, 1f);
                 }
             }
             else if (getinto != null)
