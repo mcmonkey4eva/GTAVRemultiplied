@@ -135,6 +135,10 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                 case "blackout":
                     World.Blackout = BooleanTag.TryFor(arg2).Internal;
                     break;
+                case "playParticle":
+                    string[] arguments = arg2.ToString().SplitFast('=');
+                    new ParticleEffectsAsset(arguments[0]).StartNonLoopedAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
