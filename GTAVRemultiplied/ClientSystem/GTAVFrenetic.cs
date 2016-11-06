@@ -48,6 +48,7 @@ namespace GTAVRemultiplied.ClientSystem
 
         public static void Init()
         {
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/frenetic/client/scripts/");
             Output = new GTAVFreneticOutputter();
             CommandSystem = new Commands();
             Output.Syst = CommandSystem;

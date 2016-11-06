@@ -83,6 +83,7 @@ namespace GTAVRemultiplied.ServerSystem
                 return;
             }
             Enabled = true;
+            Directory.CreateDirectory(Environment.CurrentDirectory + "/frenetic/server/scripts/");
             if (!ModelEnforcementScript.WantedModel.HasValue)
             {
                 GTAVUtilities.SwitchCharacter(PedHash.DeadHooker);
