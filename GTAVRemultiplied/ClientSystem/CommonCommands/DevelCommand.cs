@@ -132,6 +132,9 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     RaycastResult rcr = World.Raycast(Game.PlayerPed.GetBoneCoord(Bone.IK_Head), Game.PlayerPed.GetBoneCoord(Bone.IK_Head) + aim * 50, IntersectOptions.Everything, Game.PlayerPed);
                     World.AddExplosion(rcr.HitPosition, ExplosionType.Blimp, 10, 5);
                     break;
+                case "blackout":
+                    World.Blackout = BooleanTag.TryFor(arg2).Internal;
+                    break;
                 default:
                     queue.HandleError(entry, "What?");
                     return;
