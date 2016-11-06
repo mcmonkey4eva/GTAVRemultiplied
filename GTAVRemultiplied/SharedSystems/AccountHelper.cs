@@ -42,7 +42,7 @@ namespace GTAVRemultiplied.SharedSystems
                         data["username"] = user;
                         data["password"] = pass;
                         data["session_id"] = "0";
-                        byte[] response = wb.UploadValues("http://frenetic.xyz/account/micrologin", "POST", data);
+                        byte[] response = wb.UploadValues("https://frenetic.xyz/account/micrologin", "POST", data);
                         string resp = GTAVUtilities.Enc.GetString(response).Trim(' ', '\n', '\r', '\t');
                         if (resp.StartsWith("ACCEPT=") && resp.EndsWith(";"))
                         {
@@ -87,7 +87,7 @@ namespace GTAVRemultiplied.SharedSystems
                 data["formtype"] = "getsess";
                 data["username"] = Username;
                 data["session"] = Key;
-                byte[] response = wb.UploadValues("http://frenetic.xyz/account/microgetsess", "POST", data);
+                byte[] response = wb.UploadValues("https://frenetic.xyz/account/microgetsess", "POST", data);
                 string resp = GTAVUtilities.Enc.GetString(response).Trim(' ', '\n', '\r', '\t');
                 if (resp.StartsWith("ACCEPT=") && resp.EndsWith(";"))
                 {
@@ -109,7 +109,7 @@ namespace GTAVRemultiplied.SharedSystems
                 data["formtype"] = "confirm";
                 data["username"] = username;
                 data["session"] = key;
-                byte[] response = wb.UploadValues("http://frenetic.xyz/account/microconfirm", "POST", data);
+                byte[] response = wb.UploadValues("https://frenetic.xyz/account/microconfirm", "POST", data);
                 string resp = GTAVUtilities.Enc.GetString(response).Trim(' ', '\n', '\r', '\t');
                 string rip = sock.RemoteEndPoint.ToString();
                 if (resp.StartsWith("ACCEPT=") && resp.EndsWith(";"))
