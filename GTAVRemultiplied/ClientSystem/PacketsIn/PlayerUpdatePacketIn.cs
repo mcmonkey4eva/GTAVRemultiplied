@@ -18,7 +18,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int serverPed = BitConverter.ToInt32(data, 16 + 12 + 4 + 12);
-            Ped ped = new Ped(ClientConnectionScript.ServerToClientPed[serverPed]);
+            int tped;
+            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(serverPed, out tped))
+            {
+                return true; // TODO: Maybe send a 'request redefine' packet?
+            }
+            Ped ped = new Ped(tped);
             Vector3 vec = new Vector3();
             vec.X = BitConverter.ToSingle(data, 0);
             vec.Y = BitConverter.ToSingle(data, 4);
