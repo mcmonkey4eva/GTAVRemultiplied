@@ -54,11 +54,11 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     vehicle.Velocity = vel;
                     vehicle.Quaternion = rot;
                     vehicle.Speed = speed;
-                    vehicle.SirenActive = siren;
-                    vehicle.LightsOn = lights;
-                    vehicle.SearchLightOn = lights_search;
-                    vehicle.TaxiLightOn = lights_taxi;
-                    vehicle.InteriorLightOn = lights_int;
+                    vehicle.IsSirenActive = siren;
+                    vehicle.AreLightsOn = lights;
+                    vehicle.IsSearchLightOn = lights_search;
+                    vehicle.IsTaxiLightOn = lights_taxi;
+                    vehicle.IsInteriorLightOn = lights_int;
                     // TODO: Find a way to set steering angle? Perhaps use driver AI magic?
                     GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                 }

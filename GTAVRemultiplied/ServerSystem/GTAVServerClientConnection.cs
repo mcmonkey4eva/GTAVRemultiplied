@@ -43,7 +43,7 @@ namespace GTAVRemultiplied.ServerSystem
         {
             if (blip != null)
             {
-                blip.Remove();
+                blip.Delete();
             }
             if (Character != null)
             {
