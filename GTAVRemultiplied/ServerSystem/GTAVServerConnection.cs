@@ -22,15 +22,26 @@ namespace GTAVRemultiplied.ServerSystem
 
         public List<GTAVServerClientConnection> Connections = new List<GTAVServerClientConnection>();
 
+        public const float PACKET_RATE = 0.5f;
+
+        public float PacketLastUpdate = 0f;
+
         public void CheckForConnections()
         {
+            PacketLastUpdate += GTAVFreneticServer.cDelta;
+            bool send_update = false;
+            if (PacketLastUpdate >= PACKET_RATE)
+            {
+                PacketLastUpdate = 0f;
+                send_update = true;
+            }
             while (Listener.Pending())
             {
                 PendingConnection pcon = new PendingConnection();
                 pcon.Sock = Listener.AcceptSocket();
                 pcon.Sock.Blocking = false;
-                pcon.Sock.SendBufferSize = 1024 * 1024;
-                pcon.Sock.ReceiveBufferSize = 1024 * 1024;
+                pcon.Sock.SendBufferSize = 1024 * 1024 * 10;
+                pcon.Sock.ReceiveBufferSize = 1024 * 1024 * 10;
                 pcon.Data = "";
                 Waiting.Add(pcon);
             }
@@ -102,6 +113,7 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 if (!vehicle.Model.IsValid) // TODO: ???
                 {
+                    Log.Error("Failed: " + vehicle.Model.Hash + ":" + vehicle.Model.NativeValue + ", " + vehicle.ClassDisplayName);
                     continue;
                 }
                 if (!Vehicles.ContainsKey(vehicle.Handle))
@@ -126,9 +138,15 @@ namespace GTAVRemultiplied.ServerSystem
                     vinf.ForcePersistent = false;
                     vehicle.IsPersistent = false;
                 }
-                foreach (GTAVServerClientConnection connection in Connections)
+                if (send_update)
                 {
-                    connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
+                    foreach (GTAVServerClientConnection connection in Connections)
+                    {
+                        if (connection.Waiting < connection.MaxWaiting)
+                        {
+                            connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
+                        }
+                    }
                 }
             }
             foreach (int id in ids)
@@ -243,8 +261,14 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     if (connection.Character.Handle != ped.Handle)
                     {
-                        connection.SendPacket(new PlayerUpdatePacketOut(ped,
-                            (ped.Handle == Game.Player.Character.Handle && Game.Player.IsAiming) ? GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
+                        if (send_update)
+                        {
+                            if (connection.Waiting < connection.MaxWaiting)
+                            {
+                                connection.SendPacket(new PlayerUpdatePacketOut(ped, (ped.Handle == Game.Player.Character.Handle && Game.Player.IsAiming) ?
+                                    GameplayCamera.Direction : ((owner == null) ? Vector3.Zero : owner.Aim)));
+                            }
+                        }
                         if (cweap == character.weap && character.ammo > cammo)
                         {
                             connection.SendPacket(new FiredShotPacketOut(ped,
@@ -293,7 +317,10 @@ namespace GTAVRemultiplied.ServerSystem
                 deltaTilWorldUpdate = 0.5f;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
-                    connection.SendPacket(new WorldStatusPacketOut());
+                    if (connection.Waiting < connection.MaxWaiting)
+                    {
+                        connection.SendPacket(new WorldStatusPacketOut());
+                    }
                 }
             }
         }

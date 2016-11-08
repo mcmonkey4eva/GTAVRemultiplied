@@ -344,6 +344,7 @@ public class ClientConnectionScript : Script
         toSend[0] = type;
         BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);
         data.CopyTo(toSend, 5);
+        GTAVRemultiplied.ServerSystem.GTAVFreneticServer.DataUsage += toSend.Length;
         Connection.Send(toSend);
     }
 

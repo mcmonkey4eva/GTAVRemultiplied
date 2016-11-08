@@ -76,6 +76,8 @@ namespace GTAVRemultiplied.ServerSystem
 
         public static GTAVServerConnection Connections;
 
+        public static long DataUsage = 0;
+
         public static void Init(ushort port)
         {
             if (Enabled)

@@ -50,7 +50,7 @@ namespace GTAVRemultiplied.ServerSystem
                 Character.Delete();
             }
         }
-
+        
         public void AddBlip()
         {
             blip = Character.AttachBlip();
@@ -218,6 +218,7 @@ namespace GTAVRemultiplied.ServerSystem
                 int read = Sock.Receive(dat, Math.Min(dat.Length, Sock.Available), SocketFlags.None);
                 Array.Copy(dat, 0, known, count, read);
                 count += read;
+                GTAVFreneticServer.DataUsage += read;
                 while (count > 5)
                 {
                     ClientToServerPacket packType = (ClientToServerPacket)known[0];
@@ -274,6 +275,15 @@ namespace GTAVRemultiplied.ServerSystem
 
         bool dcon = false;
 
+        public long Waiting = 0;
+
+        public long MaxWaiting = 1024 * 10;
+
+        void sendCallback(IAsyncResult res)
+        {
+            Waiting -= (int)res.AsyncState;
+        }
+
         public void SendPacket(byte type, byte[] data)
         {
             if (dcon)
@@ -286,7 +296,9 @@ namespace GTAVRemultiplied.ServerSystem
                 toSend[0] = type;
                 BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);
                 data.CopyTo(toSend, 5);
-                Sock.Send(toSend);
+                GTAVFreneticServer.DataUsage += toSend.Length;
+                Waiting += toSend.Length;
+                Sock.BeginSend(toSend, 0, toSend.Length, SocketFlags.None, sendCallback, toSend.Length);
             }
             catch (SocketException ex)
             {
