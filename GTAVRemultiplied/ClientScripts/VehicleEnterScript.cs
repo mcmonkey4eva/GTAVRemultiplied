@@ -40,7 +40,7 @@ public class VehicleEnterScript : Script
 
     public double TapDetector = 0;
 
-    public Vector3? PosFor(Vehicle veh, VehicleSeat seat)
+    public Vector3 PosFor(Vehicle veh, VehicleSeat seat)
     {
         if (veh.IsSeatFree(seat))
         {
@@ -50,28 +50,31 @@ public class VehicleEnterScript : Script
             p.Delete();
             return pos;
         }
-        return null;
+        else
+        {
+            return veh.GetPedOnSeat(seat).GetBoneCoord(Bone.IK_Head);
+        }
     }
 
     public void GetClosestSeat(Vehicle veh, ref float closest, ref Vector3 closepos, ref string seatName)
     {
         foreach (Tuple<VehicleSeat, string> seatd in seatOptions)
         {
-            Vector3? pos = PosFor(veh, seatd.Item1);
-            if (pos.HasValue)
+            if (veh.IsSeatFree(seatd.Item1))
             {
-                float dist = pos.Value.DistanceToSquared2D(Game.Player.Character.Position);
+                Vector3 pos = PosFor(veh, seatd.Item1);
+                float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
                 if (dist < closest)
                 {
                     closest = dist;
                     getinto = veh;
                     spot = seatd.Item1;
-                    closepos = pos.Value;
+                    closepos = pos;
                     seatName = seatd.Item2;
                 }
                 if (DebugPositionScript.Enabled)
                 {
-                    ClientConnectionScript.Text3D(pos.Value, "[" + seatd.Item2 + "]");
+                    ClientConnectionScript.Text3D(pos, "[" + seatd.Item2 + "]");
                 }
             }
         }
@@ -94,9 +97,9 @@ public class VehicleEnterScript : Script
             {
                 return;
             }
-            Game.Player.SetMayNotEnterAnyVehicleThisFrame();
             if (ControlTagBase.ControlDown(Control.Enter))
             {
+                Game.Player.SetMayNotEnterAnyVehicleThisFrame();
                 TapDetector += GTAVFrenetic.cDelta;
                 bool held = TapDetector > 1.0;
                 float closest = 8f * 8f;
@@ -106,8 +109,15 @@ public class VehicleEnterScript : Script
                 string seatName = null;
                 foreach (Vehicle veh in World.GetAllVehicles())
                 {
-                    // TODO: Handle supermassive vehicles (jets in particular)
-                    if (veh.Position.DistanceToSquared(playerpos) > 7f * 7f)
+                    Vector3 min;
+                    Vector3 max;
+                    veh.Model.GetDimensions(out min, out max);
+                    min -= new Vector3(7, 7, 7);
+                    max += new Vector3(7, 7, 7);
+                    min += veh.Position;
+                    max += veh.Position;
+                    if (!(playerpos.X > min.X && playerpos.Y > min.Y && playerpos.Z > min.Z
+                        && playerpos.X < max.X && playerpos.Y < max.Y && playerpos.Z < max.Z))
                     {
                         continue;
                     }
@@ -122,13 +132,26 @@ public class VehicleEnterScript : Script
                     }
                     if (held)
                     {
+                        Vector3 pos = PosFor(veh, VehicleSeat.Driver);
+                        float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
+                        if (dist < closest)
+                        {
+                            closest = dist;
+                            getinto = veh;
+                            spot = VehicleSeat.Driver;
+                            closepos = pos;
+                            seatName = "Driver";
+                        }
                         if (driverOpen)
                         {
                             GetClosestSeat(veh, ref closest, ref closepos, ref seatName);
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (driverOpen)
                         {
-                            Vector3 pos = veh.GetPedOnSeat(VehicleSeat.Driver).GetBoneCoord(Bone.IK_Head);
+                            Vector3 pos = PosFor(veh, VehicleSeat.Driver);
                             float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
                             if (dist < closest)
                             {
@@ -137,25 +160,6 @@ public class VehicleEnterScript : Script
                                 spot = VehicleSeat.Driver;
                                 closepos = pos;
                                 seatName = "Driver";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (driverOpen)
-                        {
-                            Vector3? pos = PosFor(veh, VehicleSeat.Driver);
-                            if (pos.HasValue)
-                            {
-                                float dist = pos.Value.DistanceToSquared2D(Game.Player.Character.Position);
-                                if (dist < closest)
-                                {
-                                    closest = dist;
-                                    getinto = veh;
-                                    spot = VehicleSeat.Driver;
-                                    closepos = pos.Value;
-                                    seatName = "Driver";
-                                }
                             }
                         }
                         else
@@ -175,8 +179,29 @@ public class VehicleEnterScript : Script
                 TapDetector = 0;
                 if (getinto != null)
                 {
-                    Game.Player.Character.Task.EnterVehicle(getinto, spot);
+                    if (!getinto.IsSeatFree(spot))
+                    {
+                        getinto.GetPedOnSeat(spot).CanBeDraggedOutOfVehicle = true;
+                        if (getinto.GetPedOnSeat(spot).IsDead)
+                        {
+                            // TODO: How do we move out bodies?
+                            getinto.GetPedOnSeat(spot).Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+                            Game.Player.Character.Task.EnterVehicle(getinto, VehicleSeat.Any, -1, 2);
+                        }
+                        else
+                        {
+                            getinto.GetPedOnSeat(spot).Task.LeaveVehicle(LeaveVehicleFlags.BailOut);
+                        }
+                    }
+                    else
+                    {
+                        Game.Player.Character.Task.EnterVehicle(getinto, spot, -1, 2);
+                    }
                     getinto = null;
+                }
+                else
+                {
+                    Game.Player.SetMayNotEnterAnyVehicleThisFrame();
                 }
             }
         }
