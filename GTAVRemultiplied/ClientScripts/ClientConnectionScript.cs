@@ -363,8 +363,8 @@ public class ClientConnectionScript : Script
             Connected = false;
             // TODO: Reasonably choose between ipv4 and ipv6.
             Connection = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Connection.SendBufferSize = 1024 * 1024;
-            Connection.ReceiveBufferSize = 1024 * 1024;
+            Connection.SendBufferSize = 1024 * 1024 * 10;
+            Connection.ReceiveBufferSize = 1024 * 1024 * 10;
             Connection.BeginConnect(ip, port, (a) =>
             {
                 try

@@ -288,8 +288,9 @@ namespace GTAVRemultiplied.ServerSystem
                 data.CopyTo(toSend, 5);
                 Sock.Send(toSend);
             }
-            catch (SocketException)
+            catch (SocketException ex)
             {
+                Log.Exception(ex); // TODO: Remove?
                 dcon = true;
             }
         }
