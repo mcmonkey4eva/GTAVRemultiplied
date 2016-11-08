@@ -18,7 +18,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int veh = BitConverter.ToInt32(data, 0);
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             int ped = BitConverter.ToInt32(data, 5);
-            Ped p = new Ped(ClientConnectionScript.ServerToClientPed[ped]);
+            int tped;
+            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(ped, out tped))
+            {
+                return true; // TODO: Maybe send a 'request redefine' packet?
+            }
+            Ped p = new Ped(tped);
             Vehicle v = new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]);
             ClientConnectionScript.ServerPedKnownPosition[ped].InVehicle = true;
             if (!v.IsSeatFree(seat))
