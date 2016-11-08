@@ -91,6 +91,7 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     Log.Exception(ex);
                     Log.Error("Dropping a client!");
+                    Connections[i].Delete();
                     Connections[i].Sock.Close();
                     Connections.RemoveAt(i);
                     i--;

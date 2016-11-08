@@ -39,6 +39,18 @@ namespace GTAVRemultiplied.ServerSystem
 
         public string Name = null;
 
+        public void Delete()
+        {
+            if (blip != null)
+            {
+                blip.Remove();
+            }
+            if (Character != null)
+            {
+                Character.Delete();
+            }
+        }
+
         public void AddBlip()
         {
             blip = Character.AttachBlip();
