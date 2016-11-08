@@ -106,11 +106,20 @@ public class VehicleEnterScript : Script
                 string seatName = null;
                 foreach (Vehicle veh in World.GetAllVehicles())
                 {
+                    // TODO: Handle supermassive vehicles (jets in particular)
                     if (veh.Position.DistanceToSquared(playerpos) > 7f * 7f)
                     {
                         continue;
                     }
                     bool driverOpen = veh.IsSeatFree(VehicleSeat.Driver);
+                    if (!driverOpen)
+                    {
+                        Ped driver = veh.GetPedOnSeat(VehicleSeat.Driver);
+                        if (driver.AttachedBlips.Length == 0) // TODO: better player/important check system?
+                        {
+                            driverOpen = true;
+                        }
+                    }
                     if (held)
                     {
                         if (driverOpen)
