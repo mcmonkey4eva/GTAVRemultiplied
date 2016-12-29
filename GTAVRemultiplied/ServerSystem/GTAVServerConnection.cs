@@ -22,6 +22,10 @@ namespace GTAVRemultiplied.ServerSystem
 
         public List<GTAVServerClientConnection> Connections = new List<GTAVServerClientConnection>();
 
+        public const float PACKET_RATE_VEHICLE = 0.1f;
+
+        public float PacketLastUpdateVehicle = 0f;
+
         public const float PACKET_RATE = 0.25f;
 
         public float PacketLastUpdate = 0f;
@@ -34,6 +38,13 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 PacketLastUpdate = 0f;
                 send_update = true;
+            }
+            PacketLastUpdateVehicle += GTAVFreneticServer.cDelta;
+            bool send_update_vehicle = false;
+            if (PacketLastUpdateVehicle >= PACKET_RATE_VEHICLE)
+            {
+                PacketLastUpdateVehicle = 0f;
+                send_update_vehicle = true;
             }
             while (Listener.Pending())
             {
@@ -138,7 +149,7 @@ namespace GTAVRemultiplied.ServerSystem
                     vinf.ForcePersistent = false;
                     vehicle.IsPersistent = false;
                 }
-                if (send_update)
+                if (send_update_vehicle)
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
