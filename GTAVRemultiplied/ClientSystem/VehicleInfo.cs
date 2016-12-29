@@ -57,7 +57,11 @@ namespace GTAVRemultiplied.ClientSystem
                 lPos = lGoal;
                 SetVehiclePosition(lGoal);
             }
-            vehicle.Quaternion = lRot = Quaternion.Slerp(lRot, lRotGoal, GTAVFrenetic.cDelta * Math.Max(lRotVel.Length() * 10f, 0.5f)); // TODO: Deal with constants here!
+            float ang = Math.Abs(Quaternion.AngleBetween(lRot, lRotGoal));
+            if (ang > 0.01)
+            {
+                vehicle.Quaternion = lRot = Quaternion.Lerp(lRot, lRotGoal, GTAVFrenetic.cDelta * Math.Max(lRotVel.Length() * 100f / ang, 0.5f)); // TODO: Deal with constants here!
+            }
         }
     }
 }
