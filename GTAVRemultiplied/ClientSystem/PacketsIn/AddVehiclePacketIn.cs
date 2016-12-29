@@ -52,6 +52,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vehicle.Mods.RimColor = (VehicleColor)data[ind + 4];
             ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
             ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
+            VehicleInfo inf = new VehicleInfo();
+            inf.lPos = vehicle.Position;
+            inf.lGoal = inf.lPos;
+            inf.vehicle = vehicle;
+            inf.lRot = vehicle.Quaternion;
+            inf.lRotGoal = inf.lRot;
+            ClientConnectionScript.ServerVehKnownPosition[id] = inf;
             return true;
         }
     }

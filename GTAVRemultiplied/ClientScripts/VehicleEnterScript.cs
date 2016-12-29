@@ -125,7 +125,7 @@ public class VehicleEnterScript : Script
                     if (!driverOpen)
                     {
                         Ped driver = veh.GetPedOnSeat(VehicleSeat.Driver);
-                        if (driver.AttachedBlips.Length == 0) // TODO: better player/important check system?
+                        if (driver == null || driver.AttachedBlips.Length == 0) // TODO: better player/important check system?
                         {
                             driverOpen = true;
                         }
@@ -173,6 +173,10 @@ public class VehicleEnterScript : Script
                     ClientConnectionScript.Text3D(closepos + new Vector3(0, 0, -0.5f), seatName, System.Drawing.Color.Yellow, 5f);
                     World.DrawSpotLight(closepos + new Vector3(0, 0, 3), new Vector3(0, 0, -1), System.Drawing.Color.Yellow, 10f, 3f, 1f, 20f, 1f);
                 }
+                else
+                {
+                    ClientConnectionScript.Text3D(Game.Player.Character.Position + new Vector3(0, 0, 0.5f), "<None>", System.Drawing.Color.Yellow, 5f);
+                }
             }
             else
             {
@@ -184,7 +188,7 @@ public class VehicleEnterScript : Script
                         getinto.GetPedOnSeat(spot).CanBeDraggedOutOfVehicle = true;
                         if (getinto.GetPedOnSeat(spot).IsDead)
                         {
-                            // TODO: How do we move out bodies?
+                            // TODO: How do we move out bodies reasonably? Ideally would be a player-pulls-the-body-out animation!
                             getinto.GetPedOnSeat(spot).Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
                             Game.Player.Character.Task.EnterVehicle(getinto, VehicleSeat.Any, -1, 2);
                         }

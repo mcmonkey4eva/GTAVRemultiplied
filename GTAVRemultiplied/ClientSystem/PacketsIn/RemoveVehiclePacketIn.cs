@@ -23,6 +23,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 vehicle.Delete();
                 ClientConnectionScript.ServerToClientVehicle.Remove(id);
                 ClientConnectionScript.ClientToServerVehicle.Remove(veh);
+                ClientConnectionScript.ServerVehKnownPosition.Remove(id);
             }
             else
             {

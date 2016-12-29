@@ -47,6 +47,8 @@ public class ClientConnectionScript : Script
 
     public static Dictionary<int, PedInfo> ServerPedKnownPosition = new Dictionary<int, PedInfo>();
 
+    public static Dictionary<int, VehicleInfo> ServerVehKnownPosition = new Dictionary<int, VehicleInfo>();
+
     public static Dictionary<int, int> ServerToClientProp = new Dictionary<int, int>();
 
     public static Dictionary<int, int> ClientToServerProp = new Dictionary<int, int>();
@@ -113,7 +115,7 @@ public class ClientConnectionScript : Script
                             PedHash model = (PedHash)unchecked((uint)p.Model.Hash);
                             string modname = model.ToString();
                             Vector3 pos = peddata.Value.WorldPos;
-                            System.Drawing.PointF point = GTA.UI.Screen.WorldToScreen(pos);
+                            System.Drawing.PointF point = Screen.WorldToScreen(pos);
                             Vector3 camPos = GameplayCamera.Position;
                             float dist = camPos.DistanceTo(pos);
                             float scale = 5f / (dist / GameplayCamera.Zoom);
@@ -306,6 +308,10 @@ public class ClientConnectionScript : Script
                         {
                             Text3D(pinf.Character.GetBoneCoord(Bone.IK_Head) + new Vector3(0, 0, 0.25f), pinf.Name, System.Drawing.Color.White, 2f);
                         }
+                    }
+                    foreach (VehicleInfo inf in ServerVehKnownPosition.Values)
+                    {
+                        inf.Tick();
                     }
                 }
             }

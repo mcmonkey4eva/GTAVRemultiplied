@@ -71,6 +71,7 @@
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ClientSystem\PedInfo.cs" />
     <Compile Include="ClientSystem\TagBases\ControlTagBase.cs" />
+    <Compile Include="ClientSystem\VehicleInfo.cs" />
     <Compile Include="GTAVExtensions.cs" />
     <Compile Include="ServerSystem\EntityCommands\RepairVehicleCommand.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />

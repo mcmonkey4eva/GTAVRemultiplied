@@ -154,7 +154,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void SetCharacterPosition(Vector3 pos)
         {
-            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DitHit)
+            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
             {
                 return;
             }
@@ -277,7 +277,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public long Waiting = 0;
 
-        public long MaxWaiting = 1024 * 10;
+        public long MaxWaiting = 1024 * 20; // TODO: Variation with net availability! (IE, shrink this if a client is lagging, and grow it otherwise, while not going too high)
 
         void sendCallback(IAsyncResult res)
         {

@@ -46,13 +46,18 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int veh;
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
             {
+                VehicleInfo pinf = ClientConnectionScript.ServerVehKnownPosition[id];
                 Vehicle vehicle = new Vehicle(veh);
                 Vehicle cveh = Game.Player.Character.CurrentVehicle;
-                if (cveh == null || cveh.Handle != vehicle.Handle)
+                if (cveh == null || cveh.Handle != vehicle.Handle || Game.Player.Character.SeatIndex != VehicleSeat.Driver)
                 {
-                    vehicle.PositionNoOffset = pos;
-                    vehicle.Velocity = vel;
-                    vehicle.Quaternion = rot;
+                    pinf.lGoal = pos;
+                    pinf.speed = vel.Length();
+                    pinf.lRotGoal = rot;
+                    pinf.lRotVel = rotvel;
+                    //vehicle.Velocity = vel;
+                    //vehicle.Quaternion = rot;
+                    //GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                     vehicle.Speed = speed;
                     vehicle.IsSirenActive = siren;
                     vehicle.AreLightsOn = lights;
@@ -60,7 +65,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                     vehicle.IsTaxiLightOn = lights_taxi;
                     vehicle.IsInteriorLightOn = lights_int;
                     // TODO: Find a way to set steering angle? Perhaps use driver AI magic?
-                    GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
                 }
                 if (isDead && !vehicle.IsDead)
                 {
@@ -79,6 +83,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             else
             {
+                // TODO: Maybe a 'request redefine' packet?
                 Log.Message("Warning", "Unknown vehicle updated!", 'Y');
             }
             return true;

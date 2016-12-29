@@ -39,7 +39,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 }
             }
             p.SetIntoVehicle(v, seat);
-            Console.WriteLine("Ped " + ped + " forced into " + veh + ", at spot " + seat + ", confirmed: " + p.IsInVehicle());
             return true;
         }
     }
