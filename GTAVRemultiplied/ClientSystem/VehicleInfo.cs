@@ -60,7 +60,8 @@ namespace GTAVRemultiplied.ClientSystem
             float ang = Math.Abs(Quaternion.AngleBetween(lRot, lRotGoal));
             if (ang > 0.01)
             {
-                vehicle.Quaternion = lRot = Quaternion.Lerp(lRot, lRotGoal, GTAVFrenetic.cDelta * Math.Max(lRotVel.Length() * 100f / ang, 0.5f)); // TODO: Deal with constants here!
+                // * Math.Min(Math.Max(ang / 10f, 0.25f), 1f)
+                vehicle.Quaternion = lRot = Quaternion.Lerp(lRot, lRotGoal, Math.Min(GTAVFrenetic.cDelta * 10f, 1f)); // TODO: Deal with constants here!
             }
         }
     }

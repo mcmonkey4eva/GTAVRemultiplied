@@ -22,7 +22,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public List<GTAVServerClientConnection> Connections = new List<GTAVServerClientConnection>();
 
-        public const float PACKET_RATE = 0.333f;
+        public const float PACKET_RATE = 0.25f;
 
         public float PacketLastUpdate = 0f;
 
