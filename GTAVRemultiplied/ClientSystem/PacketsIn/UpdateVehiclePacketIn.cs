@@ -17,6 +17,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             {
                 return false;
             }
+            bool dbme = false;
             int id = BitConverter.ToInt32(data, 0);
             Vector3 pos = new Vector3();
             pos.X = BitConverter.ToSingle(data, 4);
@@ -46,39 +47,50 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int veh;
             if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
             {
-                VehicleInfo pinf = ClientConnectionScript.ServerVehKnownPosition[id];
-                Vehicle vehicle = new Vehicle(veh);
-                Vehicle cveh = Game.Player.Character.CurrentVehicle;
-                if (cveh == null || cveh.Handle != vehicle.Handle || Game.Player.Character.SeatIndex != VehicleSeat.Driver)
+                VehicleInfo pinf;// = ClientConnectionScript.ServerVehKnownPosition[id];
+                if (!ClientConnectionScript.ServerVehKnownPosition.TryGetValue(id, out pinf))
                 {
-                    pinf.lGoal = pos;
-                    pinf.speed = vel.Length();
-                    pinf.lRotGoal = rot;
-                    pinf.lRotVel = rotvel;
-                    //vehicle.Velocity = vel;
-                    //vehicle.Quaternion = rot;
-                    //GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
-                    vehicle.Speed = speed;
+                    Log.Message("Warning", "Half-calculated vehicle updated!", 'Y');
+                    return true;
+                }
+#if !NO_DEBUG
+                if (!World.GetAllVehicles().Any((v) => v.Handle == veh))
+                {
+                    // TODO: Why does this flood?: Log.Message("Warning", "Long-gone vehicle updated!", 'Y');
+                    return true;
+                }
+#endif
+                Vehicle vehicle = new Vehicle(veh);
+                dbme = vehicle.Model.IsTrain || (VehicleHash)vehicle.Model.Hash == VehicleHash.FreightGrain;
+                pinf.lGoal = pos;
+                pinf.speed = vel.Length();
+                pinf.lRotGoal = rot;
+                pinf.lRotVel = rotvel;
+                //vehicle.Velocity = vel;
+                //vehicle.Quaternion = rot;
+                //GTAVUtilities.SetRotationVelocity(vehicle, rotvel);
+                if (!dbme)
+                {
                     vehicle.IsSirenActive = siren;
                     vehicle.AreLightsOn = lights;
                     vehicle.IsSearchLightOn = lights_search;
                     vehicle.IsTaxiLightOn = lights_taxi;
                     vehicle.IsInteriorLightOn = lights_int;
                     // TODO: Find a way to set steering angle? Perhaps use driver AI magic?
-                }
-                if (isDead && !vehicle.IsDead)
-                {
-                    vehicle.IsInvincible = false;
-                    vehicle.Explode();
-                    if (!vehicle.IsDead)
+                    if (isDead && !vehicle.IsDead)
                     {
-                        vehicle.Health = 0;
+                        vehicle.IsInvincible = false;
+                        vehicle.Explode();
+                        if (!vehicle.IsDead)
+                        {
+                            vehicle.Health = 0;
+                        }
                     }
-                }
-                else if (vehicle.IsDead && !isDead)
-                {
-                    vehicle.IsInvincible = true;
-                    vehicle.Repair();
+                    else if (vehicle.IsDead && !isDead)
+                    {
+                        vehicle.IsInvincible = true;
+                        vehicle.Repair();
+                    }
                 }
             }
             else

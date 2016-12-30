@@ -68,7 +68,7 @@ namespace GTAVRemultiplied.ClientSystem
             CommandSystem.PostInit();
             AutorunScripts();
             // TEMPORARY: Fix vehicle stuff!
-            // TODO: REINSTATE?: CommandSystem.ExecuteCommands("debug minimal; wait 1; devel dbFix", null);
+            CommandSystem.ExecuteCommands("debug minimal; wait 1; devel dbFix", null);
         }
     }
 }
