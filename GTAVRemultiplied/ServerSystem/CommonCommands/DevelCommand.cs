@@ -58,6 +58,11 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     if (Enum.TryParse(arg2.ToString(), true, out veh))
                     {
                         Vehicle v = World.CreateVehicle(veh, Game.Player.Character.Position + Game.Player.Character.ForwardVector * 5);
+                        if (v == null)
+                        {
+                            entry.Bad(queue, "Failed to spawn vehicle!"); // Should this be an error or a Bad output?
+                            return;
+                        }
                         v.Position += new Vector3(0, 0, -v.HeightAboveGround);
                         queue.SetVariable("devel_quick_vehicle", new VehicleTag(v));
                         if (entry.ShouldShowGood(queue))

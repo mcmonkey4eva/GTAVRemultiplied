@@ -80,11 +80,13 @@ public class VehicleEnterScript : Script
         }
     }
 
+    public static bool UseFancy = true;
+
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
         try
         {
-            if (!ClientConnectionScript.Connected && !GTAVFreneticServer.Enabled)
+            if ((!ClientConnectionScript.Connected && !GTAVFreneticServer.Enabled) || !UseFancy)
             {
                 return;
             }
@@ -132,19 +134,22 @@ public class VehicleEnterScript : Script
                     }
                     if (held)
                     {
-                        Vector3 pos = PosFor(veh, VehicleSeat.Driver);
-                        float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
-                        if (dist < closest)
-                        {
-                            closest = dist;
-                            getinto = veh;
-                            spot = VehicleSeat.Driver;
-                            closepos = pos;
-                            seatName = "Driver";
-                        }
                         if (driverOpen)
                         {
                             GetClosestSeat(veh, ref closest, ref closepos, ref seatName);
+                        }
+                        else
+                        {
+                            Vector3 pos = PosFor(veh, VehicleSeat.Driver);
+                            float dist = pos.DistanceToSquared2D(Game.Player.Character.Position);
+                            if (dist < closest)
+                            {
+                                closest = dist;
+                                getinto = veh;
+                                spot = VehicleSeat.Driver;
+                                closepos = pos;
+                                seatName = "Driver";
+                            }
                         }
                     }
                     else

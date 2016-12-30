@@ -8,6 +8,8 @@ using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using GTAVRemultiplied.ServerSystem.TagObjects;
 using GTA;
+using GTA.Native;
+
 namespace GTAVRemultiplied.ServerSystem.TagBases
 {
     public class GameTagBase : TemplateTagBase
@@ -28,6 +30,10 @@ namespace GTAVRemultiplied.ServerSystem.TagBases
             {
                 case "main_player_character":
                     return new CharacterTag(Game.Player.Character).Handle(data.Shrink());
+                case "debug_hash":
+                    {
+                        return new IntegerTag(Function.Call<uint>(Hash.GET_HASH_KEY, data.GetModifier(0)));
+                    }
                 default:
                     return new TextTag(ToString()).Handle(data);
             }

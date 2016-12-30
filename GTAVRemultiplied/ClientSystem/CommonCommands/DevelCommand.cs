@@ -105,6 +105,11 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         }
                     }
                     break;
+                case "vehicleHelper":
+                    {
+                        VehicleEnterScript.UseFancy = BooleanTag.TryFor(arg2).Internal;
+                    }
+                    break;
                 case "shootEm":
                     foreach (Ped ped in World.GetAllPeds())
                     {
@@ -146,6 +151,11 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                         string[] arguments = arg2.ToString().SplitFast('=');
                         CoordinateParticleEffect cpe = new ParticleEffectsAsset(arguments[0]).CreateEffectAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
                         cpe.Start();
+                    }
+                    break;
+                case "dbFix":
+                    {
+                        MONKEYHELPER.AttemptVehicleFix();
                     }
                     break;
                 default:

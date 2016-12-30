@@ -7,6 +7,8 @@ using FreneticScript;
 using FreneticScript.TagHandlers;
 using FreneticScript.TagHandlers.Objects;
 using GTA;
+using GTA.Native;
+
 namespace GTAVRemultiplied.ClientSystem.TagBases
 {
     public class ControlTagBase : TemplateTagBase
@@ -34,6 +36,11 @@ namespace GTAVRemultiplied.ClientSystem.TagBases
                     {
                         Control ctrl = (Control)Enum.Parse(typeof(Control), data.GetModifier(0), true);
                         return new BooleanTag(ControlDown(ctrl)).Handle(data.Shrink());
+                    }
+                    // TODO: Move this to a proper gtav general tag.
+                case "debug_hash":
+                    {
+                        return new IntegerTag(Function.Call<uint>(Hash.GET_HASH_KEY, data.GetModifier(0)));
                     }
                 default:
                     return new TextTag(ToString()).Handle(data);
