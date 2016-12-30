@@ -36,7 +36,7 @@ namespace GTAVRemultiplied.ClientSystem
 
         public void Tick()
         {
-            if (Game.Player.Character.IsInVehicle() && Game.Player.Character.CurrentVehicle.Handle == vehicle.Handle && Game.Player.Character.SeatIndex == VehicleSeat.Driver)
+            if (Game.Player.Character.IsSittingInVehicle() && Game.Player.Character.CurrentVehicle != null && Game.Player.Character.CurrentVehicle.Handle == vehicle.Handle && Game.Player.Character.SeatIndex == VehicleSeat.Driver)
             {
                 return;
             }

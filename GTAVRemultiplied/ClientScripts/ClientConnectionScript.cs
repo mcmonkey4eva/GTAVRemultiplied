@@ -280,7 +280,7 @@ public class ClientConnectionScript : Script
                             ped.Delete();
                         }
                     }
-                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !ControlTagBase.ControlDown(Control.VehicleExit);
+                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.Player.Character.IsJumpingOutOfVehicle && !ControlTagBase.ControlDown(Control.VehicleExit) && Game.Player.Character.CurrentVehicle != null;
                     if (isInVehicle && !wasInVehicle)
                     {
                         SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
@@ -346,6 +346,7 @@ public class ClientConnectionScript : Script
 
     public static void SendPacket(byte type, byte[] data)
     {
+        // TODO: Data waste monitoring / slowdown as needed?
         byte[] toSend = new byte[data.Length + 5];
         toSend[0] = type;
         BitConverter.GetBytes(data.Length).CopyTo(toSend, 1);

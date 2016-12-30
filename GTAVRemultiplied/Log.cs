@@ -14,6 +14,7 @@ namespace GTAVRemultiplied
             foreach (string str in text.Replace("\r", "").Split('\n'))
             {
                 ChatTextScript.Instance.AddLine(color, type, str);
+                File.AppendAllText(Environment.CurrentDirectory + "/frenetic/" + DateTime.Now.Year + "-" + DateTime.Now.Month + "-" + DateTime.Now.Day + ".log", "[[" + type + "]]: " + str + Environment.NewLine);
             }
         }
 
