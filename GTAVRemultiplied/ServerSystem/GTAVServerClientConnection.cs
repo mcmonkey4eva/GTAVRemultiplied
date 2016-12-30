@@ -154,12 +154,29 @@ namespace GTAVRemultiplied.ServerSystem
 
         public void SetCharacterPosition(Vector3 pos)
         {
-            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
+            if (Character.IsInVehicle())
+            {
+                return;
+            }
+            if (World.RaycastCapsule(pos, Vector3.WorldUp, 1.0f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
             {
                 return;
             }
             Character.PositionNoOffset = pos;
         }
+        
+        public void SetVehiclePosition(Vector3 pos)
+        {
+            if (!Character.IsInVehicle())
+            {
+                return;
+            }
+            Character.CurrentVehicle.PositionNoOffset = pos;
+        }
+
+        public Quaternion lRot = Quaternion.Identity;
+
+        public Quaternion lRotGoal = Quaternion.Identity;
 
         public void Tick()
         {
@@ -167,48 +184,62 @@ namespace GTAVRemultiplied.ServerSystem
             {
                 throw new Exception("Disconnected");
             }
-            Vector3 rel = lGoal - lPos;
-            float rlen = rel.Length();
-            if (rlen > 0.01f && speed > 0.01f)
+            if (Character.IsInVehicle() && Character.SeatIndex == VehicleSeat.Driver)
             {
-                rel /= rlen;
-                if (speed * GTAVFreneticServer.cDelta > rlen || rlen > 10)
+                if (Character.CurrentVehicle != null)
                 {
-                    StopMove();
-                    lPos = lGoal;
-                    if (Character.IsInVehicle())
+                    Vector3 vrel = lGoal - lPos;
+                    float vrlen = vrel.Length();
+                    if (vrlen > 0.01f && speed > 0.01f)
                     {
-                        Character.CurrentVehicle.PositionNoOffset = lGoal;
+                        vrel /= vrlen;
+                        if (speed * GTAVFreneticServer.cDelta > vrlen || vrlen > 10)
+                        {
+                            lPos = lGoal;
+                            SetVehiclePosition(lGoal);
+                        }
+                        else
+                        {
+                            lPos = lPos + vrel * speed * GTAVFreneticServer.cDelta;
+                            SetVehiclePosition(lPos);
+                        }
                     }
                     else
                     {
-                        SetCharacterPosition(lGoal);
+                        lPos = lGoal;
+                        SetVehiclePosition(lGoal);
                     }
-                }
-                else
-                {
-                    AnimateMove(speed > 3);
-                    lPos = lPos + rel * speed * GTAVFreneticServer.cDelta;
-                    if (Character.IsInVehicle())
+                    float ang = Math.Abs(Quaternion.AngleBetween(lRot, lRotGoal));
+                    if (ang > 0.01)
                     {
-                        Character.CurrentVehicle.PositionNoOffset = lPos;
-                    }
-                    else
-                    {
-                        SetCharacterPosition(lPos);
+                        Character.CurrentVehicle.Quaternion = lRot = Quaternion.Lerp(lRot, lRotGoal, Math.Min(GTAVFreneticServer.cDelta * 10f, 1f)); // TODO: Deal with constants here!
                     }
                 }
             }
             else
             {
-                StopMove();
-                lPos = lGoal;
-                if (Character.IsInVehicle())
+                Vector3 rel = lGoal - lPos;
+                float rlen = rel.Length();
+                if (rlen > 0.01f && speed > 0.01f)
                 {
-                    Character.CurrentVehicle.PositionNoOffset = lGoal;
+                    rel /= rlen;
+                    if (speed * GTAVFreneticServer.cDelta > rlen || rlen > 10)
+                    {
+                        StopMove();
+                        lPos = lGoal;
+                        SetCharacterPosition(lGoal);
+                    }
+                    else
+                    {
+                        AnimateMove(speed > 3);
+                        lPos = lPos + rel * speed * GTAVFreneticServer.cDelta;
+                        SetCharacterPosition(lPos);
+                    }
                 }
                 else
                 {
+                    StopMove();
+                    lPos = lGoal;
                     SetCharacterPosition(lGoal);
                 }
             }

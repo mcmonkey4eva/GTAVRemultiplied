@@ -36,6 +36,10 @@ namespace GTAVRemultiplied.ClientSystem
 
         public void Tick()
         {
+            if (Game.Player.Character.IsInVehicle() && Game.Player.Character.CurrentVehicle.Handle == vehicle.Handle && Game.Player.Character.SeatIndex == VehicleSeat.Driver)
+            {
+                return;
+            }
             Vector3 rel = lGoal - lPos;
             float rlen = rel.Length();
             if (rlen > 0.01f && speed > 0.01f)

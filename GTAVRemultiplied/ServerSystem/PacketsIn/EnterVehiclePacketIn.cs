@@ -23,6 +23,8 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             client.Character.SetIntoVehicle(new Vehicle(veh), seat);
             client.InVehicle = true;
+            client.lRot = new Vehicle(veh).Quaternion;
+            client.lPos = new Vehicle(veh).Position;
             return true;
         }
     }

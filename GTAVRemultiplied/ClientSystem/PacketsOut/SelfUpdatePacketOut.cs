@@ -14,7 +14,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
         public SelfUpdatePacketOut()
         {
             ID = ClientToServerPacket.SELF_UPDATE;
-            Data = new byte[16 + 12 + 4 + 12 + 12 + 1];
+            Data = new byte[16 + 12 + 4 + 12 + 16 + 1];
             Vector3 pos = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Position : Game.Player.Character.Position);
             float head = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Heading : Game.Player.Character.Heading);
             Vector3 vel = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Velocity : Game.Player.Character.Velocity);
@@ -34,11 +34,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
             BitConverter.GetBytes(vel.X).CopyTo(Data, 16 + 12 + 4);
             BitConverter.GetBytes(vel.Y).CopyTo(Data, 16 + 12 + 4 + 4);
             BitConverter.GetBytes(vel.Z).CopyTo(Data, 16 + 12 + 4 + 8);
-            Vector3 rot = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Rotation : Game.Player.Character.Rotation);
+            Quaternion rot = (Game.Player.Character.CurrentVehicle != null ? Game.Player.Character.CurrentVehicle.Quaternion : Game.Player.Character.Quaternion);
             BitConverter.GetBytes(rot.X).CopyTo(Data, 16 + 12 + 4 + 12);
             BitConverter.GetBytes(rot.Y).CopyTo(Data, 16 + 12 + 4 + 12 + 4);
             BitConverter.GetBytes(rot.Z).CopyTo(Data, 16 + 12 + 4 + 12 + 8);
-            Data[16 + 12 + 4 + 12 + 12] = (byte)((Game.Player.Character.IsRunning ? PedFlags.RUNNING : 0)
+            BitConverter.GetBytes(rot.W).CopyTo(Data, 16 + 12 + 4 + 12 + 12);
+            Data[16 + 12 + 4 + 12 + 16] = (byte)((Game.Player.Character.IsRunning ? PedFlags.RUNNING : 0)
                 | (Game.Player.Character.IsSprinting ? PedFlags.SPRINTING : 0));
         }
     }

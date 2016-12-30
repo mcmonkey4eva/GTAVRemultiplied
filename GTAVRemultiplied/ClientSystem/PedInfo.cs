@@ -37,7 +37,7 @@ namespace GTAVRemultiplied.ClientSystem
 
         public void SetCharacterPosition(Vector3 pos)
         {
-            if (World.RaycastCapsule(pos, Vector3.WorldUp, 0.01f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
+            if (World.RaycastCapsule(pos, Vector3.WorldUp, 1.0f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
             {
                 return;
             }
