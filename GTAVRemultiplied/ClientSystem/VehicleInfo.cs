@@ -52,8 +52,10 @@ namespace GTAVRemultiplied.ClientSystem
                 }
                 else
                 {
-                    lPos = lPos + rel * speed * GTAVFrenetic.cDelta;
-                    SetVehiclePosition(lPos);
+                    lPos = vehicle.Position;
+                    vehicle.Velocity = rel * speed;
+                    //lPos = lPos + rel * speed * GTAVFrenetic.cDelta;
+                    //SetVehiclePosition(lPos);
                 }
             }
             else

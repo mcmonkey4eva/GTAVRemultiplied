@@ -200,8 +200,10 @@ namespace GTAVRemultiplied.ServerSystem
                         }
                         else
                         {
-                            lPos = lPos + vrel * speed * GTAVFreneticServer.cDelta;
-                            SetVehiclePosition(lPos);
+                            lPos = Character.CurrentVehicle.Position;
+                            Character.CurrentVehicle.Velocity = vrel * speed;
+                            //lPos = lPos + vrel * speed * GTAVFreneticServer.cDelta;
+                            //SetVehiclePosition(lPos);
                         }
                     }
                     else
