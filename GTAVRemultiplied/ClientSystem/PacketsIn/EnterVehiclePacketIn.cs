@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GTA;
+using GTAVRemultiplied.ClientSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
@@ -21,13 +22,15 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int tped;
             if (!ClientConnectionScript.ServerToClientPed.TryGetValue(ped, out tped))
             {
-                return true; // TODO: Maybe send a 'request redefine' packet?
+                ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.PED, ped));
+                return true;
             }
             Ped p = new Ped(tped);
             int vid;
             if (!ClientConnectionScript.ServerToClientVehicle.TryGetValue(veh, out vid))
             {
-                return true; // TODO: Maybe send a 'request redefine' packet?
+                ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.VEHICLE, veh));
+                return true;
             }
             Vehicle v = new Vehicle(vid);
             ClientConnectionScript.ServerPedKnownPosition[ped].InVehicle = true;

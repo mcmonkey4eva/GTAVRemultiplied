@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
+using GTAVRemultiplied.ClientSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
@@ -95,8 +96,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             else
             {
-                // TODO: Maybe a 'request redefine' packet?
-                Log.Message("Warning", "Unknown vehicle updated!", 'Y');
+                ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.VEHICLE, id));
             }
             return true;
         }

@@ -67,6 +67,7 @@
     <Compile Include="ClientSystem\PacketsOut\EnterVehiclePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\ExitVehiclePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\FiredShotPacketOut.cs" />
+    <Compile Include="ClientSystem\PacketsOut\RequestRedefinePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
     <Compile Include="ClientSystem\PedInfo.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="ClientSystem\VehicleInfo.cs" />
     <Compile Include="GTAVExtensions.cs" />
     <Compile Include="ServerSystem\EntityCommands\RepairVehicleCommand.cs" />
+    <Compile Include="ServerSystem\PacketsIn\RequestRedefinePacketIn.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPropPacketOut.cs" />

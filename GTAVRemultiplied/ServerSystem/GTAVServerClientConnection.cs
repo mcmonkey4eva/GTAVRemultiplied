@@ -267,6 +267,7 @@ namespace GTAVRemultiplied.ServerSystem
                         count -= len + 5;
                         Array.Copy(known, len + 5, known, 0, count);
                         AbstractPacketIn pack = null;
+                        // TODO: Packet registry (dictionary)!
                         switch (packType)
                         {
                             case ClientToServerPacket.SELF_UPDATE:
@@ -286,6 +287,9 @@ namespace GTAVRemultiplied.ServerSystem
                                 break;
                             case ClientToServerPacket.REQUEST_MODEL:
                                 pack = new RequestModelPacketIn();
+                                break;
+                            case ClientToServerPacket.REQUEST_REDEFINE:
+                                pack = new RequestRedefinePacketIn();
                                 break;
                         }
                         if (pack == null)

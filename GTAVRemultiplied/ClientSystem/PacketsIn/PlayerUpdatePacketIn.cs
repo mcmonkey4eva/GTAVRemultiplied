@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GTA;
 using GTA.Math;
 using GTA.Native;
+using GTAVRemultiplied.ClientSystem.PacketsOut;
 
 namespace GTAVRemultiplied.ClientSystem.PacketsIn
 {
@@ -21,7 +22,8 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int tped;
             if (!ClientConnectionScript.ServerToClientPed.TryGetValue(serverPed, out tped))
             {
-                return true; // TODO: Maybe send a 'request redefine' packet?
+                ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.PED, serverPed));
+                return true;
             }
             Ped ped = new Ped(tped);
             Vector3 vec = new Vector3();

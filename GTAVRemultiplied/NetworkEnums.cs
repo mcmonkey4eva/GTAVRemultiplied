@@ -13,7 +13,14 @@ namespace GTAVRemultiplied
         JUMP = 2,
         ENTER_VEHICLE = 3,
         EXIT_VEHICLE = 4,
-        REQUEST_MODEL = 5
+        REQUEST_MODEL = 5,
+        REQUEST_REDEFINE = 6
+    }
+
+    public enum ObjectType : byte
+    {
+        VEHICLE = 0,
+        PED = 1
     }
 
     public enum ServerToClientPacket : byte
