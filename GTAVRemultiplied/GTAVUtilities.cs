@@ -22,6 +22,11 @@ namespace GTAVRemultiplied
             ModelEnforcementScript.WantedModel = mod;
         }
 
+        public static void FixVehicles()
+        {
+            GlobalVariable.Get(0x279476).Write<long>(1);
+        }
+
         public static Vector3 StringToVector(string input)
         {
             string[] split = input.SplitFast(',', 3);

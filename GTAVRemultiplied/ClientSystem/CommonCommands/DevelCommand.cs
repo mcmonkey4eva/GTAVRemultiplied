@@ -155,7 +155,8 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     break;
                 case "dbFix":
                     {
-                        MONKEYHELPER.AttemptVehicleFix();
+                        //MONKEYHELPER.AttemptVehicleFix();
+                        GTAVUtilities.FixVehicles();
                     }
                     break;
                 default:
