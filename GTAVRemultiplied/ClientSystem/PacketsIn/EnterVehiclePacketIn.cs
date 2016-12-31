@@ -24,7 +24,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return true; // TODO: Maybe send a 'request redefine' packet?
             }
             Ped p = new Ped(tped);
-            Vehicle v = new Vehicle(ClientConnectionScript.ServerToClientVehicle[veh]);
+            int vid;
+            if (!ClientConnectionScript.ServerToClientVehicle.TryGetValue(veh, out vid))
+            {
+                return true; // TODO: Maybe send a 'request redefine' packet?
+            }
+            Vehicle v = new Vehicle(vid);
             ClientConnectionScript.ServerPedKnownPosition[ped].InVehicle = true;
             if (!v.IsSeatFree(seat))
             {

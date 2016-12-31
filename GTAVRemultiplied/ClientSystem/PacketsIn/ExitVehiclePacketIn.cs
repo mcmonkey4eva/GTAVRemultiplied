@@ -23,7 +23,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             Ped ped = new Ped(tped);
             ClientConnectionScript.ServerPedKnownPosition[sped].InVehicle = false;
-            if (ped.CurrentVehicle != null)
+            if (ped.IsInVehicle() && ped.CurrentVehicle != null)
             {
                 ped.Task.LeaveVehicle(ped.CurrentVehicle, false);
                 ped.Task.LeaveVehicle();

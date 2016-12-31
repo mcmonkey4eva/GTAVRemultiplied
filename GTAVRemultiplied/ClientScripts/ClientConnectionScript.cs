@@ -78,6 +78,8 @@ public class ClientConnectionScript : Script
 
     public static Vector3 camPos;
 
+    public double VehicleAnnounceTimer = 0.0;
+
     private void ClientConnectionScript_Tick(object sender, EventArgs e)
     {
         try
@@ -281,13 +283,17 @@ public class ClientConnectionScript : Script
                         }
                     }
                     bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.Player.Character.IsJumpingOutOfVehicle && !ControlTagBase.ControlDown(Control.VehicleExit) && Game.Player.Character.CurrentVehicle != null;
-                    if (isInVehicle && !wasInVehicle)
+                    VehicleAnnounceTimer += GTAVFrenetic.cDelta;
+                    bool anncVeh = VehicleAnnounceTimer > 1.0; // TODO: Constant
+                    if (anncVeh || (isInVehicle && !wasInVehicle))
                     {
                         SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
+                        VehicleAnnounceTimer = 0.0;
                     }
-                    else if (!isInVehicle && wasInVehicle)
+                    else if (anncVeh || (!isInVehicle && wasInVehicle))
                     {
                         SendPacket(new ExitVehiclePacketOut());
+                        VehicleAnnounceTimer = 0.0;
                     }
                     wasInVehicle = isInVehicle;
                     bool hasModel = ModelEnforcementScript.WantedModel.HasValue;
