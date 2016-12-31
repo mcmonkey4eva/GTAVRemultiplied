@@ -29,6 +29,7 @@ namespace GTAVRemultiplied.SharedSystems
             }
         }
 
+        // TODO: Update/Clean this. Maybe externalize this to a separate app.
         public static void GlobalLoginAttempt(string user, string pass, Scheduler schedule)
         {
             schedule.StartASyncTask(() =>
@@ -41,7 +42,7 @@ namespace GTAVRemultiplied.SharedSystems
                         data["formtype"] = "login";
                         data["username"] = user;
                         data["password"] = pass;
-                        data["session_id"] = "0";
+                        data["session_id"] = "0"; // TODO: Own sessid for GTAV?
                         byte[] response = wb.UploadValues("https://frenetic.xyz/account/micrologin", "POST", data);
                         string resp = GTAVUtilities.Enc.GetString(response).Trim(' ', '\n', '\r', '\t');
                         if (resp.StartsWith("ACCEPT=") && resp.EndsWith(";"))

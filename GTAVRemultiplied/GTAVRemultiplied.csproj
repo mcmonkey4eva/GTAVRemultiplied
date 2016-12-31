@@ -56,6 +56,7 @@
     <Compile Include="ClientSystem\PacketsIn\FiredShotPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\JumpPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\AddVehiclePacketIn.cs" />
+    <Compile Include="ClientSystem\PacketsIn\PingPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\RemovePedPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\RemovePropPacketIn.cs" />
     <Compile Include="ClientSystem\PacketsIn\SetIPLDataPacketIn.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ClientSystem\PacketsOut\EnterVehiclePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\ExitVehiclePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\FiredShotPacketOut.cs" />
+    <Compile Include="ClientSystem\PacketsOut\PingPacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\RequestRedefinePacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\JumpPacketOut.cs" />
     <Compile Include="ClientSystem\PacketsOut\RequestModelPacketOut.cs" />
@@ -75,10 +77,12 @@
     <Compile Include="ClientSystem\VehicleInfo.cs" />
     <Compile Include="GTAVExtensions.cs" />
     <Compile Include="ServerSystem\EntityCommands\RepairVehicleCommand.cs" />
+    <Compile Include="ServerSystem\PacketsIn\PingPacketIn.cs" />
     <Compile Include="ServerSystem\PacketsIn\RequestRedefinePacketIn.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddBlipPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\AddPropPacketOut.cs" />
+    <Compile Include="ServerSystem\PacketsOut\PingPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\RemovePedPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\RemovePropPacketOut.cs" />
     <Compile Include="ServerSystem\PacketsOut\SetIPLDataPacketOut.cs" />

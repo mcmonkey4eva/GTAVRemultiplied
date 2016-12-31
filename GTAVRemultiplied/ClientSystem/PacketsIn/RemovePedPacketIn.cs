@@ -27,10 +27,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.ClientToServerPed.Remove(pd);
                 ClientConnectionScript.ServerPedKnownPosition.Remove(id);
             }
-            else
-            {
-                Log.Message("Warning", "Unknown character removed!", 'Y');
-            }
             return true;
         }
     }

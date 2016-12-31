@@ -39,6 +39,51 @@ namespace GTAVRemultiplied.ServerSystem
 
         public string Name = null;
 
+        public byte PingLast = 0;
+
+        public long PingCount = 0;
+
+        public bool Ping(byte code)
+        {
+            if (code != PingLast)
+            {
+                return false;
+            }
+            PingCount++;
+            if (PingCount == 3)
+            {
+                SendPacket(new SetIPLDataPacketOut());
+            }
+            else if (PingCount == 6)
+            {
+                foreach (int vehicle in GTAVServerConnection.Vehicles.Keys)
+                {
+                    SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
+                }
+                foreach (int id in GTAVServerConnection.Characters.Keys)
+                {
+                    Ped ped = new Ped(id);
+                    GTAVServerClientConnection owner = null;
+                    foreach (GTAVServerClientConnection connection in GTAVFreneticServer.Connections.Connections)
+                    {
+                        if (connection.Character.Handle == ped.Handle)
+                        {
+                            owner = connection;
+                            break;
+                        }
+                    }
+                    SendPacket(new AddPedPacketOut(ped));
+                    if (owner != null || Game.Player.Character.Handle == ped.Handle)
+                    {
+                        SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
+                    }
+                }
+            }
+            PingLast = (byte)GTAVUtilities.random.Next(256);
+            SendPacket(new PingPacketOut(PingLast));
+            return true;
+        }
+
         public void Delete()
         {
             if (blip != null)
@@ -76,34 +121,7 @@ namespace GTAVRemultiplied.ServerSystem
         public void Spawn()
         {
             SpawnCharacter();
-            foreach (int vehicle in GTAVServerConnection.Vehicles.Keys)
-            {
-                SendPacket(new AddVehiclePacketOut(new Vehicle(vehicle)));
-            }
-            /*foreach (int prop in GTAVServerConnection.Props)
-            {
-                SendPacket(new AddPropPacketOut(new Prop(prop)));
-            }*/
-            foreach (int id in GTAVServerConnection.Characters.Keys)
-            {
-                Ped ped = new Ped(id);
-                GTAVServerClientConnection owner = null;
-                foreach (GTAVServerClientConnection connection in GTAVFreneticServer.Connections.Connections)
-                {
-                    if (connection.Character.Handle == ped.Handle)
-                    {
-                        owner = connection;
-                        break;
-                    }
-                } 
-                SendPacket(new AddPedPacketOut(ped));
-                if (owner != null || Game.Player.Character.Handle == ped.Handle)
-                {
-                    SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
-                }
-            }
-            SendPacket(new SetIPLDataPacketOut());
-            SendPacket(new WorldStatusPacketOut());
+            Ping(PingLast);
             Log.Message("Server", "Spawned a new player from " + Sock.RemoteEndPoint.ToString());
         }
 
@@ -290,6 +308,9 @@ namespace GTAVRemultiplied.ServerSystem
                                 break;
                             case ClientToServerPacket.REQUEST_REDEFINE:
                                 pack = new RequestRedefinePacketIn();
+                                break;
+                            case ClientToServerPacket.PING:
+                                pack = new PingPacketIn();
                                 break;
                         }
                         if (pack == null)

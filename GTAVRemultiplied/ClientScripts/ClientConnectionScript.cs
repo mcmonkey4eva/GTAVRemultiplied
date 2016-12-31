@@ -200,6 +200,9 @@ public class ClientConnectionScript : Script
                                     case ServerToClientPacket.UPDATE_PROP:
                                         pack = new UpdatePropPacketIn();
                                         break;
+                                    case ServerToClientPacket.PING:
+                                        pack = new PingPacketIn();
+                                        break;
                                 }
                                 if (pack == null)
                                 {
@@ -285,12 +288,12 @@ public class ClientConnectionScript : Script
                     bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.Player.Character.IsJumpingOutOfVehicle && !ControlTagBase.ControlDown(Control.VehicleExit) && Game.Player.Character.CurrentVehicle != null;
                     VehicleAnnounceTimer += GTAVFrenetic.cDelta;
                     bool anncVeh = VehicleAnnounceTimer > 1.0; // TODO: Constant
-                    if (anncVeh || (isInVehicle && !wasInVehicle))
+                    if (isInVehicle && (anncVeh || !wasInVehicle))
                     {
                         SendPacket(new EnterVehiclePacketOut(Game.Player.Character.CurrentVehicle, Game.Player.Character.SeatIndex));
                         VehicleAnnounceTimer = 0.0;
                     }
-                    else if (anncVeh || (!isInVehicle && wasInVehicle))
+                    else if (!isInVehicle && (anncVeh || wasInVehicle))
                     {
                         SendPacket(new ExitVehiclePacketOut());
                         VehicleAnnounceTimer = 0.0;

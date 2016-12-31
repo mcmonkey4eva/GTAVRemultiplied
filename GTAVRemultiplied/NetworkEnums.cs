@@ -14,7 +14,8 @@ namespace GTAVRemultiplied
         ENTER_VEHICLE = 3,
         EXIT_VEHICLE = 4,
         REQUEST_MODEL = 5,
-        REQUEST_REDEFINE = 6
+        REQUEST_REDEFINE = 6,
+        PING = 7
     }
 
     public enum ObjectType : byte
@@ -41,7 +42,8 @@ namespace GTAVRemultiplied
         ADD_BLIP = 13,
         ADD_PROP = 14,
         REMOVE_PROP = 15,
-        UPDATE_PROP = 16
+        UPDATE_PROP = 16,
+        PING = 17
     }
 
     [Flags]

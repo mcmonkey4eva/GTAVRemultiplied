@@ -24,10 +24,6 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 ClientConnectionScript.ServerToClientProp.Remove(id);
                 ClientConnectionScript.ClientToServerProp.Remove(pr);
             }
-            else
-            {
-                Log.Message("Warning", "Unknown vehicle removed!", 'Y');
-            }
             return true;
         }
     }

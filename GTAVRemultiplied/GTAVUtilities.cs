@@ -17,6 +17,8 @@ namespace GTAVRemultiplied
     {
         public static Encoding Enc = new UTF8Encoding(false);
 
+        public static Random random = new Random();
+
         public static void SwitchCharacter(Model? mod)
         {
             ModelEnforcementScript.WantedModel = mod;

@@ -133,7 +133,10 @@ namespace GTAVRemultiplied.ServerSystem
                     Vehicles.Add(vehicle.Handle, vi);
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        connection.SendPacket(new AddVehiclePacketOut(vehicle));
+                        if (connection.PingCount > 5)
+                        {
+                            connection.SendPacket(new AddVehiclePacketOut(vehicle));
+                        }
                     }
                 }
                 ids.Remove(vehicle.Handle);
@@ -153,7 +156,7 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        if (connection.Waiting < connection.MaxWaiting)
+                        if (connection.PingCount > 5 && connection.Waiting < connection.MaxWaiting)
                         {
                             connection.SendPacket(new UpdateVehiclePacketOut(vehicle));
                         }
@@ -213,7 +216,10 @@ namespace GTAVRemultiplied.ServerSystem
                 {
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        connection.SendPacket(new SetModelPacketOut(Game.Player.Character, cModel));
+                        if (connection.PingCount > 5)
+                        {
+                            connection.SendPacket(new SetModelPacketOut(Game.Player.Character, cModel));
+                        }
                     }
                     pModel = cModel;
                 }
@@ -240,7 +246,7 @@ namespace GTAVRemultiplied.ServerSystem
                     Characters[ped.Handle] = new PedInfo();
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        if (connection.Character.Handle != ped.Handle)
+                        if (connection.PingCount > 5 && connection.Character.Handle != ped.Handle)
                         {
                             connection.SendPacket(new AddPedPacketOut(ped));
                             if (owner != null || Game.Player.Character.Handle == ped.Handle)
@@ -270,7 +276,7 @@ namespace GTAVRemultiplied.ServerSystem
                 bool vehRem = isInVehicle && (!character.wasInVehicle || DateTime.Now.Subtract(character.nextVehicleReminder).TotalSeconds > 1.0);
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
-                    if (connection.Character.Handle != ped.Handle)
+                    if (connection.PingCount > 5 && connection.Character.Handle != ped.Handle)
                     {
                         if (send_update)
                         {
@@ -328,7 +334,7 @@ namespace GTAVRemultiplied.ServerSystem
                 deltaTilWorldUpdate = 0.5f;
                 foreach (GTAVServerClientConnection connection in Connections)
                 {
-                    if (connection.Waiting < connection.MaxWaiting)
+                    if (connection.PingCount > 3 && connection.Waiting < connection.MaxWaiting)
                     {
                         connection.SendPacket(new WorldStatusPacketOut());
                     }
