@@ -20,22 +20,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             }
             bool dbme = false;
             int id = BitConverter.ToInt32(data, 0);
-            Vector3 pos = new Vector3();
-            pos.X = BitConverter.ToSingle(data, 4);
-            pos.Y = BitConverter.ToSingle(data, 4 + 4);
-            pos.Z = BitConverter.ToSingle(data, 4 + 8);
-            Vector3 vel = new Vector3();
-            vel.X = BitConverter.ToSingle(data, 4 + 12);
-            vel.Y = BitConverter.ToSingle(data, 4 + 12 + 4);
-            vel.Z = BitConverter.ToSingle(data, 4 + 12 + 8);
+            Vector3 pos = new Vector3(BitConverter.ToSingle(data, 4), BitConverter.ToSingle(data, 4 + 4), BitConverter.ToSingle(data, 4 + 8));
+            Vector3 vel = new Vector3(BitConverter.ToSingle(data, 4 + 12), BitConverter.ToSingle(data, 4 + 12 + 4), BitConverter.ToSingle(data, 4 + 12 + 8));
             Quaternion rot;
             rot.X = BitConverter.ToSingle(data, 4 + 12 + 12);
             rot.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 4);
             rot.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 8);
-            Vector3 rotvel = new Vector3();
-            rotvel.X = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1);
-            rotvel.Y = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 4);
-            rotvel.Z = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 8);
+            Vector3 rotvel = new Vector3(BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1), BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 4), BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 8));
             rot.W = BitConverter.ToSingle(data, 4 + 12 + 12 + 12 + 1 + 12);
             VehicleFlags flags = (VehicleFlags)data[4 + 12 + 12 + 12];
             bool isDead = flags.HasFlag(VehicleFlags.DEAD);
@@ -45,11 +36,9 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             bool lights_int = flags.HasFlag(VehicleFlags.INTERIOR_LIGHTS);
             bool lights_taxi = flags.HasFlag(VehicleFlags.TAXI_LIGHTS);
             float speed = BitConverter.ToSingle(data, ind);
-            int veh;
-            if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
+            if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out int veh))
             {
-                VehicleInfo pinf;// = ClientConnectionScript.ServerVehKnownPosition[id];
-                if (!ClientConnectionScript.ServerVehKnownPosition.TryGetValue(id, out pinf))
+                if (!ClientConnectionScript.ServerVehKnownPosition.TryGetValue(id, out VehicleInfo pinf))
                 {
                     Log.Message("Warning", "Half-calculated vehicle updated!", 'Y');
                     return true;

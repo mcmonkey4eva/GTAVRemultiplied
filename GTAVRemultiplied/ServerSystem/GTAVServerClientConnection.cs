@@ -337,7 +337,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public long MaxWaiting = 1024 * 20; // TODO: Variation with net availability! (IE, shrink this if a client is lagging, and grow it otherwise, while not going too high)
 
-        void sendCallback(IAsyncResult res)
+        void SendCallback(IAsyncResult res)
         {
             Waiting -= (int)res.AsyncState;
         }
@@ -356,7 +356,7 @@ namespace GTAVRemultiplied.ServerSystem
                 data.CopyTo(toSend, 5);
                 GTAVFreneticServer.DataUsage += toSend.Length;
                 Waiting += toSend.Length;
-                Sock.BeginSend(toSend, 0, toSend.Length, SocketFlags.None, sendCallback, toSend.Length);
+                Sock.BeginSend(toSend, 0, toSend.Length, SocketFlags.None, SendCallback, toSend.Length);
             }
             catch (SocketException ex)
             {

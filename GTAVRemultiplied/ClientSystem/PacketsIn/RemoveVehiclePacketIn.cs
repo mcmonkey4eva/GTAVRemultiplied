@@ -16,8 +16,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int id = BitConverter.ToInt32(data, 0);
-            int veh;
-            if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out veh))
+            if (ClientConnectionScript.ServerToClientVehicle.TryGetValue(id, out int veh))
             {
                 Vehicle vehicle = new Vehicle(veh);
                 vehicle.Delete();

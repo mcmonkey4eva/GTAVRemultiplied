@@ -24,10 +24,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return true;
             }
             int hash = BitConverter.ToInt32(data, 4);
-            Vector3 pos = new Vector3();
-            pos.X = BitConverter.ToSingle(data, 4 + 4);
-            pos.Y = BitConverter.ToSingle(data, 4 + 4 + 4);
-            pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
+            Vector3 pos = new Vector3(BitConverter.ToSingle(data, 4 + 4), BitConverter.ToSingle(data, 4 + 4 + 4), BitConverter.ToSingle(data, 4 + 4 + 8));
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
             Vehicle vehicle = World.CreateVehicle(new Model(hash), pos, heading);
             if (vehicle == null)
@@ -56,12 +53,14 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             vehicle.Mods.RimColor = (VehicleColor)data[ind + 4];
             ClientConnectionScript.ServerToClientVehicle[id] = vehicle.Handle;
             ClientConnectionScript.ClientToServerVehicle[vehicle.Handle] = id;
-            VehicleInfo inf = new VehicleInfo();
-            inf.lPos = vehicle.Position;
-            inf.lGoal = inf.lPos;
-            inf.vehicle = vehicle;
-            inf.lRot = vehicle.Quaternion;
-            inf.lRotGoal = inf.lRot;
+            VehicleInfo inf = new VehicleInfo()
+            {
+                lPos = vehicle.Position,
+                lGoal = vehicle.Position,
+                vehicle = vehicle,
+                lRot = vehicle.Quaternion,
+                lRotGoal = vehicle.Quaternion
+            };
             ClientConnectionScript.ServerVehKnownPosition[id] = inf;
             return true;
         }
