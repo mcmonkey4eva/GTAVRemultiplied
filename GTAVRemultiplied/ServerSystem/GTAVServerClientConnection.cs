@@ -114,6 +114,8 @@ namespace GTAVRemultiplied.ServerSystem
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
             Character.CanBeDraggedOutOfVehicle = false;
+            Function.Call(Hash.SET_ENTITY_LOAD_COLLISION_FLAG, Character, true); // TODO: Experimental!
+            Function.Call(Hash.SET_ENTITY_ALWAYS_PRERENDER, Character, true); // TODO: Experimental!
             KnownCharHistory.Add(Character.Handle);
             //Character.FreezePosition = true;
         }
