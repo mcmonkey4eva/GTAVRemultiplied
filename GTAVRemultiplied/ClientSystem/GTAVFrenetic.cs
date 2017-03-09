@@ -38,8 +38,11 @@ namespace GTAVRemultiplied.ClientSystem
 
         public static double GlobalTickTime = 100;
 
+        public static long Ticks = 1;
+
         public static void Tick(float delta)
         {
+            Ticks++;
             cDelta = delta;
             GlobalTickTime += cDelta;
             Schedule.RunAllSyncTasks(delta);

@@ -82,6 +82,8 @@ public class VehicleEnterScript : Script
 
     public static bool UseFancy = true;
 
+    bool Forbid = false;
+    
     private void VehicleEnterScript_Tick(object sender, EventArgs e)
     {
         try
@@ -95,15 +97,16 @@ public class VehicleEnterScript : Script
                 LastVehicle = GTAVFrenetic.GlobalTickTime;
                 return;
             }
-            if (GTAVFrenetic.GlobalTickTime - LastVehicle < 3)
+            if (GTAVFrenetic.GlobalTickTime - LastVehicle < 1.0)
             {
                 return;
             }
             if (ControlTagBase.ControlDown(Control.Enter))
             {
+                Forbid = true;
                 Game.Player.SetMayNotEnterAnyVehicleThisFrame();
                 TapDetector += GTAVFrenetic.cDelta;
-                bool held = TapDetector > 1.0;
+                bool held = TapDetector > 0.5;
                 float closest = 8f * 8f;
                 getinto = null;
                 Vector3 closepos = Vector3.Zero;
@@ -111,9 +114,7 @@ public class VehicleEnterScript : Script
                 string seatName = null;
                 foreach (Vehicle veh in World.GetAllVehicles())
                 {
-                    Vector3 min;
-                    Vector3 max;
-                    veh.Model.GetDimensions(out min, out max);
+                    veh.Model.GetDimensions(out Vector3 min, out Vector3 max);
                     min -= new Vector3(7, 7, 7);
                     max += new Vector3(7, 7, 7);
                     min += veh.Position;
@@ -127,7 +128,7 @@ public class VehicleEnterScript : Script
                     if (!driverOpen)
                     {
                         Ped driver = veh.GetPedOnSeat(VehicleSeat.Driver);
-                        if (driver == null || driver.AttachedBlips.Length == 0) // TODO: better player/important check system?
+                        if (driver == null || driver.AttachedBlips.Length == 0) // TODO: better player/important ped check system?
                         {
                             driverOpen = true;
                         }
@@ -183,6 +184,13 @@ public class VehicleEnterScript : Script
                     ClientConnectionScript.Text3D(Game.Player.Character.Position + new Vector3(0, 0, 0.5f), "<None>", System.Drawing.Color.Yellow, 5f);
                 }
             }
+            else if (Forbid)
+            {
+                Game.Player.SetMayNotEnterAnyVehicleThisFrame();
+                Game.DisableControlThisFrame(0, Control.Enter);
+                Game.DisableControlThisFrame(2, Control.Enter);
+                Forbid = false;
+            }
             else
             {
                 TapDetector = 0;
@@ -194,8 +202,8 @@ public class VehicleEnterScript : Script
                         if (getinto.GetPedOnSeat(spot).IsDead)
                         {
                             // TODO: How do we move out bodies reasonably? Ideally would be a player-pulls-the-body-out animation!
-                            getinto.GetPedOnSeat(spot).Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
-                            Game.Player.Character.Task.EnterVehicle(getinto, VehicleSeat.Any, -1, 2);
+                            getinto.GetPedOnSeat(spot).Delete();
+                            Game.Player.Character.Task.EnterVehicle(getinto, spot, -1, 2, 16);
                         }
                         else
                         {
@@ -204,7 +212,9 @@ public class VehicleEnterScript : Script
                     }
                     else
                     {
-                        Game.Player.Character.Task.EnterVehicle(getinto, spot, -1, 2);
+                        Game.Player.Character.Task.ClearAllImmediately();
+                        // TODO: proper vehicle entry animation!
+                        Game.Player.Character.Task.EnterVehicle(getinto, spot, -1, 2, 16);
                     }
                     getinto = null;
                 }
