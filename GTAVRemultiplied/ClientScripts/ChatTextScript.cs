@@ -32,7 +32,7 @@ public class ChatTextScript : Script
     public Text GenOne()
     {
         CPos += Height;
-        return new Text("", new Point(0, CPos), 0.33f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false);
+        return new Text("", new Point(0, CPos), 0.33f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false, float.MaxValue);
     }
 
     public List<Text> ChatTextSlot = new List<Text>();
