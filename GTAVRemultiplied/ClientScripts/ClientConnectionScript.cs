@@ -206,7 +206,7 @@ public class ClientConnectionScript : Script
                                 }
                                 if (pack == null)
                                 {
-                                    Log.Error("Packet from server is null!");
+                                    Log.Error("Packet from server is null: " + packType);
                                     Connected = false;
                                     // TODO: Disconnect properly.
                                     return;

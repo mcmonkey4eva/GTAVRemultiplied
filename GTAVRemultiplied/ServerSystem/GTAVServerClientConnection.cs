@@ -317,7 +317,7 @@ namespace GTAVRemultiplied.ServerSystem
                         }
                         if (pack == null)
                         {
-                            Log.Error("Packet from user is null!");
+                            Log.Error("Packet from user is null: " + packType);
                             // TODO: Kick user + error.
                         }
                         else
