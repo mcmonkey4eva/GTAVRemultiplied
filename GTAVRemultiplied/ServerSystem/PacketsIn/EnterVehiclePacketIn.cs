@@ -18,13 +18,25 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             int veh = BitConverter.ToInt32(data, 0);
             // TODO: Validate vehicle ID!
             // TODO: Validate the seat!
-            // TODO: Make sure we're not forcing anyone out of their seat!
             // TODO: Make sure the character can validly move into this vehicle, and isn't using vehicles to teleport!
+            Vehicle v = new Vehicle(veh);
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
-            client.Character.SetIntoVehicle(new Vehicle(veh), seat);
+            if (!v.IsSeatFree(seat))
+            {
+                Ped problem = v.GetPedOnSeat(seat);
+                if (problem.Handle != Game.Player.Character.Handle && problem.AttachedBlip == null)
+                {
+                    problem.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            client.Character.SetIntoVehicle(v, seat);
             client.InVehicle = true;
-            client.lRot = new Vehicle(veh).Quaternion;
-            client.lPos = new Vehicle(veh).Position;
+            client.lRot = v.Quaternion;
+            client.lPos = v.Position;
             return true;
         }
     }

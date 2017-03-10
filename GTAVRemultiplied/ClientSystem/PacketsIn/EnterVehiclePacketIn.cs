@@ -19,15 +19,13 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             int veh = BitConverter.ToInt32(data, 0);
             VehicleSeat seat = (VehicleSeat)(data[4] - 3);
             int ped = BitConverter.ToInt32(data, 5);
-            int tped;
-            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(ped, out tped))
+            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(ped, out int tped))
             {
                 ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.PED, ped));
                 return true;
             }
             Ped p = new Ped(tped);
-            int vid;
-            if (!ClientConnectionScript.ServerToClientVehicle.TryGetValue(veh, out vid))
+            if (!ClientConnectionScript.ServerToClientVehicle.TryGetValue(veh, out int vid))
             {
                 ClientConnectionScript.SendPacket(new RequestRedefinePacketOut(ObjectType.VEHICLE, veh));
                 return true;

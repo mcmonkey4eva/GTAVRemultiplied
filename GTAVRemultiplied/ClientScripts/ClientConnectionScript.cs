@@ -285,7 +285,7 @@ public class ClientConnectionScript : Script
                             ped.Delete();
                         }
                     }
-                    bool isInVehicle = Game.Player.Character.IsSittingInVehicle() && !Game.Player.Character.IsJumpingOutOfVehicle && !ControlTagBase.ControlDown(Control.VehicleExit) && Game.Player.Character.CurrentVehicle != null;
+                    bool isInVehicle = Game.Player.Character.CurrentVehicle != null;
                     VehicleAnnounceTimer += GTAVFrenetic.cDelta;
                     bool anncVeh = VehicleAnnounceTimer > 1.0; // TODO: Constant
                     if (isInVehicle && (anncVeh || !wasInVehicle))

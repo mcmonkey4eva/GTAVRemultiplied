@@ -16,17 +16,16 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return false;
             }
             int sped = BitConverter.ToInt32(data, 0);
-            int tped;
-            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(sped, out tped))
+            if (!ClientConnectionScript.ServerToClientPed.TryGetValue(sped, out int tped))
             {
                 return true; // TODO: Maybe send a 'request redefine' packet?
             }
             Ped ped = new Ped(tped);
             ClientConnectionScript.ServerPedKnownPosition[sped].InVehicle = false;
-            if (ped.IsInVehicle() && ped.CurrentVehicle != null)
+            ped.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+            if (ped.CurrentVehicle != null)
             {
-                ped.Task.LeaveVehicle(ped.CurrentVehicle, false);
-                ped.Task.LeaveVehicle();
+                ped.CurrentVehicle.Delete();
             }
             return true;
         }

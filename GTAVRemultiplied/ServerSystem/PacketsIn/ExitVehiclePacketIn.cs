@@ -15,10 +15,10 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             {
                 return false;
             }
-            if (client.Character.IsInVehicle() && client.Character.CurrentVehicle != null)
+            client.Character.Task.LeaveVehicle(LeaveVehicleFlags.WarpOut);
+            if (client.Character.CurrentVehicle != null)
             {
-                client.Character.Task.LeaveVehicle(client.Character.CurrentVehicle, false);
-                client.Character.Task.LeaveVehicle();
+                client.Character.CurrentVehicle.Delete();
             }
             client.InVehicle = false;
             return true;
