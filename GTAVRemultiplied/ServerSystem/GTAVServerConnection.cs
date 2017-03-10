@@ -48,12 +48,14 @@ namespace GTAVRemultiplied.ServerSystem
             }
             while (Listener.Pending())
             {
-                PendingConnection pcon = new PendingConnection();
-                pcon.Sock = Listener.AcceptSocket();
+                PendingConnection pcon = new PendingConnection()
+                {
+                    Sock = Listener.AcceptSocket(),
+                    Data = ""
+                };
                 pcon.Sock.Blocking = false;
                 pcon.Sock.SendBufferSize = 1024 * 1024 * 10;
                 pcon.Sock.ReceiveBufferSize = 1024 * 1024 * 10;
-                pcon.Data = "";
                 Waiting.Add(pcon);
             }
             for (int i = Waiting.Count - 1; i >= 0; i--)
@@ -288,8 +290,8 @@ namespace GTAVRemultiplied.ServerSystem
                         }
                         if (cweap == character.weap && character.ammo > cammo)
                         {
-                            connection.SendPacket(new FiredShotPacketOut(ped,
-                                (ped.Handle == Game.Player.Character.Handle) ? GameplayCamera.Direction : ((owner == null) ? ped.ForwardVector : owner.lastShotAim)));
+                            
+                            connection.SendPacket(new FiredShotPacketOut(ped, (ped.Handle == Game.Player.Character.Handle || owner == null) ? ped.Weapons.CurrentWeaponObject.ForwardVector : owner.lastShotAim));
                             // TODO: Reload, etc.
                             // TODO: Sticky bombs, etc. No ammo clip!
                             // Also, sticky bomb remote detonation.

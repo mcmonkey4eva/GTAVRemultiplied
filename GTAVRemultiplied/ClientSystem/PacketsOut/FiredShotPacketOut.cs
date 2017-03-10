@@ -14,7 +14,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsOut
         {
             ID = ClientToServerPacket.FIRED_SHOT;
             Data = new byte[12];
-            Vector3 aim = Game.Player.Character.ForwardVector;
+            Vector3 aim = Game.Player.Character.Weapons.CurrentWeaponObject.ForwardVector;
             if (Game.Player.IsAiming)
             {
                 aim = GameplayCamera.Direction;

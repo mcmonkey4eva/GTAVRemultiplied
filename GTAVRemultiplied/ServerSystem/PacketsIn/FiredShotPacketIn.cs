@@ -17,11 +17,8 @@ namespace GTAVRemultiplied.ServerSystem.PacketsIn
             {
                 return false;
             }
-            Vector3 aim = new Vector3();
-            aim.X = BitConverter.ToSingle(data, 0);
-            aim.Y = BitConverter.ToSingle(data, 4);
-            aim.Z = BitConverter.ToSingle(data, 8);
-            Vector3 vec = client.Character.Position + aim * 50;
+            Vector3 aim = new Vector3(BitConverter.ToSingle(data, 0), BitConverter.ToSingle(data, 4), BitConverter.ToSingle(data, 8));
+            Vector3 vec = client.Character.Weapons.CurrentWeaponObject.Position + aim * 50;
             client.lastShotAim = aim;
             // SET_PED_SHOOTS_AT_COORD(Ped ped, float x, float y, float z, BOOL toggle)
             Function.Call(Hash.SET_PED_SHOOTS_AT_COORD, client.Character.Handle, vec.X, vec.Y, vec.Z, true);
