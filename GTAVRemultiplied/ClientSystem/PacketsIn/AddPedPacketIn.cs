@@ -23,10 +23,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
                 return true;
             }
             int hash = BitConverter.ToInt32(data, 4);
-            Vector3 pos = new Vector3();
-            pos.X = BitConverter.ToSingle(data, 4 + 4);
-            pos.Y = BitConverter.ToSingle(data, 4 + 4 + 4);
-            pos.Z = BitConverter.ToSingle(data, 4 + 4 + 8);
+            Vector3 pos = new Vector3(BitConverter.ToSingle(data, 4 + 4), BitConverter.ToSingle(data, 4 + 4 + 4), BitConverter.ToSingle(data, 4 + 4 + 8));
             float heading = BitConverter.ToSingle(data, 4 + 4 + 12);
             Ped ped = World.CreatePed(new Model(hash), pos, heading);
             if (ped == null)
@@ -45,10 +42,12 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             ped.Style.SetDefaultClothes();
             ClientConnectionScript.ServerToClientPed[id] = ped.Handle;
             ClientConnectionScript.ClientToServerPed[ped.Handle] = id;
-            PedInfo pinf = new PedInfo();
-            pinf.lPos = ped.Position;
-            pinf.lGoal = pinf.lPos;
-            pinf.Character = ped;
+            PedInfo pinf = new PedInfo()
+            {
+                lPos = ped.Position,
+                lGoal = ped.Position,
+                Character = ped
+            };
             ClientConnectionScript.ServerPedKnownPosition[id] = pinf;
             return true;
         }

@@ -35,6 +35,8 @@ namespace GTAVRemultiplied.ClientSystem
 
         public bool InVehicle = false;
 
+        bool lastMoveWasRun = false;
+
         public void SetCharacterPosition(Vector3 pos)
         {
             if (World.RaycastCapsule(pos, Vector3.WorldUp, 1.0f, 0.3f, IntersectOptions.Map | IntersectOptions.MissionEntities | IntersectOptions.Objects, Character).DidHit)
@@ -97,6 +99,7 @@ namespace GTAVRemultiplied.ClientSystem
                     Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@NON_CHALANT");
                     Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@NON_CHALANT", "walk", 8f, 1f, 5000, 1, 1f, false, false, false);
                 }
+                lastMoveWasRun = run;
                 lastRun = GTAVFrenetic.GlobalTickTime;
                 running = true;
             }
@@ -107,7 +110,16 @@ namespace GTAVRemultiplied.ClientSystem
             lastRun = 0.0;
             if (running)
             {
-                Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 0, 1, 1f, false, false, false);
+                if (lastMoveWasRun)
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@MULTIPLAYER");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 0, 1, 1f, false, false, false);
+                }
+                else
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@NON_CHALANT");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@NON_CHALANT", "walk", 8f, 1f, 0, 1, 1f, false, false, false);
+                }
                 running = false;
             }
         }

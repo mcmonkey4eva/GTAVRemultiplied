@@ -111,6 +111,9 @@ namespace GTAVRemultiplied.ServerSystem
             Character.IsInvincible = true;
             Character.IsFireProof = true;
             Character.IsExplosionProof = true;
+            Character.BlockPermanentEvents = true;
+            Character.Task.ClearAllImmediately();
+            Character.Style.SetDefaultClothes();
             Weapon held = Character.Weapons.Give(WeaponHash.AdvancedRifle, 1000, true, true);
             Character.Weapons.Select(held);
             Character.CanBeDraggedOutOfVehicle = false;
@@ -135,6 +138,8 @@ namespace GTAVRemultiplied.ServerSystem
 
         bool running = false;
 
+        bool lastMoveWasRun = false;
+
         public void AnimateMove(bool run)
         {
             if (Character.IsInVehicle())
@@ -153,6 +158,7 @@ namespace GTAVRemultiplied.ServerSystem
                     Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@NON_CHALANT");
                     Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@NON_CHALANT", "walk", 8f, 1f, 5000, 1, 1f, false, false, false);
                 }
+                lastMoveWasRun = run;
                 lastRun = GTAVFreneticServer.GlobalTickTime;
                 running = true;
             }
@@ -167,7 +173,16 @@ namespace GTAVRemultiplied.ServerSystem
             lastRun = 0.0;
             if (running)
             {
-                Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 0, 1, 1f, false, false, false);
+                if (lastMoveWasRun)
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@MULTIPLAYER");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@MULTIPLAYER", "run", 8f, 1f, 0, 1, 1f, false, false, false);
+                }
+                else
+                {
+                    Function.Call(Hash.REQUEST_ANIM_DICT, "MOVE_M@NON_CHALANT");
+                    Function.Call(Hash.TASK_PLAY_ANIM, Character.Handle, "MOVE_M@NON_CHALANT", "walk", 8f, 1f, 0, 1, 1f, false, false, false);
+                }
                 running = false;
             }
         }
