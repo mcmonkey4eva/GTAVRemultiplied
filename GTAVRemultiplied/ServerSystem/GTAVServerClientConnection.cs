@@ -72,10 +72,13 @@ namespace GTAVRemultiplied.ServerSystem
                             break;
                         }
                     }
-                    SendPacket(new AddPedPacketOut(ped));
-                    if (owner != null || Game.Player.Character.Handle == ped.Handle)
+                    if (ped.Handle != Character.Handle)
                     {
-                        SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
+                        SendPacket(new AddPedPacketOut(ped));
+                        if (owner != null || Game.Player.Character.Handle == ped.Handle)
+                        {
+                            SendPacket(new AddBlipPacketOut(ped, BlipSprite.Standard, BlipColor.Blue, (owner == null ? GTAVFreneticServer.HostAccount : owner.Name)));
+                        }
                     }
                 }
             }

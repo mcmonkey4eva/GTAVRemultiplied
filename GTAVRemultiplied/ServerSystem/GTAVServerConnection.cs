@@ -135,10 +135,7 @@ namespace GTAVRemultiplied.ServerSystem
                     Vehicles.Add(vehicle.Handle, vi);
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        if (connection.PingCount > 5)
-                        {
-                            connection.SendPacket(new AddVehiclePacketOut(vehicle));
-                        }
+                        connection.SendPacket(new AddVehiclePacketOut(vehicle));
                     }
                 }
                 ids.Remove(vehicle.Handle);
@@ -248,7 +245,7 @@ namespace GTAVRemultiplied.ServerSystem
                     Characters[ped.Handle] = new PedInfo();
                     foreach (GTAVServerClientConnection connection in Connections)
                     {
-                        if (connection.PingCount > 5 && connection.Character.Handle != ped.Handle)
+                        if (connection.Character.Handle != ped.Handle)
                         {
                             connection.SendPacket(new AddPedPacketOut(ped));
                             if (owner != null || Game.Player.Character.Handle == ped.Handle)
