@@ -11,46 +11,44 @@ using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.NetworkCommands
 {
-    public class ConnectCommand : AbstractCommand
+    public class HostServerCommand : AbstractCommand
     {
         // TODO: Meta!
 
-        public ConnectCommand()
+        public HostServerCommand()
         {
-            Name = "connect";
-            Arguments = "<ip> [port]";
-            Description = "Connects to a remote server.";
-            MinimumArguments = 1;
-            MaximumArguments = 2;
+            Name = "hostserver";
+            Arguments = "[port]";
+            Description = "Starts hosting a server locally.";
+            MinimumArguments = 0;
+            MaximumArguments = 1;
             ObjectTypes = new List<Func<TemplateObject, TemplateObject>>()
             {
-                TextTag.For,
                 IntegerTag.TryFor
             };
         }
-
+        
         public static void Execute(CommandQueue queue, CommandEntry entry)
         {
-            string ip = entry.GetArgument(queue, 0);
-            ushort port = 28010;
-            if (entry.Arguments.Count > 1)
+            if (GTAVFreneticServer.HostAccount == null)
             {
-                port = (ushort)IntegerTag.TryFor(entry.GetArgumentObject(queue, 1)).Internal;
+                queue.HandleError(entry, "Cannot host: not logged in!");
+                return;
+            }
+            ushort port = 28010;
+            if (entry.Arguments.Count > 0)
+            {
+                port = (ushort)IntegerTag.TryFor(entry.GetArgumentObject(queue, 0)).Internal;
             }
             if (GTAVFreneticServer.Enabled)
             {
                 queue.HandleError(entry, "Already running a server!");
                 return;
             }
-            if (ClientConnectionScript.Connected)
-            {
-                queue.HandleError(entry, "Already connected to a server!");
-                return;
-            }
-            ClientConnectionScript.Connect(ip, port);
+            GTAVFreneticServer.Init(port);
             if (entry.ShouldShowGood(queue))
             {
-                entry.Good(queue, "Connection starting!");
+                entry.Good(queue, "Server starting!");
             }
         }
     }

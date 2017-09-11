@@ -19,7 +19,7 @@ namespace GTAVRemultiplied.ClientSystem.PacketsIn
             Weather weather = (Weather)BitConverter.ToInt32(data, 8);
             Weather nextWeather = (Weather)BitConverter.ToInt32(data, 12);
             float weatherTransition = BitConverter.ToSingle(data, 16);
-            World.CurrentDayTime = new TimeSpan(ticks);
+            World.CurrentTimeOfDay = new TimeSpan(ticks);
             World.Weather = weather;
             World.NextWeather = nextWeather;
             World.WeatherTransition = weatherTransition;

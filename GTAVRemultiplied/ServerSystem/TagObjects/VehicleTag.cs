@@ -24,11 +24,13 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
             return (obj is VehicleTag) ? (VehicleTag)obj : null;
         }
 
-        /// <summary>
-        /// All tag handlers for this tag type.
-        /// </summary>
-        public static Dictionary<string, TagSubHandler> Handlers = new Dictionary<string, TagSubHandler>();
+        public override string GetTagTypeName()
+        {
+            return "vehicletag";
+        }
 
+        // TODO: Tags!
+        /*
         static VehicleTag()
         {
             // TODO: Meta!
@@ -37,21 +39,7 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
             Handlers.Add("duplicate", new TagSubHandler() { Handle = (data, obj) => new VehicleTag(((VehicleTag)obj).Internal), ReturnTypeString = "vehicletag" });
             // Documented in TextTag.
             // TODO: Handlers.Add("type", new TagSubHandler() { Handle = (data, obj) => new TagTypeTag(data.TagSystem.Type_Null), ReturnTypeString = "tagtypetag" });
-        }
-
-        public override TemplateObject Handle(TagData data)
-        {
-            if (data.Remaining == 0)
-            {
-                return this;
-            }
-            TagSubHandler handler;
-            if (Handlers.TryGetValue(data[0], out handler))
-            {
-                return handler.Handle(data, this).Handle(data.Shrink());
-            }
-            return new TextTag(ToString()).Handle(data);
-        }
+        }*/
 
         public override string ToString()
         {

@@ -10,7 +10,7 @@ using FreneticScript.TagHandlers.Objects;
 
 namespace GTAVRemultiplied.ClientSystem.CommonCommands
 {
-    class DebugPositionCommand : AbstractCommand
+    public class DebugPositionCommand : AbstractCommand
     {
         // TODO: Meta!
         
@@ -27,7 +27,7 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
             };
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             DebugPositionScript.Enabled = BooleanTag.TryFor(entry.GetArgumentObject(queue, 0)).Internal;
             if (entry.ShouldShowGood(queue))

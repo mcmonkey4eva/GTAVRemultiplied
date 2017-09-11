@@ -12,6 +12,7 @@ using GTAVRemultiplied.ClientSystem.CommonCommands;
 using GTAVRemultiplied.ClientSystem.NetworkCommands;
 using GTAVRemultiplied.ClientSystem.TagBases;
 using GTAVRemultiplied.SharedSystems;
+using GTA.Native;
 
 namespace GTAVRemultiplied.ClientSystem
 {

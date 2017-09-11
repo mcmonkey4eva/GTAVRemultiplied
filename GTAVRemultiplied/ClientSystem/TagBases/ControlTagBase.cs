@@ -20,9 +20,12 @@ namespace GTAVRemultiplied.ClientSystem.TagBases
 
         public static bool ControlDown(Control ctrl)
         {
-            return Game.IsControlPressed(0, ctrl) || Game.IsControlPressed(2, ctrl);
+            return Game.IsControlPressed(ctrl);
         }
 
+
+        // TODO: Tags!
+        /*
         public override TemplateObject Handle(TagData data)
         {
             data.Shrink();
@@ -45,6 +48,6 @@ namespace GTAVRemultiplied.ClientSystem.TagBases
                 default:
                     return new TextTag(ToString()).Handle(data);
             }
-        }
+        }*/
     }
 }

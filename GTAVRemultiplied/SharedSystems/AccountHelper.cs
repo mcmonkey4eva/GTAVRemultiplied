@@ -23,7 +23,7 @@ namespace GTAVRemultiplied.SharedSystems
             if (System.IO.File.Exists("logindata.dat"))
             {
                 string dat = System.IO.File.ReadAllText("logindata.dat");
-                string[] d = dat.SplitFast('=');
+                string[] d = dat.SplitFastFS('=');
                 Username = d[0];
                 Key = d[1];
             }
@@ -38,7 +38,7 @@ namespace GTAVRemultiplied.SharedSystems
                 {
                     try
                     {
-                        NameValueCollection data = new NameValueCollection();
+                        NameValueCollection data = new NameValueCollection() { };
                         data["formtype"] = "login";
                         data["username"] = user;
                         data["password"] = pass;
@@ -84,7 +84,7 @@ namespace GTAVRemultiplied.SharedSystems
             }
             using (ShortWebClient wb = new ShortWebClient())
             {
-                NameValueCollection data = new NameValueCollection();
+                NameValueCollection data = new NameValueCollection() { };
                 data["formtype"] = "getsess";
                 data["username"] = Username;
                 data["session"] = Key;
@@ -106,7 +106,7 @@ namespace GTAVRemultiplied.SharedSystems
             }
             using (ShortWebClient wb = new ShortWebClient())
             {
-                NameValueCollection data = new NameValueCollection();
+                NameValueCollection data = new NameValueCollection() { };
                 data["formtype"] = "confirm";
                 data["username"] = username;
                 data["session"] = key;

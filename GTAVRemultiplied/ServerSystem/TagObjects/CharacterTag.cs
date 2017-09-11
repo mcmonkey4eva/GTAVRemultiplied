@@ -24,11 +24,8 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
             return (obj is CharacterTag) ? (CharacterTag)obj : null;
         }
 
-        /// <summary>
-        /// All tag handlers for this tag type.
-        /// </summary>
-        public static Dictionary<string, TagSubHandler> Handlers = new Dictionary<string, TagSubHandler>();
-
+        // TODO: Tags!
+        /*
         static CharacterTag()
         {
             // TODO: Meta!
@@ -37,25 +34,16 @@ namespace GTAVRemultiplied.ServerSystem.TagObjects
             Handlers.Add("duplicate", new TagSubHandler() { Handle = (data, obj) => new CharacterTag(((CharacterTag)obj).Internal), ReturnTypeString = "charactertag" });
             // Documented in TextTag.
             // TODO: Handlers.Add("type", new TagSubHandler() { Handle = (data, obj) => new TagTypeTag(data.TagSystem.Type_Null), ReturnTypeString = "tagtypetag" });
-        }
-
-        public override TemplateObject Handle(TagData data)
-        {
-            if (data.Remaining == 0)
-            {
-                return this;
-            }
-            TagSubHandler handler;
-            if (Handlers.TryGetValue(data[0], out handler))
-            {
-                return handler.Handle(data, this).Handle(data.Shrink());
-            }
-            return new TextTag(ToString()).Handle(data);
-        }
+        }*/
 
         public override string ToString()
         {
             return "character:" + Internal.Handle;
+        }
+
+        public override string GetTagTypeName()
+        {
+            return "charactertag";
         }
     }
 }

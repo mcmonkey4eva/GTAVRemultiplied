@@ -12,7 +12,7 @@ using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ClientSystem.NetworkCommands
 {
-    class LoginCommand : AbstractCommand
+    public class LoginCommand : AbstractCommand
     {
         // TODO: Meta!
 
@@ -30,7 +30,7 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
             };
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             string username = entry.GetArgument(queue, 0);
             string password = entry.GetArgument(queue, 1);

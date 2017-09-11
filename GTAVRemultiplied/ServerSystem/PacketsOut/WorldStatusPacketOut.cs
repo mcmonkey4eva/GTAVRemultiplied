@@ -13,7 +13,7 @@ namespace GTAVRemultiplied.ServerSystem.PacketsOut
         {
             ID = ServerToClientPacket.WORLD_STATUS;
             Data = new byte[8 + 4 + 4 + 4];
-            BitConverter.GetBytes(World.CurrentDayTime.Ticks).CopyTo(Data, 0);
+            BitConverter.GetBytes(World.CurrentTimeOfDay.Ticks).CopyTo(Data, 0);
             BitConverter.GetBytes((int)World.Weather).CopyTo(Data, 8);
             BitConverter.GetBytes((int)World.NextWeather).CopyTo(Data, 12);
             BitConverter.GetBytes(World.WeatherTransition).CopyTo(Data, 16);

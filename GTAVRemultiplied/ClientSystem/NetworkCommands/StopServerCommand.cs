@@ -24,7 +24,7 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
             ObjectTypes = new List<Func<TemplateObject, TemplateObject>>();
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             if (!GTAVFreneticServer.Enabled)
             {

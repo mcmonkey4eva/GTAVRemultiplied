@@ -14,7 +14,7 @@ using GTAVRemultiplied.ServerSystem.TagObjects;
 
 namespace GTAVRemultiplied.ServerSystem.EntityCommands
 {
-    class ModVehicleCommand : AbstractCommand
+    public class ModVehicleCommand : AbstractCommand
     {
         // TODO: Meta!
 
@@ -35,10 +35,10 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
 
         public TemplateObject GetLowText(TemplateObject input)
         {
-            return new TextTag(input.ToString().ToLowerFast());
+            return new TextTag(input.ToString().ToLowerFastFS());
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             VehicleTag veh = VehicleTag.For(entry.GetArgumentObject(queue, 0));
             if (veh == null)
@@ -46,7 +46,7 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
                 queue.HandleError(entry, "Null vehicle!");
                 return;
             }
-            string option = entry.GetArgument(queue, 1).ToLowerFast();
+            string option = entry.GetArgument(queue, 1).ToLowerFastFS();
             TemplateObject val = entry.GetArgumentObject(queue, 2);
             switch (option)
             {

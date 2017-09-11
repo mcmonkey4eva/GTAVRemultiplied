@@ -19,8 +19,8 @@ class LightTheNightScript : Script
     {
         if (Light)
         {
-            World.DrawLightWithRange(Game.PlayerPed.Position + new Vector3(0, 0, 10), System.Drawing.Color.White, 1000, 1);
-            World.DrawLightWithRange(Game.PlayerPed.Position, System.Drawing.Color.White, 10, 1);
+            World.DrawLightWithRange(Game.Player.Character.Position + new Vector3(0, 0, 10), System.Drawing.Color.White, 1000, 1);
+            World.DrawLightWithRange(Game.Player.Character.Position, System.Drawing.Color.White, 10, 1);
         }
     }
 }

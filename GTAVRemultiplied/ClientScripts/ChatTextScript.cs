@@ -29,13 +29,13 @@ public class ChatTextScript : Script
 
     int CPos = (int)GTA.UI.Screen.Height / 3 - Height;
 
-    public Text GenOne()
+    public TextElement GenOne()
     {
         CPos += Height;
-        return new Text("", new Point(0, CPos), 0.33f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false, float.MaxValue);
+        return new TextElement("", new Point(0, CPos), 0.33f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false, float.MaxValue);
     }
 
-    public List<Text> ChatTextSlot = new List<Text>();
+    public List<TextElement> ChatTextSlot = new List<TextElement>();
 
     List<string> AllText = new List<string>();
 

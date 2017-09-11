@@ -31,7 +31,7 @@ namespace GTAVRemultiplied
 
         public static Vector3 StringToVector(string input)
         {
-            string[] split = input.SplitFast(',', 3);
+            string[] split = input.SplitFastFS(',', 3);
             if (split.Length != 3)
             {
                 return Vector3.Zero;
@@ -73,7 +73,7 @@ namespace GTAVRemultiplied
         public static void EnableDLC()
         {
             Function.Call(Hash._LOAD_MP_DLC_MAPS);
-            Function.Call(Hash._ENABLE_MP_DLC_MAPS, true);
+            // TODO: ? -> Function.Call(Hash._ENABLE_MP_DLC_MAPS, true);
         }
 
         public static void SpawnNorthYankton()

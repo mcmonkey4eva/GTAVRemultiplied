@@ -15,7 +15,7 @@ using GTAVRemultiplied.ServerSystem.TagObjects;
 
 namespace GTAVRemultiplied.ServerSystem.EntityCommands
 {
-    class RepairVehicleCommand : AbstractCommand
+    public class RepairVehicleCommand : AbstractCommand
     {
         // TODO: Meta!
 
@@ -32,7 +32,7 @@ namespace GTAVRemultiplied.ServerSystem.EntityCommands
             };
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             VehicleTag veh = VehicleTag.For(entry.GetArgumentObject(queue, 0));
             if (veh == null)

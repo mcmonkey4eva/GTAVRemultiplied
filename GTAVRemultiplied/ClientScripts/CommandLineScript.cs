@@ -33,8 +33,8 @@ public class CommandLineScript : Script
         KeyUp += CommandLineScript_KeyUp;
         PointF cent = new PointF(GTA.UI.Screen.Width * 0.5f - 150f, GTA.UI.Screen.Height * 0.5f);
         PointF bcent = new PointF(GTA.UI.Screen.Width * 0.5f, GTA.UI.Screen.Height * 0.5f + 30f);
-        WritingBack = new GTA.UI.Rectangle(bcent, new SizeF(300f, 60f), Color.Black, true);
-        Writing = new Text("", cent, 0.25f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false, 300f);
+        WritingBack = new ContainerElement(bcent, new SizeF(300f, 60f), Color.Black, true);
+        Writing = new TextElement("", cent, 0.25f, Color.White, GTA.UI.Font.ChaletLondon, Alignment.Left, true, false, 300f);
     }
 
     public bool Shift = false;
@@ -52,9 +52,9 @@ public class CommandLineScript : Script
         e.SuppressKeyPress = true;
     }
 
-    public GTA.UI.Rectangle WritingBack;
+    public ContainerElement WritingBack;
 
-    public Text Writing;
+    public TextElement Writing;
 
     [DllImport("User32.dll", CharSet = CharSet.Unicode)]
     public static extern int ToUnicode(uint virtualKey, uint scanCode, byte[] keyStates, [MarshalAs(UnmanagedType.LPArray)] [Out] char[] chars, int charMaxCount, uint flags);
@@ -170,7 +170,7 @@ public class CommandLineScript : Script
         {
             if (OSKVisible)
             {
-                Game.DisableAllControlsThisFrame(0);
+                Game.DisableAllControlsThisFrame();
                 WritingBack.Draw();
                 Writing.Caption = "] " + KB_Entry;
                 Writing.Draw();

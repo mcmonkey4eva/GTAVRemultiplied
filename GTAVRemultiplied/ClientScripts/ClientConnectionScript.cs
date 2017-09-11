@@ -71,7 +71,7 @@ public class ClientConnectionScript : Script
             }
             float dist = camPos.DistanceTo(pos);
             float scale = sfact / (dist / GameplayCamera.Zoom);
-            Text utext = new Text(text, point, scale, color, Font.ChaletLondon, Alignment.Center, true, false);
+            TextElement utext = new TextElement(text, point, scale, color, Font.ChaletLondon, Alignment.Center, true, false);
             utext.Draw();
         }
     }
@@ -121,7 +121,7 @@ public class ClientConnectionScript : Script
                             Vector3 camPos = GameplayCamera.Position;
                             float dist = camPos.DistanceTo(pos);
                             float scale = 5f / (dist / GameplayCamera.Zoom);
-                            Text text = new Text("<" + modname + ">", point, scale);
+                            TextElement text = new TextElement("<" + modname + ">", point, scale);
                             text.Draw();
                         }
                     }

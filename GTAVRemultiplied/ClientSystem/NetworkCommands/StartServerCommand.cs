@@ -11,7 +11,7 @@ using GTAVRemultiplied.ServerSystem;
 
 namespace GTAVRemultiplied.ClientSystem.NetworkCommands
 {
-    class StartServerCommand : AbstractCommand
+    public class StartServerCommand : AbstractCommand
     {
         // TODO: Meta!
 
@@ -28,7 +28,7 @@ namespace GTAVRemultiplied.ClientSystem.NetworkCommands
             };
         }
         
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             if (GTAVFreneticServer.HostAccount == null)
             {

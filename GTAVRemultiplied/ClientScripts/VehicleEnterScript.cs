@@ -187,8 +187,7 @@ public class VehicleEnterScript : Script
             else if (Forbid)
             {
                 Game.Player.SetMayNotEnterAnyVehicleThisFrame();
-                Game.DisableControlThisFrame(0, Control.Enter);
-                Game.DisableControlThisFrame(2, Control.Enter);
+                Game.DisableControlThisFrame(Control.Enter);
                 Forbid = false;
             }
             else

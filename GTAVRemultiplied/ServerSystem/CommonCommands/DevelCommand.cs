@@ -31,7 +31,7 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
             };
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             string cmd = entry.GetArgument(queue, 0);
             TemplateObject arg2 = entry.GetArgumentObject(queue, 1);
@@ -64,7 +64,7 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                             return;
                         }
                         v.Position += new Vector3(0, 0, -v.HeightAboveGround);
-                        queue.SetVariable("devel_quick_vehicle", new VehicleTag(v));
+                        // TODO: queue.SetVariable("devel_quick_vehicle", new VehicleTag(v));
                         if (entry.ShouldShowGood(queue))
                         {
                             entry.Good(queue, "Vehicle spawned!");
@@ -111,7 +111,7 @@ namespace GTAVRemultiplied.ServerSystem.CommonCommands
                     ListTag list = new ListTag();
                     for (int i = 0; i < 12; i++)
                     {
-                        list.ListEntries.Add(new TextTag(i + "->" + Function.Call<int>(Hash.GET_PED_DRAWABLE_VARIATION, Game.Player.Character.Handle, i)));
+                        list.Internal.Add(new TextTag(i + "->" + Function.Call<int>(Hash.GET_PED_DRAWABLE_VARIATION, Game.Player.Character.Handle, i)));
                     }
                     entry.Info(queue, "Clothing was..." + list.ToString());
                     int choice = (int)IntegerTag.TryFor(arg2).Internal;

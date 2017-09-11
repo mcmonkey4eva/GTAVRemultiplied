@@ -14,7 +14,7 @@ using GTAVRemultiplied.SharedSystems;
 
 namespace GTAVRemultiplied.ClientSystem.CommonCommands
 {
-    class DevelCommand : AbstractCommand
+    public class DevelCommand : AbstractCommand
     {
         // TODO: Meta!
 
@@ -31,7 +31,7 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
             };
         }
 
-        public override void Execute(CommandQueue queue, CommandEntry entry)
+        public static void Execute(CommandQueue queue, CommandEntry entry)
         {
             TemplateObject arg2 = (entry.Arguments.Count > 1) ? entry.GetArgumentObject(queue, 1) : null;
             switch (entry.GetArgument(queue, 0))
@@ -134,7 +134,7 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     {
                         aim = GameplayCamera.Direction;
                     }
-                    RaycastResult rcr = World.Raycast(Game.PlayerPed.GetBoneCoord(Bone.IK_Head), Game.PlayerPed.GetBoneCoord(Bone.IK_Head) + aim * 50, IntersectOptions.Everything, Game.PlayerPed);
+                    RaycastResult rcr = World.Raycast(Game.Player.Character.GetBoneCoord(Bone.IK_Head), Game.Player.Character.GetBoneCoord(Bone.IK_Head) + aim * 50, IntersectOptions.Everything, Game.Player.Character);
                     World.AddExplosion(rcr.HitPosition, ExplosionType.Blimp, 10, 5);
                     break;
                 case "blackout":
@@ -142,14 +142,14 @@ namespace GTAVRemultiplied.ClientSystem.CommonCommands
                     break;
                 case "playParticle":
                     {
-                        string[] arguments = arg2.ToString().SplitFast('=');
-                        new ParticleEffectsAsset(arguments[0]).StartNonLoopedAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                        string[] arguments = arg2.ToString().SplitFastFS('=');
+                        new ParticleEffectsAsset(arguments[0]).StartNonLoopedAtCoord(arguments[1], Game.Player.Character.Position + new Vector3(0, 0, 1));
                     }
                     break;
                 case "loopParticle":
                     {
-                        string[] arguments = arg2.ToString().SplitFast('=');
-                        CoordinateParticleEffect cpe = new ParticleEffectsAsset(arguments[0]).CreateEffectAtCoord(arguments[1], Game.PlayerPed.Position + new Vector3(0, 0, 1));
+                        string[] arguments = arg2.ToString().SplitFastFS('=');
+                        CoordinateParticleEffect cpe = new ParticleEffectsAsset(arguments[0]).CreateEffectAtCoord(arguments[1], Game.Player.Character.Position + new Vector3(0, 0, 1));
                         cpe.Start();
                     }
                     break;

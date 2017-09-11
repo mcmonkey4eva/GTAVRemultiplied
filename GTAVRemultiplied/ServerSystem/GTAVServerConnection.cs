@@ -69,7 +69,7 @@ namespace GTAVRemultiplied.ServerSystem
                     conn.Data += GTAVUtilities.Enc.GetString(hb, 0, c);
                     if (conn.Data.EndsWith("\n\n"))
                     {
-                        string[] split = conn.Data.SplitFast('\n');
+                        string[] split = conn.Data.SplitFastFS('\n');
                         Waiting.Remove(conn);
                         GTAVFreneticServer.Schedule.StartASyncTask(() =>
                         {

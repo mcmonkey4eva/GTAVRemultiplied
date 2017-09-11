@@ -19,6 +19,8 @@ namespace GTAVRemultiplied.ServerSystem.TagBases
             Name = "game";
         }
 
+        // TODO: Tags!
+        /*
         public override TemplateObject Handle(TagData data)
         {
             data.Shrink();
@@ -37,6 +39,6 @@ namespace GTAVRemultiplied.ServerSystem.TagBases
                 default:
                     return new TextTag(ToString()).Handle(data);
             }
-        }
+        }*/
     }
 }

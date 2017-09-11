@@ -14,17 +14,7 @@ namespace GTAVRemultiplied.ServerSystem
     public class GTAVFreneticServerOutputter : Outputter
     {
         public Commands Syst;
-
-        public override void Bad(string tagged_text, DebugMode mode)
-        {
-            Log.Error(Syst.TagSystem.ParseTagsFromText(tagged_text, "", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true));
-        }
-
-        public override void Good(string tagged_text, DebugMode mode)
-        {
-            Log.Message("Info", Syst.TagSystem.ParseTagsFromText(tagged_text, "", new Dictionary<string, TemplateObject>(), mode, (o) => { throw new Exception(o); }, true));
-        }
-
+        
         public override string ReadTextFile(string name)
         {
             return File.ReadAllText(Environment.CurrentDirectory + "/frenetic/server/scripts/" + name.Replace("..", "_")); // TODO: Proper sandbox!
@@ -32,7 +22,7 @@ namespace GTAVRemultiplied.ServerSystem
 
         public override void UnknownCommand(CommandQueue queue, string basecommand, string[] arguments)
         {
-            Bad("Invalid command: " + TagParser.Escape(basecommand) + "!", queue.CommandStack.Count > 0 ? queue.CommandStack.Peek().Debug : DebugMode.FULL);
+            // TODO: ?
         }
 
         public override void WriteLine(string text)
@@ -55,6 +45,21 @@ namespace GTAVRemultiplied.ServerSystem
         public override void Reload()
         {
             GTAVFreneticServer.AutorunScripts();
+        }
+
+        public override void BadOutput(string text)
+        {
+            Log.Error(text);
+        }
+
+        public override void GoodOutput(string text)
+        {
+            Log.Message("Info", text);
+        }
+
+        public override bool ShouldErrorOnInvalidCommand()
+        {
+            return true;
         }
     }
 }
